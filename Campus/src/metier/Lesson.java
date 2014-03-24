@@ -35,7 +35,7 @@ public class Lesson implements Serializable {
      * @param teacher
      * @param students 
      */
-    public Lesson(int id, String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, CourseStatus status, Teacher teacher, List<Student> students) {
+    public Lesson(int id, String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, LessonStatus status, Teacher teacher, List<Student> students) {
         this.id = id;
         this.name = name;
         this.tp = tp;
@@ -57,7 +57,7 @@ public class Lesson implements Serializable {
      * @param teacher
      * @param students 
      */
-    public Lesson(String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, CourseStatus status, Teacher teacher, List<Student> students) {
+    public Lesson(String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, LessonStatus status, Teacher teacher, List<Student> students) {
         this.name = name;
         this.tp = tp;
         this.test = test;
@@ -120,11 +120,11 @@ public class Lesson implements Serializable {
         this.endHour = endHour;
     }
 
-    public CourseStatus getStatus() {
+    public LessonStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CourseStatus status) {
+    public void setStatus(LessonStatus status) {
         this.status = status;
     }
 
