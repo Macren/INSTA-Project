@@ -28,9 +28,14 @@ public class GeneralMDI extends javax.swing.JFrame {
         initComponents();
         this.menuBar.setVisible(false);
         this.centerJIF(this.jif_authent);
+        this.lbl_error.setText("");
     }
 
-    
+    /**
+     * Center a JInternalFrame in the GeneralMDI
+     * -----------------------------------------
+     * @param jif 
+     */
     public void centerJIF(JInternalFrame jif) {
         Dimension desktopSize = this.desktopPane.getSize();
         Dimension jInternalFrameSize = jif.getSize();
@@ -39,6 +44,22 @@ public class GeneralMDI extends javax.swing.JFrame {
         jif.setLocation(width, height);
         jif.setVisible(true);
     }
+    
+    public String getMD5Str(String md5) {
+        try {
+             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+             byte[] array = md.digest(md5.getBytes());
+             StringBuffer sb = new StringBuffer();
+             for (int i = 0; i < array.length; ++i) {
+               sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+             return sb.toString();
+         } catch (java.security.NoSuchAlgorithmException e) {
+         }
+         return null;
+     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,9 +75,10 @@ public class GeneralMDI extends javax.swing.JFrame {
         lbl_login = new javax.swing.JLabel();
         lbl_pwd = new javax.swing.JLabel();
         tf_login = new javax.swing.JTextField();
-        tf_pwd = new javax.swing.JTextField();
         bt_connect = new javax.swing.JButton();
         checkb_remember = new javax.swing.JCheckBox();
+        tf_pwd = new javax.swing.JPasswordField();
+        lbl_error = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -91,14 +113,21 @@ public class GeneralMDI extends javax.swing.JFrame {
         tf_login.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
         tf_login.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        tf_pwd.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
-        tf_pwd.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
         bt_connect.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
         bt_connect.setText("Ouvrir session");
+        bt_connect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_connectActionPerformed(evt);
+            }
+        });
 
         checkb_remember.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
         checkb_remember.setText("Se souvenir de moi");
+
+        lbl_error.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
+        lbl_error.setForeground(new java.awt.Color(255, 0, 0));
+        lbl_error.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_error.setText("jLabel1");
 
         javax.swing.GroupLayout jif_authentLayout = new javax.swing.GroupLayout(jif_authent.getContentPane());
         jif_authent.getContentPane().setLayout(jif_authentLayout);
@@ -111,10 +140,11 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(tf_login)
                     .addComponent(lbl_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lbl_pwd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tf_pwd, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tf_pwd)
                     .addGroup(jif_authentLayout.createSequentialGroup()
                         .addComponent(checkb_remember)
-                        .addGap(0, 27, Short.MAX_VALUE)))
+                        .addGap(0, 54, Short.MAX_VALUE))
+                    .addComponent(lbl_error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jif_authentLayout.setVerticalGroup(
@@ -128,15 +158,17 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addComponent(lbl_pwd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tf_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(7, 7, 7)
                 .addComponent(checkb_remember)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_error)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bt_connect)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_authent);
-        jif_authent.setBounds(10, 10, 190, 225);
+        jif_authent.setBounds(10, 10, 217, 234);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -219,6 +251,15 @@ public class GeneralMDI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    private void bt_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_connectActionPerformed
+        // TODO add your handling code here:
+        String  cleanPwd = new String(this.tf_pwd.getPassword());
+        String  cryptPwd = this.getMD5Str(cleanPwd);
+        cleanPwd = null;
+        System.out.println("clean password : " + cleanPwd);
+        System.out.println("crypt password : " + cryptPwd);
+    }//GEN-LAST:event_bt_connectActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,6 +310,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JInternalFrame jif_authent;
+    private javax.swing.JLabel lbl_error;
     private javax.swing.JLabel lbl_login;
     private javax.swing.JLabel lbl_pwd;
     private javax.swing.JMenuBar menuBar;
@@ -277,7 +319,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JTextField tf_login;
-    private javax.swing.JTextField tf_pwd;
+    private javax.swing.JPasswordField tf_pwd;
     // End of variables declaration//GEN-END:variables
 
 }
