@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package dao;
-//
+package metier;
 
 /**
  *
  * @author Thierry
  */
-public class Bdd {
+public class School {
     
 }
