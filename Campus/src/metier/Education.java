@@ -13,33 +13,44 @@ public class Education implements Serializable {
      * Attributs
      */
     private int                 id;
-    private int                 nbHours;
     private String              name;
+    private int                 nbHours;
+    private int                 promo;
+    private School              school;
     private List<Discipline>    disciplines;
+    // private School           school; ??????????
     
     /**
      * Contructeur
      * @param id
-     * @param nbHours
      * @param name
+     * @param nbHours
+     * @param promo
+     * @param school
      * @param disciplines 
      */
-    public Education(int id, int nbHours, String name, List<Discipline> disciplines) {
-        this.id = id;
-        this.nbHours = nbHours;
-        this.name = name;
-        this.disciplines = disciplines;
+    public Education(int id, String name, int nbHours, int promo, School school, List<Discipline> disciplines) {
+        this.id           = id;
+        this.name         = name;
+        this.nbHours      = nbHours;
+        this.promo        = promo;
+        this.school       = school;
+        this.disciplines  = disciplines;
     }
     /**
      * Constructeur sans id
-     * @param nbHours
      * @param name
+     * @param nbHours
+     * @param promo
+     * @param school
      * @param disciplines 
      */
-    public Education(int nbHours, String name, List<Discipline> disciplines) {
-        this.nbHours = nbHours;
-        this.name = name;
-        this.disciplines = disciplines;
+    public Education(String name, int nbHours, int promo, School school, List<Discipline> disciplines) {
+        this.name         = name;
+        this.nbHours      = nbHours;
+        this.promo        = promo;
+        this.school       = school;
+        this.disciplines  = disciplines;
     }
     
     /**
@@ -60,6 +71,22 @@ public class Education implements Serializable {
 
     public void setNbHours(int nbHours) {
         this.nbHours = nbHours;
+    }
+    
+    public int getPromo() {
+        return promo;
+    }
+
+    public void setPromo(int promo) {
+        this.promo = promo;
+    }
+
+    public School getSchool() {
+      return school;
+    }
+
+    public void setSchool(School school) {
+      this.school = school;
     }
 
     public String getName() {
