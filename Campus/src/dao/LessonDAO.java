@@ -105,7 +105,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `lesson` WHERE  `id` = ?;";
+      String sql = "SELECT * FROM `lesson` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();

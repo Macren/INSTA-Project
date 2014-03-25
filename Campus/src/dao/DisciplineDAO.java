@@ -24,6 +24,9 @@ import metier.Education;
  */
 public class DisciplineDAO implements IDAO<Discipline> {
 
+  private static final int DISCIPLINE_STATUS_AVAILABLE = 1;
+  private static final int DISCIPLINE_STATUS_FULL = 2;
+  
   @Override
   public void insert(Discipline pDiscipline) {
     Connection cnx = null;
@@ -42,7 +45,18 @@ public class DisciplineDAO implements IDAO<Discipline> {
       stat.setString(2, null); //pDiscipline.getBeginDate());
       stat.setString(3, null); //pDiscipline.getEndDate());
       stat.setInt(4, pDiscipline.getEducation().getId());
-      stat.setInt(5, 0); // pDiscipline.getStatus.getId();
+      
+      switch (pDiscipline.getStatus()) {
+        case "AVAILABLE":
+          stat.setInt(5, DISCIPLINE_STATUS_AVAILABLE);
+          break;
+        case "FULL":
+          stat.setInt(5, DISCIPLINE_STATUS_FULL);
+          break;
+        default:
+          stat.setInt(5, 0); // pDiscipline.getStatus.getId();
+          break;
+      }
       
       stat.executeUpdate();
       
@@ -73,9 +87,20 @@ public class DisciplineDAO implements IDAO<Discipline> {
       stat.setString(2, null); //pDiscipline.getBeginDate());
       stat.setString(3, null); //pDiscipline.getEndDate());
       stat.setInt(4, pDiscipline.getEducation().getId());
-      stat.setInt(5, 0); // pDiscipline.getStatus.getId();
       
-      stat.setInt(5, pDiscipline.getId());
+      switch (pDiscipline.getStatus()) {
+        case "AVAILABLE":
+          stat.setInt(5, DISCIPLINE_STATUS_AVAILABLE);
+          break;
+        case "FULL":
+          stat.setInt(5, DISCIPLINE_STATUS_FULL);
+          break;
+        default:
+          stat.setInt(5, 0); // pDiscipline.getStatus.getId();
+          break;
+      }
+      
+      stat.setInt(6, pDiscipline.getId());
       
       stat.executeUpdate();
       
@@ -114,11 +139,15 @@ public class DisciplineDAO implements IDAO<Discipline> {
         // Ici récupérer l' Education
         /////////////////////////////////////////////////////////////////////////
         Education education = null;
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status
+        /////////////////////////////////////////////////////////////////////////
+        String status = null;
         
         
         discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                     null, null, //res.getInt("begin_date"), res.getInt("end_date"),
-                                    education);
+                                    education, status);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -149,10 +178,14 @@ public class DisciplineDAO implements IDAO<Discipline> {
         // Ici récupérer l' Education
         /////////////////////////////////////////////////////////////////////////
         Education education = null;
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status
+        /////////////////////////////////////////////////////////////////////////
+        String status = null;
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                                 null, null, //res.getInt("begin_date"), res.getInt("end_date"),
-                                                education);
+                                                education, status);
         listDisciplines.add(discipline);
       }
 

@@ -192,11 +192,13 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`mark` (
   `value` FLOAT NULL ,
   `value_max` FLOAT NULL ,
   `id_user_student` INT NOT NULL ,
+  `id_user_teacher` INT NULL ,
   `id_discipline` INT NOT NULL ,
   `comment` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_mark_user_student_idx` (`id_user_student` ASC) ,
   INDEX `fk_mark_discipline_idx` (`id_discipline` ASC) ,
+  INDEX `fk_mark_user_teacher_idx` (`id_user_teacher` ASC) ,
   CONSTRAINT `fk_mark_user_student`
     FOREIGN KEY (`id_user_student` )
     REFERENCES `campus_bdd`.`user` (`id` )
@@ -205,6 +207,11 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`mark` (
   CONSTRAINT `fk_mark_discipline`
     FOREIGN KEY (`id_discipline` )
     REFERENCES `campus_bdd`.`discipline` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mark_user_teacher`
+    FOREIGN KEY (`id_user_teacher` )
+    REFERENCES `campus_bdd`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -313,4 +320,18 @@ INSERT INTO `campus_bdd`.`school` (`name`) VALUES ('School_guest');
 -- -----------------------------------------------------
 -- Donnée Table `campus_bdd`.`user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`user` (`id`, `login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_promo`, `id_school`) VALUES (NULL, 'campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', NULL, '1');
+INSERT INTO `campus_bdd`.`user` (`id`, `login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES (NULL, 'campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', '1');
+
+-- -----------------------------------------------------
+-- Donnée Table `campus_bdd`.`lesson_status`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('AVAILABLE');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('CANCELED');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('FULL');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('ENDED');
+
+-- -----------------------------------------------------
+-- Donnée Table `campus_bdd`.`discipline_status`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('AVAILABLE');
+INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('FULL');

@@ -13,39 +13,44 @@ public class Discipline implements Serializable {
     /**
      * Variables
      */
-    private int             id;
-    private String          name;
-    private Calendar        beginDate;
-    private Calendar        endDate;
-    private Education       education;
+    private int       id;
+    private String    name;
+    private Calendar  beginDate;
+    private Calendar  endDate;
+    private Education education;
+    private String    status;
     
     /**
      * Constructeur
      * @param id
      * @param name
      * @param beginDate
-     * @param endDate 
+     * @param endDate
+     * @param education
+     * @param status
      */
-    public Discipline(int id, String name, Calendar beginDate, Calendar endDate, Education education) {
-        this.id = id;
-        this.name = name;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-        this.education = education;
+    public Discipline(int id, String name, Calendar beginDate, Calendar endDate, Education education, String status) {
+        this.id         = id;
+        this.name       = name;
+        this.beginDate  = beginDate;
+        this.endDate    = endDate;
+        this.education  = education;
+        this.status     = status;
     }
     /**
      * Constructeur sans id
      * @param name
-     * @param lessons
-     * @param marks
      * @param beginDate
-     * @param endDate 
+     * @param endDate
+     * @param education
+     * @param status
      */
-    public Discipline(String name, Calendar beginDate, Calendar endDate, Education education) {
-        this.name = name;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
-        this.education = education;
+    public Discipline(String name, Calendar beginDate, Calendar endDate, Education education, String status) {
+        this.name       = name;
+        this.beginDate  = beginDate;
+        this.endDate    = endDate;
+        this.education  = education;
+        this.status     = status;
     }
     
     /**
@@ -91,7 +96,16 @@ public class Discipline implements Serializable {
   public void setEducation(Education education) {
     this.education = education;
   }
-    
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+  
+  
     
     
     @Override
