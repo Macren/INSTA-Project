@@ -78,9 +78,7 @@ public class Teacher extends AbstractUser implements IDocUse {
     
     
     /**
-     * =======
      * Methods
-     * =======
      */
     
     /**

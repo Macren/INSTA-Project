@@ -77,9 +77,7 @@ public class Student extends AbstractUser implements IDocUse {
     
     
     /**
-     * =======
      * Methods
-     * =======
      */
     
     /**

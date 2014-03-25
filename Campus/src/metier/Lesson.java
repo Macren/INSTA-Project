@@ -17,10 +17,10 @@ public class Lesson implements Serializable {
     private String          name;
     private boolean         tp;
     private boolean         test;
-    private Calendar        beginHour;
-    private Calendar        endHour;
+    private Calendar        beginHour; // changer en 'Date beginDate'
+    private Calendar        endHour; // changer en 'Date endDate'
     private LessonStatus    status;
-    private Teacher         teacher;
+    private Teacher         teacher; // GOOD : reproduire ca ;)
     private List<Student>   students;
     
     /**
