@@ -6,6 +6,7 @@
 
 package swing;
 
+import dao.AdministratorDAO;
 import java.awt.Dimension;
 import javax.swing.JInternalFrame;
 import metier.Administrator;
@@ -256,6 +257,11 @@ public class GeneralMDI extends javax.swing.JFrame {
         String  cleanPwd = new String(this.tf_pwd.getPassword());
         String  cryptPwd = this.getMD5Str(cleanPwd);
         cleanPwd = null;
+        
+        Administrator myAdmin = new Administrator(tf_login.getText(), cryptPwd);
+        
+        AdministratorDAO adminDAO = new AdministratorDAO();
+        
         System.out.println("clean password : " + cleanPwd);
         System.out.println("crypt password : " + cryptPwd);
     }//GEN-LAST:event_bt_connectActionPerformed

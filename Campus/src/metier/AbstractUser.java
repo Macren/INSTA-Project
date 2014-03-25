@@ -21,16 +21,16 @@ public abstract class AbstractUser implements Serializable {
      * ==========
      */
     
-    protected   int     id;
-    protected   String  login;
-    protected   String  passwd;
-    protected   String  mail;
-    protected   String  birthDate;
-    protected   String  firstName;
-    protected   String  lastName;
-    protected   int     phone;
-    protected   int     schoolID;
-    protected   int     educationID;
+    protected   int         id;
+    protected   String      login;
+    protected   String      passwd;
+    protected   String      mail;
+    protected   String      birthDate;
+    protected   String      firstName;
+    protected   String      lastName;
+    protected   int         phone;
+    protected   School      school;
+    protected   Education   education;
     
 
     /**
@@ -45,10 +45,10 @@ public abstract class AbstractUser implements Serializable {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school 
+     * @param education 
      */
-    public AbstractUser(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID) {
+    public AbstractUser(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
         this.id = id;
         this.login = login;
         this.passwd = passwd;
@@ -57,8 +57,8 @@ public abstract class AbstractUser implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.schoolID = schoolID;
-        this.educationID = educationID;
+        this.school = school;
+        this.education = education;
     }
 
     /**
@@ -72,10 +72,10 @@ public abstract class AbstractUser implements Serializable {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school 
+     * @param education 
      */
-    public AbstractUser(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID) {
+    public AbstractUser(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
         this.login = login;
         this.passwd = passwd;
         this.mail = mail;
@@ -83,9 +83,22 @@ public abstract class AbstractUser implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.schoolID = schoolID;
-        this.educationID = educationID;
+        this.school = school;
+        this.education = education;
     }
+
+    /**
+     * ================================
+     * Constructor for authentification
+     * ================================
+     * @param login
+     * @param passwd 
+     */
+    public AbstractUser(String login, String passwd) {
+        this.login = login;
+        this.passwd = passwd;
+    }
+    
     
     
 
@@ -126,12 +139,12 @@ public abstract class AbstractUser implements Serializable {
         return phone;
     }
 
-    public int getSchoolID() {
-        return schoolID;
+    public School getSchool() {
+        return school;
     }
 
-    public int getEducationID() {
-        return educationID;
+    public Education getEducation() {
+        return education;
     }
 
     
@@ -173,12 +186,12 @@ public abstract class AbstractUser implements Serializable {
         this.phone = phone;
     }
 
-    public void setSchoolID(int schoolID) {
-        this.schoolID = schoolID;
+    public void setSchool(School school) {
+        this.school = school;
     }
 
-    public void setEducationID(int educationID) {
-        this.educationID = educationID;
+    public void setEducation(Education education) {
+        this.education = education;
     }
 
 

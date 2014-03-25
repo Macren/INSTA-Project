@@ -33,12 +33,12 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school
+     * @param education 
      * @param lessons 
      */
-    public Teacher(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID, List<Lesson> lessons) {
-        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, schoolID, educationID);
+    public Teacher(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
         this.lessons = lessons;
     }
 
@@ -53,14 +53,28 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school
+     * @param education 
      * @param lessons 
      */
-    public Teacher(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID, List<Lesson> lessons) {
-        super(login, passwd, mail, birthDate, firstName, lastName, phone, schoolID, educationID);
+    public Teacher(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+        super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
         this.lessons = lessons;
     }
+
+    /**
+     * ================================
+     * Constructor for authentification
+     * ================================
+     * @param login
+     * @param passwd 
+     */
+    public Teacher(String login, String passwd) {
+        super(login, passwd);
+    }
+    
+    
+    
     
     
     /**

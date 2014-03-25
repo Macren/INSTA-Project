@@ -24,11 +24,11 @@ public class Administrator extends AbstractUser {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school
+     * @param education 
      */
-    public Administrator(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID) {
-        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, schoolID, educationID);
+    public Administrator(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
     }
 
     /**
@@ -42,11 +42,22 @@ public class Administrator extends AbstractUser {
      * @param firstName
      * @param lastName
      * @param phone
-     * @param schoolID
-     * @param educationID 
+     * @param school
+     * @param education 
      */
-    public Administrator(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID) {
-        super(login, passwd, mail, birthDate, firstName, lastName, phone, schoolID, educationID);
+    public Administrator(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+        super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
+    }
+    
+    /**
+     * ================================
+     * Constructor for authentification
+     * ================================
+     * @param login
+     * @param passwd 
+     */
+    public Administrator(String login, String passwd) {
+        super(login, passwd);
     }
     
     /**

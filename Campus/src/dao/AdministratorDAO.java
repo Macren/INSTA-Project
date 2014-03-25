@@ -44,7 +44,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setInt(7, pAdministrator.getPhone());
       stat.setInt(8, 1);        // 1 : Administrator
       stat.setString(9, null);  // null, car un administrateur n'appartient à aucune promo
-      stat.setInt(10, pAdministrator.getSchoolID());
+      stat.setInt(10, pAdministrator.getSchool());
       
       stat.executeUpdate();
       
