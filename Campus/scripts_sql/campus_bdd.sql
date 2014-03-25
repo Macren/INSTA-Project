@@ -91,9 +91,11 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
   `phone` INT NOT NULL ,
   `id_role` INT NOT NULL ,
   `id_school` INT NOT NULL ,
+  `id_education` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_user_role_idx` (`id_role` ASC) ,
   INDEX `fk_user_school_idx` (`id_school` ASC) ,
+  INDEX `fk_user_education_idx` (`id_education` ASC) ,
   CONSTRAINT `fk_user_role`
     FOREIGN KEY (`id_role` )
     REFERENCES `campus_bdd`.`role` (`id` )
@@ -102,6 +104,11 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
   CONSTRAINT `fk_user_school`
     FOREIGN KEY (`id_school` )
     REFERENCES `campus_bdd`.`school` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_education`
+    FOREIGN KEY (`id_education` )
+    REFERENCES `campus_bdd`.`education` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
