@@ -261,6 +261,8 @@ public class GeneralMDI extends javax.swing.JFrame {
         Administrator myAdmin = new Administrator(tf_login.getText(), cryptPwd);
         
         AdministratorDAO adminDAO = new AdministratorDAO();
+        Administrator myAdminTest = adminDAO.selectById(1);
+        System.out.println(myAdminTest);
         
         System.out.println("clean password : " + cleanPwd);
         System.out.println("crypt password : " + cryptPwd);

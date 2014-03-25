@@ -6,6 +6,8 @@
 
 package metier;
 
+import java.sql.Date;
+
 /**
  *
  * @author Madeleine
@@ -27,7 +29,7 @@ public class Administrator extends AbstractUser {
      * @param school
      * @param education 
      */
-    public Administrator(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+    public Administrator(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
     }
 
@@ -45,7 +47,7 @@ public class Administrator extends AbstractUser {
      * @param school
      * @param education 
      */
-    public Administrator(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+    public Administrator(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
     }
     
@@ -63,6 +65,9 @@ public class Administrator extends AbstractUser {
     /**
      * Methods
      */
+    
+        
+    
     
     /**
      * createStudent()

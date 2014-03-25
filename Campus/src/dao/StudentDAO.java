@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,13 +37,13 @@ public class StudentDAO implements IDAO<Student> {
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String myDate = sdf.format(pStudent.getBirthDate().getTime());
+      
       stat.setString(1, pStudent.getLogin());
       stat.setString(2, pStudent.getPasswd());
       stat.setString(3, pStudent.getMail());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(4, pStudent.getBirthDate());
+      stat.setString(4, myDate);
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
@@ -73,13 +73,13 @@ public class StudentDAO implements IDAO<Student> {
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String myDate = sdf.format(pStudent.getBirthDate().getTime());
+      
       stat.setString(1, pStudent.getLogin());
       stat.setString(2, pStudent.getPasswd());
       stat.setString(3, pStudent.getMail());
-      // pour la modification des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(4, pStudent.getBirthDate());
+      stat.setString(4, myDate);
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
@@ -128,8 +128,8 @@ public class StudentDAO implements IDAO<Student> {
       if(res.first())
       {
         student = new Student(res.getInt("id"), res.getString("login"),
-                              res.getString("password"), res.getString("mail"),
-                              res.getString("birth_date"), res.getString("first_name"),
+                              res.getString("pwd"), res.getString("mail"),
+                              res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
                               null, null, null); // avant dernier arg education id education.. ?pb classe metier?
       }
@@ -160,15 +160,9 @@ public class StudentDAO implements IDAO<Student> {
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
-        
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des lessons du student
-        /////////////////////////////////////////////////////////////////////////
-        List<Lesson> listLessons = new ArrayList();
-        
         Student student = new Student(res.getInt("id"), res.getString("login"),
-                                      res.getString("password"), res.getString("mail"),
-                                      res.getString("birth_date"), res.getString("first_name"),
+                                      res.getString("pwd"), res.getString("mail"),
+                                      res.getDate("birth_date"), res.getString("first_name"),
                                       res.getString("last_name"), res.getInt("phone"),
                                       null, null, null); // avant dernier arg education id education.. ?pb classe metier?
         listStudents.add(student);
