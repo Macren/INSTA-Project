@@ -141,9 +141,50 @@ public class TeacherDAO implements IDAO<Teacher>{
       }
       
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return teacher;
+  }
+  
+  public Teacher selectByLoginPwd(String pLogin, String pPwd) {
+    Teacher teacher = null;
+    
+    Connection cnx = null;
+    
+    try {
+      cnx= db.connect();
+      /////////////////////////////////////////////////////////////////////////
+      // Ici récupérer la liste des lessons
+      /////////////////////////////////////////////////////////////////////////
+      List<Lesson> listLessons = new ArrayList();
+      /////////////////////////////////////////////////////////////////////////
+      // Ici récupérer l'id de l'école en fonction 
+      /////////////////////////////////////////////////////////////////////////
+      //
+      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setString(1, pLogin);
+      stat.setString(2, pPwd);
+      ResultSet res = stat.executeQuery();
+      
+      // S'il y a un resultat
+      if(res.first())
+      {
+          teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                              res.getString("pwd"), res.getString("mail"),
+                              res.getDate("birth_date"), res.getString("first_name"),
+                              res.getString("last_name"), res.getInt("phone"),
+                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+      }
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }

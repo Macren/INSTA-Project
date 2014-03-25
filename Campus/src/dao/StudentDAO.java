@@ -143,6 +143,47 @@ public class StudentDAO implements IDAO<Student> {
     }
     return student;
   }
+  
+  public Student selectByLoginPwd(String pLogin, String pPwd) {
+    Student student = null;
+    
+    Connection cnx = null;
+    
+    try {
+      cnx= db.connect();
+      /////////////////////////////////////////////////////////////////////////
+      // Ici récupérer la liste des lessons du student
+      /////////////////////////////////////////////////////////////////////////
+      List<Lesson> listLessons = new ArrayList();
+      
+      /////////////////////////////////////////////////////////////////////////
+      // Ici récupérer l'id de l'école en fonction 
+      /////////////////////////////////////////////////////////////////////////
+      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setString(1, pLogin);
+      stat.setString(2, pPwd);
+      ResultSet res = stat.executeQuery();
+      
+      // S'il y a un resultat
+      if(res.first())
+      {
+        student = new Student(res.getInt("id"), res.getString("login"),
+                              res.getString("pwd"), res.getString("mail"),
+                              res.getDate("birth_date"), res.getString("first_name"),
+                              res.getString("last_name"), res.getInt("phone"),
+                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+      }
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return student;
+  }
 
   @Override
   public List<Student> selectAll() {

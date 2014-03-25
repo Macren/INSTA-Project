@@ -139,10 +139,13 @@ public class DisciplineDAO implements IDAO<Discipline> {
         // Ici récupérer l' Education
         /////////////////////////////////////////////////////////////////////////
         Education education = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le status
-        /////////////////////////////////////////////////////////////////////////
-        String status = null;
+        // On recupère le status
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
+        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        ResultSet resStatus = statStatus.executeQuery();
+        
+        String status = resStatus.getString("label");
         
         
         discipline = new Discipline(res.getInt("id"), res.getString("name"),
@@ -178,10 +181,13 @@ public class DisciplineDAO implements IDAO<Discipline> {
         // Ici récupérer l' Education
         /////////////////////////////////////////////////////////////////////////
         Education education = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le status
-        /////////////////////////////////////////////////////////////////////////
-        String status = null;
+        // On recupère le status
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
+        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        ResultSet resStatus = statStatus.executeQuery();
+        
+        String status = resStatus.getString("label");
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                                 null, null, //res.getInt("begin_date"), res.getInt("end_date"),
