@@ -34,7 +34,7 @@ public class Student extends AbstractUser implements IDocUse {
      * @param lastName
      * @param phone
      * @param schoolID
-     * @param educationID 
+     * @param educationID
      * @param lessons 
      */
     public Student(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID, List<Lesson> lessons) {

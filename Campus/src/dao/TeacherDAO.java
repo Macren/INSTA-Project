@@ -14,18 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import metier.Administrator;
+import metier.Lesson;
+import metier.Teacher;
 
 /**
  *
  * @author biron
  */
-public class AdministratorDAO implements IDAO<Administrator>{
-
-  private static final int ID_ROLE_ADMINISTRATOR = 1;
+public class TeacherDAO implements IDAO<Teacher>{
   
+  private static final int ID_ROLE_TEACHER = 2;
+
   @Override
-  public void insert(Administrator pAdministrator) {
+  public void insert(Teacher pTeacher) {
     Connection cnx = null;
     
     try {
@@ -35,20 +36,20 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
-      stat.setString(1, pAdministrator.getLogin());
-      stat.setString(2, pAdministrator.getPasswd());
-      stat.setString(3, pAdministrator.getMail());
+      stat.setString(1, pTeacher.getLogin());
+      stat.setString(2, pTeacher.getPasswd());
+      stat.setString(3, pTeacher.getMail());
       // pour l'insertion des dates, il faut les caster avant...
       // type de l'objet : Calendar
       // type en Bdd : DATETIME
       // Pour l'instant : String /////////////////////////////////////////!!!
-      stat.setString(4, pAdministrator.getBirthDate());
-      stat.setString(5, pAdministrator.getFirstName());
-      stat.setString(6, pAdministrator.getLastName());
-      stat.setInt(7, pAdministrator.getPhone());
-      stat.setInt(8, ID_ROLE_ADMINISTRATOR);
-      stat.setString(9, null);  // null, car un administrateur n'appartient à aucune promo
-      stat.setInt(10, pAdministrator.getSchoolID());
+      stat.setString(4, pTeacher.getBirthDate());
+      stat.setString(5, pTeacher.getFirstName());
+      stat.setString(6, pTeacher.getLastName());
+      stat.setInt(7, pTeacher.getPhone());
+      stat.setInt(8, ID_ROLE_TEACHER);
+      stat.setString(9, null);  // null, car un teacher n'appartient à aucune promo
+      stat.setInt(10, pTeacher.getSchoolID());
       
       stat.executeUpdate();
       
@@ -62,7 +63,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
   }
 
   @Override
-  public void update(Administrator pAdministrator) {
+  public void update(Teacher pTeacher) {
     Connection cnx = null;
     
     try {
@@ -72,18 +73,18 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
-      stat.setString(1, pAdministrator.getLogin());
-      stat.setString(2, pAdministrator.getPasswd());
-      stat.setString(3, pAdministrator.getMail());
+      stat.setString(1, pTeacher.getLogin());
+      stat.setString(2, pTeacher.getPasswd());
+      stat.setString(3, pTeacher.getMail());
       // pour la modification des dates, il faut les caster avant...
       // type de l'objet : Calendar
       // type en Bdd : DATETIME
-      stat.setString(4, pAdministrator.getBirthDate());
-      stat.setString(5, pAdministrator.getFirstName());
-      stat.setString(6, pAdministrator.getLastName());
-      stat.setInt(7, pAdministrator.getPhone());
+      stat.setString(4, pTeacher.getBirthDate());
+      stat.setString(5, pTeacher.getFirstName());
+      stat.setString(6, pTeacher.getLastName());
+      stat.setInt(7, pTeacher.getPhone());
       
-      stat.setInt(8, pAdministrator.getId());
+      stat.setInt(8, pTeacher.getId());
       
       stat.executeUpdate();
       
@@ -97,21 +98,26 @@ public class AdministratorDAO implements IDAO<Administrator>{
   }
 
   @Override
-  public void delete(Administrator objet) {
+  public void delete(Teacher objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
-  public Administrator selectById(int id) {
-    Administrator administrator = null;
+  public Teacher selectById(int id) {
+    Teacher teacher = null;
     
     Connection cnx = null;
     
     try {
       cnx= db.connect();
       /////////////////////////////////////////////////////////////////////////
+      // Ici récupérer la liste des lessons
+      /////////////////////////////////////////////////////////////////////////
+      List<Lesson> listLessons = new ArrayList();
+      /////////////////////////////////////////////////////////////////////////
       // Ici récupérer l'id de l'école en fonction 
       /////////////////////////////////////////////////////////////////////////
+      //
       String sql = "SELECT * FROM `user` WHERE  `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
@@ -120,11 +126,11 @@ public class AdministratorDAO implements IDAO<Administrator>{
       // S'il y a un resultat
       if(res.first())
       {
-        administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                          res.getString("password"), res.getString("mail"),
-                                          res.getString("birth_date"), res.getString("first_name"),
-                                          res.getString("last_name"), res.getInt("phone"),
-                                          res.getInt("id_school"), 0); // dernier arg education id education.. ?pb classe metier?
+        teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                              res.getString("password"), res.getString("mail"),
+                              res.getString("birth_date"), res.getString("first_name"),
+                              res.getString("last_name"), res.getInt("phone"),
+                              res.getInt("id_school"), 0, listLessons); // avant dernier arg education id education.. ?pb classe metier?
       }
       
     } catch (ClassNotFoundException ex) {
@@ -134,12 +140,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
     } finally {
       db.disconnect(cnx);
     }
-    return administrator;
+    return teacher;
   }
 
   @Override
-  public List<Administrator> selectAll() {
-    List<Administrator> listAdministrators = new ArrayList();
+  public List<Teacher> selectAll() {
+    List<Teacher> listTeachers = new ArrayList();
     
     Connection cnx = null;
     
@@ -148,18 +154,23 @@ public class AdministratorDAO implements IDAO<Administrator>{
 
       String sql = "SELECT * FROM `user` WHERE `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
-      stat.setInt(1, ID_ROLE_ADMINISTRATOR);
+      stat.setInt(1, ID_ROLE_TEACHER);
       
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         
-        Administrator administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                                        res.getString("password"), res.getString("mail"),
-                                                        res.getString("birth_date"), res.getString("first_name"),
-                                                        res.getString("last_name"), res.getInt("phone"),
-                                                        res.getInt("id_school"), 0);// dernier arg : education id
-        listAdministrators.add(administrator);
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste des lessons
+        /////////////////////////////////////////////////////////////////////////
+        List<Lesson> listLessons = new ArrayList();
+        
+        Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                                      res.getString("password"), res.getString("mail"),
+                                      res.getString("birth_date"), res.getString("first_name"),
+                                      res.getString("last_name"), res.getInt("phone"),
+                                      res.getInt("id_school"), 0, listLessons); // avant dernier arg education id education.. ?pb classe metier?
+        listTeachers.add(teacher);
       }
 
     } catch (ClassNotFoundException ex) {
@@ -170,7 +181,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
       db.disconnect(cnx);
     }
     
-    return listAdministrators;
+    return listTeachers;
   }
   
 }

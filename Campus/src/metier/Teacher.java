@@ -34,7 +34,7 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param lastName
      * @param phone
      * @param schoolID
-     * @param educationID 
+     * @param educationID // a enlever ! ? ..
      * @param lessons 
      */
     public Teacher(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID, List<Lesson> lessons) {

@@ -25,7 +25,7 @@ public class Administrator extends AbstractUser {
      * @param lastName
      * @param phone
      * @param schoolID
-     * @param educationID 
+     * @param educationID  // a enlever ! ? ..
      */
     public Administrator(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, int schoolID, int educationID) {
         super(id, login, passwd, mail, birthDate, firstName, lastName, phone, schoolID, educationID);
