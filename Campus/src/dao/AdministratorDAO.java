@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,14 +36,14 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String myDate = sdf.format(pAdministrator.getBirthDate().getTime());
+      
       stat.setString(1, pAdministrator.getLogin());
       stat.setString(2, pAdministrator.getPasswd());
       stat.setString(3, pAdministrator.getMail());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      // Pour l'instant : String /////////////////////////////////////////!!!
-      stat.setString(4, pAdministrator.getBirthDate());
+      stat.setString(4, myDate);
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
@@ -72,13 +73,13 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String myDate = sdf.format(pAdministrator.getBirthDate().getTime());
+      
       stat.setString(1, pAdministrator.getLogin());
       stat.setString(2, pAdministrator.getPasswd());
       stat.setString(3, pAdministrator.getMail());
-      // pour la modification des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(4, pAdministrator.getBirthDate());
+      stat.setString(4, myDate);
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
@@ -119,12 +120,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       // S'il y a un resultat
       if(res.first())
-      {
-        administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                          res.getString("password"), res.getString("mail"),
-                                          res.getString("birth_date"), res.getString("first_name"),
-                                          res.getString("last_name"), res.getInt("phone"),
-                                          null, null); // dernier arg education id education.. ?pb classe metier?
+      {          
+          administrator = new Administrator(res.getInt("id"), res.getString("login"),
+                                            res.getString("pwd"), res.getString("mail"),
+                                            res.getDate("birth_date"), res.getString("first_name"),
+                                            res.getString("last_name"), res.getInt("phone"),
+                                            null, null);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -152,13 +153,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       ResultSet res = stat.executeQuery();
       
-      while (res.next()) {
-        
-        Administrator administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                                        res.getString("password"), res.getString("mail"),
-                                                        res.getString("birth_date"), res.getString("first_name"),
+      while (res.next()) {          
+          Administrator administrator = new Administrator(res.getInt("id"), res.getString("login"),
+                                                        res.getString("pwd"), res.getString("mail"),
+                                                        res.getDate("birth_date"), res.getString("first_name"),
                                                         res.getString("last_name"), res.getInt("phone"),
-                                                        null, null);// dernier arg : education id
+                                                        null, null);
         listAdministrators.add(administrator);
       }
 

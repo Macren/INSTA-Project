@@ -6,6 +6,7 @@
 
 package metier;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public class Student extends AbstractUser implements IDocUse {
      * @param education 
      * @param lessons 
      */
-    public Student(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+    public Student(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
         super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
         this.lessons = lessons;
     }
@@ -57,7 +58,7 @@ public class Student extends AbstractUser implements IDocUse {
      * @param education 
      * @param lessons 
      */
-    public Student(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+    public Student(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
         super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
         this.lessons = lessons;
     }

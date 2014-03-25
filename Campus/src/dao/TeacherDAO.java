@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,6 +38,10 @@ public class TeacherDAO implements IDAO<Teacher>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String date = sdf.format(pTeacher.getBirthDate().getTime());
+      
       stat.setString(1, pTeacher.getLogin());
       stat.setString(2, pTeacher.getPasswd());
       stat.setString(3, pTeacher.getMail());
@@ -43,7 +49,7 @@ public class TeacherDAO implements IDAO<Teacher>{
       // type de l'objet : Calendar
       // type en Bdd : DATETIME
       // Pour l'instant : String /////////////////////////////////////////!!!
-      stat.setString(4, pTeacher.getBirthDate());
+      stat.setString(4, date);
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
@@ -73,13 +79,14 @@ public class TeacherDAO implements IDAO<Teacher>{
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String myDate = sdf.format(pTeacher.getBirthDate().getTime());
+      
       stat.setString(1, pTeacher.getLogin());
       stat.setString(2, pTeacher.getPasswd());
       stat.setString(3, pTeacher.getMail());
-      // pour la modification des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(4, pTeacher.getBirthDate());
+      stat.setString(4, myDate);
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
@@ -126,9 +133,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       // S'il y a un resultat
       if(res.first())
       {
-        teacher = new Teacher(res.getInt("id"), res.getString("login"),
-                              res.getString("password"), res.getString("mail"),
-                              res.getString("birth_date"), res.getString("first_name"),
+          teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                              res.getString("pwd"), res.getString("mail"),
+                              res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
                               null, null, null); // avant dernier arg education id education.. ?pb classe metier?
       }
@@ -159,15 +166,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
-        
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des lessons
-        /////////////////////////////////////////////////////////////////////////
-        List<Lesson> listLessons = new ArrayList();
-        
-        Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
-                                      res.getString("password"), res.getString("mail"),
-                                      res.getString("birth_date"), res.getString("first_name"),
+          Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                                      res.getString("pwd"), res.getString("mail"),
+                                      res.getDate("birth_date"), res.getString("first_name"),
                                       res.getString("last_name"), res.getInt("phone"),
                                       null, null, null); // avant dernier arg education id education.. ?pb classe metier?
         listTeachers.add(teacher);

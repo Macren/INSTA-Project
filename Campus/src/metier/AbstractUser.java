@@ -7,7 +7,7 @@
 package metier;
 
 import java.io.Serializable;
-
+import java.sql.Date;
 /**
  *
  * @author Madeleine
@@ -25,7 +25,7 @@ public abstract class AbstractUser implements Serializable {
     protected   String      login;
     protected   String      passwd;
     protected   String      mail;
-    protected   String      birthDate;
+    protected   Date    birthDate;
     protected   String      firstName;
     protected   String      lastName;
     protected   int         phone;
@@ -48,7 +48,7 @@ public abstract class AbstractUser implements Serializable {
      * @param school 
      * @param education 
      */
-    public AbstractUser(int id, String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+    public AbstractUser(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         this.id = id;
         this.login = login;
         this.passwd = passwd;
@@ -75,7 +75,7 @@ public abstract class AbstractUser implements Serializable {
      * @param school 
      * @param education 
      */
-    public AbstractUser(String login, String passwd, String mail, String birthDate, String firstName, String lastName, int phone, School school, Education education) {
+    public AbstractUser(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         this.login = login;
         this.passwd = passwd;
         this.mail = mail;
@@ -97,6 +97,11 @@ public abstract class AbstractUser implements Serializable {
     public AbstractUser(String login, String passwd) {
         this.login = login;
         this.passwd = passwd;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractUser{" + "id=" + id + ", login=" + login + ", passwd=" + passwd + ", mail=" + mail + ", birthDate=" + birthDate + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", school=" + school + ", education=" + education + '}';
     }
     
     
@@ -123,7 +128,7 @@ public abstract class AbstractUser implements Serializable {
         return mail;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -170,7 +175,7 @@ public abstract class AbstractUser implements Serializable {
         this.mail = mail;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
