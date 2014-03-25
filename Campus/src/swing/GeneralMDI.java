@@ -254,18 +254,22 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void bt_connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_connectActionPerformed
         // TODO add your handling code here:
+        String aLogin = tf_login.getText();
         String  cleanPwd = new String(this.tf_pwd.getPassword());
         String  cryptPwd = this.getMD5Str(cleanPwd);
         cleanPwd = null;
         
-        Administrator myAdmin = new Administrator(tf_login.getText(), cryptPwd);
-        
         AdministratorDAO adminDAO = new AdministratorDAO();
-        Administrator myAdminTest = adminDAO.selectById(1);
-        System.out.println(myAdminTest);
-        
-        System.out.println("clean password : " + cleanPwd);
-        System.out.println("crypt password : " + cryptPwd);
+        Administrator myAdminTest = adminDAO.selectByLoginPwd(aLogin, cryptPwd);
+        if (myAdminTest != null) {
+            System.out.println(myAdminTest);
+            this.jif_authent.dispose();
+            this.menuBar.setVisible(true);
+        }
+        else {
+            System.out.println("noooooooo");
+            this.lbl_error.setText("noooooooooo");
+        }
     }//GEN-LAST:event_bt_connectActionPerformed
 
     /**
