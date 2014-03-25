@@ -125,9 +125,10 @@ public class TeacherDAO implements IDAO<Teacher>{
       // Ici récupérer l'id de l'école en fonction 
       /////////////////////////////////////////////////////////////////////////
       //
-      String sql = "SELECT * FROM `user` WHERE  `id` = ?;";
+      String sql = "SELECT * FROM `user` WHERE  `id` = ? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
+      stat.setInt(2, ID_ROLE_TEACHER);
       ResultSet res = stat.executeQuery();
       
       // S'il y a un resultat
@@ -165,10 +166,11 @@ public class TeacherDAO implements IDAO<Teacher>{
       // Ici récupérer l'id de l'école en fonction 
       /////////////////////////////////////////////////////////////////////////
       //
-      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=?;";
+      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
       stat.setString(2, pPwd);
+      stat.setInt(3, ID_ROLE_TEACHER);
       ResultSet res = stat.executeQuery();
       
       // S'il y a un resultat
