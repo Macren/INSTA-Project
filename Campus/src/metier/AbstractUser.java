@@ -25,7 +25,7 @@ public abstract class AbstractUser implements Serializable {
     protected   String      login;
     protected   String      passwd;
     protected   String      mail;
-    protected   Date    birthDate;
+    protected   Date        birthDate;
     protected   String      firstName;
     protected   String      lastName;
     protected   int         phone;
