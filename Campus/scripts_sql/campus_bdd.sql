@@ -90,7 +90,6 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
   `last_name` VARCHAR(45) NOT NULL ,
   `phone` INT NOT NULL ,
   `id_role` INT NOT NULL ,
-  `id_promo` INT NULL ,
   `id_school` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_user_role_idx` (`id_role` ASC) ,
