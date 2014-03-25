@@ -48,7 +48,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setInt(7, pAdministrator.getPhone());
       stat.setInt(8, ID_ROLE_ADMINISTRATOR);
       stat.setString(9, null);  // null, car un administrateur n'appartient à aucune promo
-      stat.setInt(10, pAdministrator.getSchool());
+      stat.setInt(10, pAdministrator.getSchool().getId());
       
       stat.executeUpdate();
       
@@ -124,7 +124,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
                                           res.getString("password"), res.getString("mail"),
                                           res.getString("birth_date"), res.getString("first_name"),
                                           res.getString("last_name"), res.getInt("phone"),
-                                          res.getInt("id_school"), 0); // dernier arg education id education.. ?pb classe metier?
+                                          null, null); // dernier arg education id education.. ?pb classe metier?
       }
       
     } catch (ClassNotFoundException ex) {
@@ -158,7 +158,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
                                                         res.getString("password"), res.getString("mail"),
                                                         res.getString("birth_date"), res.getString("first_name"),
                                                         res.getString("last_name"), res.getInt("phone"),
-                                                        res.getInt("id_school"), 0);// dernier arg : education id
+                                                        null, null);// dernier arg : education id
         listAdministrators.add(administrator);
       }
 

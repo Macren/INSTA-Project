@@ -127,7 +127,7 @@ public class LessonDAO implements IDAO<Lesson>{
         lesson = new Lesson(res.getInt("id"), res.getString("name"),
                             res.getBoolean("is_tp"), res.getBoolean("is_test"),
                             null, null,
-                            ENUM , null,
+                            null , null,
                             null ); // avant dernier arg education id education.. ?pb classe metier?
         
       }

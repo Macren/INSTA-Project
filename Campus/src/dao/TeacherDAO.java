@@ -49,7 +49,7 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.setInt(7, pTeacher.getPhone());
       stat.setInt(8, ID_ROLE_TEACHER);
       stat.setString(9, null);  // null, car un teacher n'appartient à aucune promo
-      stat.setInt(10, pTeacher.getSchoolID());
+      stat.setInt(10, pTeacher.getSchool().getId());
       
       stat.executeUpdate();
       
@@ -130,7 +130,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                               res.getString("password"), res.getString("mail"),
                               res.getString("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              res.getInt("id_school"), 0, listLessons); // avant dernier arg education id education.. ?pb classe metier?
+                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
       }
       
     } catch (ClassNotFoundException ex) {
@@ -169,7 +169,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                                       res.getString("password"), res.getString("mail"),
                                       res.getString("birth_date"), res.getString("first_name"),
                                       res.getString("last_name"), res.getInt("phone"),
-                                      res.getInt("id_school"), 0, listLessons); // avant dernier arg education id education.. ?pb classe metier?
+                                      null, null, null); // avant dernier arg education id education.. ?pb classe metier?
         listTeachers.add(teacher);
       }
 
