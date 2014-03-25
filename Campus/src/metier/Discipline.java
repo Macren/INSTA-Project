@@ -15,27 +15,23 @@ public class Discipline implements Serializable {
      */
     private int             id;
     private String          name;
-    private List<Lesson>    lessons;
-    private List<Float>     marks;
     private Calendar        beginDate;
     private Calendar        endDate;
+    private Education       education;
     
     /**
      * Constructeur
      * @param id
      * @param name
-     * @param lessons
-     * @param marks
      * @param beginDate
      * @param endDate 
      */
-    public Discipline(int id, String name, List<Lesson> lessons, List<Float> marks, Calendar beginDate, Calendar endDate) {
+    public Discipline(int id, String name, Calendar beginDate, Calendar endDate, Education education) {
         this.id = id;
         this.name = name;
-        this.lessons = lessons;
-        this.marks = marks;
         this.beginDate = beginDate;
         this.endDate = endDate;
+        this.education = education;
     }
     /**
      * Constructeur sans id
@@ -45,12 +41,11 @@ public class Discipline implements Serializable {
      * @param beginDate
      * @param endDate 
      */
-    public Discipline(String name, List<Lesson> lessons, List<Float> marks, Calendar beginDate, Calendar endDate) {
+    public Discipline(String name, Calendar beginDate, Calendar endDate, Education education) {
         this.name = name;
-        this.lessons = lessons;
-        this.marks = marks;
         this.beginDate = beginDate;
         this.endDate = endDate;
+        this.education = education;
     }
     
     /**
@@ -73,22 +68,6 @@ public class Discipline implements Serializable {
         this.name = name;
     }
 
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
-
-    public List<Float> getMarks() {
-        return marks;
-    }
-
-    public void setMarks(List<Float> marks) {
-        this.marks = marks;
-    }
-
     public Calendar getBeginDate() {
         return beginDate;
     }
@@ -104,10 +83,20 @@ public class Discipline implements Serializable {
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
     }
+
+  public Education getEducation() {
+    return education;
+  }
+
+  public void setEducation(Education education) {
+    this.education = education;
+  }
+    
+    
     
     @Override
     public String toString() {
-        return "Discipline{" + "name=" + name + ", lessons=" + lessons + ", marks=" + marks + ", beginDate=" + beginDate + ", endDate=" + endDate + '}';
+        return "Discipline{" + "name=" + name + ", beginDate=" + beginDate + ", endDate=" + endDate + '}';
     }
     
     

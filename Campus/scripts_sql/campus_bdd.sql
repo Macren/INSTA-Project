@@ -51,7 +51,6 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`discipline` (
   `end_date` DATETIME NOT NULL ,
   `id_education` INT NOT NULL ,
   `id_discipline_status` INT NULL ,
-  `id_promo` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_discipline_education_idx` (`id_education` ASC) ,
   INDEX `fk_discipline_status_idx` (`id_discipline_status` ASC) ,
