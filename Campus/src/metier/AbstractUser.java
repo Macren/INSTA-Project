@@ -86,6 +86,26 @@ public abstract class AbstractUser implements Serializable {
         this.school = school;
         this.education = education;
     }
+    
+    /**
+     * ================
+     * Copy Constructor
+     * ================
+     * @param other user
+     */
+    public AbstractUser(AbstractUser other) {
+        if (other != null) {
+            this.login = other.login;
+            this.passwd = other.passwd;
+            this.mail = other.mail;
+            this.birthDate = other.birthDate;
+            this.firstName = other.firstName;
+            this.lastName = other.lastName;
+            this.phone = other.phone;
+            this.school = other.school;
+            this.education = other.education;
+        }
+    }
 
     /**
      * ================================

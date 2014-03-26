@@ -63,6 +63,12 @@ public class Student extends AbstractUser implements IDocUse {
         this.lessons = lessons;
     }
 
+    public Student(AbstractUser other) {
+        super(other);
+    }
+    
+    
+
     /**
      * ===============================
      * Constructor for autentification

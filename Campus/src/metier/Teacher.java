@@ -63,6 +63,19 @@ public class Teacher extends AbstractUser implements IDocUse {
         this.lessons = lessons;
     }
 
+    
+    /**
+     * ================
+     * Copy Constructor
+     * ================
+     * @param other 
+     */
+    public Teacher(AbstractUser other) {
+        super(other);
+    }
+    
+    
+
     /**
      * ================================
      * Constructor for authentification

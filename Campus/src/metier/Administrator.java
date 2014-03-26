@@ -50,6 +50,18 @@ public class Administrator extends AbstractUser {
     public Administrator(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
     }
+
+    
+    /**
+     * ================
+     * Copy Constructor
+     * ================
+     * @param other 
+     */
+    public Administrator(AbstractUser other) {
+        super(other);
+    }
+    
     
     /**
      * ================================
