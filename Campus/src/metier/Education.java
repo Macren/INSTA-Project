@@ -18,7 +18,6 @@ public class Education implements Serializable {
     private int                 promo;
     private School              school;
     private List<Discipline>    disciplines;
-    // private School           school; ??????????
     
     /**
      * Contructeur
@@ -107,7 +106,7 @@ public class Education implements Serializable {
 
     @Override
     public String toString() {
-        return "Education{" + "nbHours=" + nbHours + ", name=" + name + ", disciplines=" + disciplines + '}';
+        return name;
     }
     
     

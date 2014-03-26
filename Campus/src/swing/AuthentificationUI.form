@@ -75,6 +75,9 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JPasswordField" name="tf_pwd">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tf_login">
       <Properties>

@@ -60,7 +60,7 @@ public class School implements Serializable {
     
     @Override
     public String toString() {
-        return "School{" + "name=" + name + '}';
+        return name;
     }
     
     

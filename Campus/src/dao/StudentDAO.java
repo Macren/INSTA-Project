@@ -49,7 +49,7 @@ public class StudentDAO implements IDAO<Student> {
       stat.setInt(7, pStudent.getPhone());
       stat.setInt(8, ID_ROLE_STUDENT);
       stat.setInt(9, pStudent.getSchool().getId());
-      stat.setInt(10, 0);
+      stat.setInt(10, pStudent.getEducation().getId());
       
       stat.executeUpdate();
       

@@ -90,12 +90,22 @@ public class GeneralMDI extends javax.swing.JFrame {
         // Menu Bar : Outils
         // -----------------
         JMenu           addItem = new JMenu("Ajouter...");
-        JMenuItem       addStudentItem = new JMenuItem("Etudiant");
-        JMenuItem       addTeacherItem = new JMenuItem("Professeur");
-        JMenuItem       addAdminItem = new JMenuItem("Admin");
-        addItem.add(addStudentItem);
-        addItem.add(addTeacherItem);
-        addItem.add(addAdminItem);
+        JMenuItem       addUserItem = new JMenuItem("Utilisateur");
+        JMenuItem       addLessonItem = new JMenuItem("Cours");
+        JMenuItem       addDisciplineItem = new JMenuItem("Matière");
+        JMenuItem       addEducationItem = new JMenuItem("Formation");
+        
+        addUserItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserMenuItemActionPerformed(evt);
+            }
+        });
+        
+        addItem.add(addUserItem);
+        addItem.add(addLessonItem);
+        addItem.add(addDisciplineItem);
+        addItem.add(addEducationItem);
         JMenuItem       listStudentItem = new JMenuItem("Liste des élèves");
         JMenuItem       listTeacherItem = new JMenuItem("Liste des profs");
         JMenuItem       listAdminItem = new JMenuItem("Liste des admin");
@@ -205,6 +215,12 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
 
+    private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        int pSchoolId = this.myAdmin.getSchool().getId();
+        AddUserUI addUserUI = new AddUserUI(pSchoolId);
+        addUserUI.setVisible(true);
+    }       
     /**
      * @param args the command line arguments
      */

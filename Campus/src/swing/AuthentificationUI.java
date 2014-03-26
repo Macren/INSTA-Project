@@ -52,6 +52,8 @@ public class AuthentificationUI extends javax.swing.JFrame {
         setBackground(new java.awt.Color(153, 153, 153));
         setResizable(false);
 
+        tf_pwd.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         tf_login.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
         tf_login.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -161,7 +163,6 @@ public class AuthentificationUI extends javax.swing.JFrame {
         System.out.println("login: " + aLogin);
         System.out.println("clean pass: " + cleanPwd);
         System.out.println("crypt pass: " + cryptPwd);
-        cleanPwd = null; // flush clean password
 
         // getting user from database
         // --------------------------
