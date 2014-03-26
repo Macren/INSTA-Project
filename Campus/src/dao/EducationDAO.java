@@ -170,4 +170,53 @@ public class EducationDAO implements IDAO<Education> {
     return listEducations;
   }
   
+  
+  
+  /**
+   * Retourne toutes les formations (Education) appartenant à une école (School)
+   * 
+   * @param pSchoolId
+   * @return 
+   */
+  public List<Education> selectAllBySchoolId(int pSchoolId) {
+    List<Education> listEducations = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`education` WHERE `id_school`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pSchoolId);
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la school (on a l'id)
+        /////////////////////////////////////////////////////////////////////////
+        School school = null;
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste de discipline
+        /////////////////////////////////////////////////////////////////////////
+        List<Discipline> listDisciplines = new ArrayList();
+        
+        Education education = new Education(res.getInt("id"), res.getString("name"),
+                                            res.getInt("nb_hours"), res.getInt("promo"),
+                                            school, listDisciplines);
+        listEducations.add(education);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listEducations;
+  }
+  
 }

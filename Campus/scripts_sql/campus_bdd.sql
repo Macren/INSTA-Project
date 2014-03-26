@@ -320,7 +320,10 @@ INSERT INTO `campus_bdd`.`school` (`name`) VALUES ('School_guest');
 -- -----------------------------------------------------
 -- Donnée Table `campus_bdd`.`user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`user` (`id`, `login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES (NULL, 'campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_teacher', '61e99028e915e6caa4f1ddafacf9b3d7 ', 'campus_teacher', '2014-03-24 00:00:00.000000', 'campus_teacher', OLD_PASSWORD('campus_teacher'), '0000000000', '2', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_student', 'a0016406b5f15f7f3f1e1300154c6d10 ', 'campus_student', '2014-03-24 00:00:00.000000', 'campus_student', OLD_PASSWORD('campus_student'), '0000000000', '3', '1');
+
 
 -- -----------------------------------------------------
 -- Donnée Table `campus_bdd`.`lesson_status`
