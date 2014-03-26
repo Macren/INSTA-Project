@@ -16,13 +16,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Administrator;
+import metier.School;
 
 /**
  *
  * @author biron
  */
 public class AdministratorDAO implements IDAO<Administrator>{
-
+  
   private static final int ID_ROLE_ADMINISTRATOR = 1;
   
   @Override
@@ -38,12 +39,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String myDate = sdf.format(pAdministrator.getBirthDate().getTime());
+      String birthDate = sdf.format(pAdministrator.getBirthDate().getTime());
       
       stat.setString(1, pAdministrator.getLogin());
       stat.setString(2, pAdministrator.getPasswd());
       stat.setString(3, pAdministrator.getMail());
-      stat.setString(4, myDate);
+      stat.setString(4, birthDate);
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
@@ -74,12 +75,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
       PreparedStatement stat = cnx.prepareStatement(sql);
       
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String myDate = sdf.format(pAdministrator.getBirthDate().getTime());
+      String birthDate = sdf.format(pAdministrator.getBirthDate().getTime());
       
       stat.setString(1, pAdministrator.getLogin());
       stat.setString(2, pAdministrator.getPasswd());
       stat.setString(3, pAdministrator.getMail());
-      stat.setString(4, myDate);
+      stat.setString(4, birthDate);
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
@@ -110,9 +111,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     
     try {
       cnx= db.connect();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer l'id de l'école en fonction 
-      /////////////////////////////////////////////////////////////////////////
+      
       String sql = "SELECT * FROM `campus_bdd`.`user` WHERE  `id` = ? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
@@ -121,12 +120,17 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       // S'il y a un resultat
       if(res.first())
-      {          
-          administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                            res.getString("pwd"), res.getString("mail"),
-                                            res.getDate("birth_date"), res.getString("first_name"),
-                                            res.getString("last_name"), res.getInt("phone"),
-                                            null, null);
+      {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        administrator = new Administrator(res.getInt("id"), res.getString("login"),
+                                          res.getString("pwd"), res.getString("mail"),
+                                          res.getDate("birth_date"), res.getString("first_name"),
+                                          res.getString("last_name"), res.getInt("phone"),
+                                          school, null); // dernier arg : Education
+                                          // Un admin n'a pas de formation (Education)
       }
       
     } catch (ClassNotFoundException ex) {
@@ -146,9 +150,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     
     try {
       cnx= db.connect();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer l'id de l'école en fonction 
-      /////////////////////////////////////////////////////////////////////////
+      
       String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
@@ -158,12 +160,17 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       // S'il y a un resultat
       if(res.first())
-      {          
-          administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                            res.getString("pwd"), res.getString("mail"),
-                                            res.getDate("birth_date"), res.getString("first_name"),
-                                            res.getString("last_name"), res.getInt("phone"),
-                                            null, null);
+      {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        administrator = new Administrator(res.getInt("id"), res.getString("login"),
+                                          res.getString("pwd"), res.getString("mail"),
+                                          res.getDate("birth_date"), res.getString("first_name"),
+                                          res.getString("last_name"), res.getInt("phone"),
+                                          school, null); // dernier arg : Education
+                                          // Un admin n'a pas de formation (Education)
       }
       
     } catch (ClassNotFoundException ex) {
@@ -191,12 +198,17 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       ResultSet res = stat.executeQuery();
       
-      while (res.next()) {          
-          Administrator administrator = new Administrator(res.getInt("id"), res.getString("login"),
-                                                        res.getString("pwd"), res.getString("mail"),
-                                                        res.getDate("birth_date"), res.getString("first_name"),
-                                                        res.getString("last_name"), res.getInt("phone"),
-                                                        null, null);
+      while (res.next()) {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        Administrator administrator = new Administrator(res.getInt("id"), res.getString("login"),
+                                                      res.getString("pwd"), res.getString("mail"),
+                                                      res.getDate("birth_date"), res.getString("first_name"),
+                                                      res.getString("last_name"), res.getInt("phone"),
+                                                      school, null); // dernier arg : Education
+                                                    // Un admin n'a pas de formation (Education)
         listAdministrators.add(administrator);
       }
 
