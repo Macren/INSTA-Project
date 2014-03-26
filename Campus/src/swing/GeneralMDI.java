@@ -6,6 +6,8 @@
 
 package swing;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import metier.AbstractUser;
 import metier.Administrator;
 import metier.Student;
@@ -18,9 +20,24 @@ import utils.UserType;
  */
 public class GeneralMDI extends javax.swing.JFrame {
 
+    
+    /**
+     * ===============
+     * User Attributes
+     * ===============
+     */
     private Student         myStudent = null;
     private Teacher         myTeacher = null;
     private Administrator   myAdmin = null;
+    
+    
+    
+    /**
+     * ============
+     * Constructors
+     * ============
+     */
+    
     /**
      * Creates new form GeneralMDI
      */
@@ -34,6 +51,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         switch (userType) {
             case STUDENT:
                 myStudent = new Student(user);
+                this.initMenuForStudent();
                 break;
                 
             case TEACHER:
@@ -42,6 +60,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                 
             case ADMIN:
                 myAdmin = new Administrator(user);
+                this.initMenuForAdmin();
                 break;
         }
         if (myStudent != null)
@@ -51,6 +70,63 @@ public class GeneralMDI extends javax.swing.JFrame {
         if (myAdmin != null)
             System.out.println(myAdmin);
     }
+    
+    /**
+     * =================
+     * Init UI Functions
+     * =================
+     */
+    
+    public  void        initMenuForAdmin() {
+        
+        // Menu Bar : Fichier
+        // ------------------
+        JMenuItem       importItem = new JMenuItem("Importer...");
+        JMenuItem       exportItem = new JMenuItem("Exporter...");
+        this.fileMenuBar.add(importItem);
+        this.fileMenuBar.add(exportItem);
+        this.fileMenuBar.add(this.disconnectMenuItem);
+        
+        // Menu Bar : Outils
+        // -----------------
+        JMenu           addItem = new JMenu("Ajouter...");
+        JMenuItem       addStudentItem = new JMenuItem("Etudiant");
+        JMenuItem       addTeacherItem = new JMenuItem("Professeur");
+        JMenuItem       addAdminItem = new JMenuItem("Admin");
+        addItem.add(addStudentItem);
+        addItem.add(addTeacherItem);
+        addItem.add(addAdminItem);
+        JMenuItem       listStudentItem = new JMenuItem("Liste des élèves");
+        JMenuItem       listTeacherItem = new JMenuItem("Liste des profs");
+        JMenuItem       listAdminItem = new JMenuItem("Liste des admin");
+        this.toolsMenuBar.add(addItem);
+        this.toolsMenuBar.add(listStudentItem);
+        this.toolsMenuBar.add(listTeacherItem);
+        this.toolsMenuBar.add(listAdminItem);
+    }
+    
+    public  void        initMenuForStudent() {
+        
+        // Menu Bar : Fichier
+        // ------------------
+        JMenuItem       modifyProfileItem = new JMenuItem("Modifier profil");
+        this.fileMenuBar.add(modifyProfileItem);
+        this.fileMenuBar.add(this.disconnectMenuItem);
+        
+        // Menu Bar : Outils
+        // -----------------
+        JMenuItem       planningItem = new JMenuItem("Planning...");
+        JMenuItem       listLessonItem = new JMenuItem("Liste cours");
+        JMenuItem       infoEducItem = new JMenuItem("Infos formation");
+        JMenuItem       contactManagerItem = new JMenuItem("Carnet d'adresse");
+        this.toolsMenuBar.add(planningItem);
+        this.toolsMenuBar.add(listLessonItem);
+        this.toolsMenuBar.add(infoEducItem);
+        this.toolsMenuBar.add(contactManagerItem);
+    }
+    
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,90 +141,40 @@ public class GeneralMDI extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        fileMenuBar = new javax.swing.JMenu();
+        disconnectMenuItem = new javax.swing.JMenuItem();
+        toolsMenuBar = new javax.swing.JMenu();
+        helpMenuBar = new javax.swing.JMenu();
 
         jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("jLabel1");
         desktopPane.add(jLabel1);
-        jLabel1.setBounds(240, 150, 220, 14);
+        jLabel1.setBounds(50, 44, 590, 340);
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+        fileMenuBar.setMnemonic('h');
+        fileMenuBar.setText("Fichier");
 
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        fileMenu.add(openMenuItem);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
-
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        disconnectMenuItem.setText("Se déconnecter");
+        disconnectMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
+                disconnectMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(exitMenuItem);
+        fileMenuBar.add(disconnectMenuItem);
 
-        menuBar.add(fileMenu);
+        menuBar.add(fileMenuBar);
 
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        toolsMenuBar.setText("Outils");
+        menuBar.add(toolsMenuBar);
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
-
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
-
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
-        helpMenu.add(contentMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
+        helpMenuBar.setText("Aide");
+        menuBar.add(helpMenuBar);
 
         setJMenuBar(menuBar);
 
@@ -166,9 +192,18 @@ public class GeneralMDI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+    private void disconnectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectMenuItemActionPerformed
+        // TODO add your handling code here:
+        AuthentificationUI authentUI = new AuthentificationUI();
+        authentUI.setVisible(true);
+        if (this.myAdmin != null)
+            myAdmin = null;
+        if (this.myTeacher != null)
+            myTeacher = null;
+        if (this.myStudent != null)
+            myStudent = null;
+        this.dispose();
+    }//GEN-LAST:event_disconnectMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,23 +241,14 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem disconnectMenuItem;
+    private javax.swing.JMenu fileMenuBar;
+    private javax.swing.JMenu helpMenuBar;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JMenu toolsMenuBar;
     // End of variables declaration//GEN-END:variables
 
 }

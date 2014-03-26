@@ -164,7 +164,7 @@ public class StudentDAO implements IDAO<Student> {
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
       stat.setString(2, pPwd);
-      stat.setInt(2, ID_ROLE_STUDENT);
+      stat.setInt(3, ID_ROLE_STUDENT);
       ResultSet res = stat.executeQuery();
       
       // S'il y a un resultat

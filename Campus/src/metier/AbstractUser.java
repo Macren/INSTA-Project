@@ -95,6 +95,7 @@ public abstract class AbstractUser implements Serializable {
      */
     public AbstractUser(AbstractUser other) {
         if (other != null) {
+            this.id = other.id;
             this.login = other.login;
             this.passwd = other.passwd;
             this.mail = other.mail;

@@ -25,7 +25,6 @@ public class AuthentificationUI extends javax.swing.JFrame {
     public AuthentificationUI() {
         initComponents();
         this.setTitle("Campus");
-        this.setResizable(false);
         this.lbl_error.setText("");
         this.lbl_error.setVisible(false);
     }

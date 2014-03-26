@@ -17,8 +17,8 @@ import javax.swing.JInternalFrame;
 public class UIUtils {
 
     /**
-     * Center a JInternalFrame in the GeneralMDI
-     * -----------------------------------------
+     * Center a JInternalFrame in the DesktopPane
+     * ------------------------------------------
      * @param jif 
      */
         public static void centerJIF(JInternalFrame jif, JDesktopPane desktopPane) {
