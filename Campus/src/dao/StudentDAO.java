@@ -33,23 +33,23 @@ public class StudentDAO implements IDAO<Student> {
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_promo`, `id_school`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?,?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String myDate = sdf.format(pStudent.getBirthDate().getTime());
+      String birthDate = sdf.format(pStudent.getBirthDate().getTime());
       
       stat.setString(1, pStudent.getLogin());
       stat.setString(2, pStudent.getPasswd());
       stat.setString(3, pStudent.getMail());
-      stat.setString(4, myDate);
+      stat.setString(4, birthDate);
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
       stat.setInt(8, ID_ROLE_STUDENT);
-      stat.setInt(9, 0); // pStudent.getPromo().getId() ///////////////// !!!!!
-      stat.setInt(10, pStudent.getSchool().getId());
+      stat.setInt(9, pStudent.getSchool().getId());
+      stat.setInt(10, 0);
       
       stat.executeUpdate();
       
