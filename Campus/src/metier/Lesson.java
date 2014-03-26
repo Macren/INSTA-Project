@@ -1,7 +1,7 @@
 package metier;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -17,10 +17,11 @@ public class Lesson implements Serializable {
     private String          name;
     private boolean         tp;
     private boolean         test;
-    private Calendar        beginHour; // changer en 'Date beginDate'
-    private Calendar        endHour; // changer en 'Date endDate'
-    private LessonStatus    status;
-    private Teacher         teacher; // GOOD : reproduire ca ;)
+    private Date            beginDate;
+    private Date            endDate;
+    private String          status;
+    private Teacher         teacher;
+    private Discipline      discipline;
     private List<Student>   students;
     
     /**
@@ -29,43 +30,47 @@ public class Lesson implements Serializable {
      * @param name
      * @param tp
      * @param test
-     * @param beginHour
-     * @param endHour
+     * @param beginDate
+     * @param endDate
      * @param status
      * @param teacher
+     * @param discipline
      * @param students 
      */
-    public Lesson(int id, String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, LessonStatus status, Teacher teacher, List<Student> students) {
-        this.id = id;
-        this.name = name;
-        this.tp = tp;
-        this.test = test;
-        this.beginHour = beginHour;
-        this.endHour = endHour;
-        this.status = status;
-        this.teacher = teacher;
-        this.students = students;
+    public Lesson(int id, String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline, List<Student> students) {
+        this.id         = id;
+        this.name       = name;
+        this.tp         = tp;
+        this.test       = test;
+        this.beginDate  = beginDate;
+        this.endDate    = endDate;
+        this.status     = status;
+        this.teacher    = teacher;
+        this.discipline = discipline;
+        this.students   = students;
     }
     /**
      * Constructeur sans id
      * @param name
      * @param tp
      * @param test
-     * @param beginHour
-     * @param endHour
+     * @param beginDate
+     * @param endDate
      * @param status
      * @param teacher
+     * @param discipline
      * @param students 
      */
-    public Lesson(String name, boolean tp, boolean test, Calendar beginHour, Calendar endHour, LessonStatus status, Teacher teacher, List<Student> students) {
-        this.name = name;
-        this.tp = tp;
-        this.test = test;
-        this.beginHour = beginHour;
-        this.endHour = endHour;
-        this.status = status;
-        this.teacher = teacher;
-        this.students = students;
+    public Lesson(String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline, List<Student> students) {
+        this.name       = name;
+        this.tp         = tp;
+        this.test       = test;
+        this.beginDate  = beginDate;
+        this.endDate    = endDate;
+        this.status     = status;
+        this.teacher    = teacher;
+        this.discipline = discipline;
+        this.students   = students;
     }
     
     /**
@@ -104,27 +109,27 @@ public class Lesson implements Serializable {
         this.test = test;
     }
 
-    public Calendar getBeginHour() {
-        return beginHour;
+    public Date getBeginDate() {
+        return beginDate;
     }
 
-    public void setBeginHour(Calendar beginHour) {
-        this.beginHour = beginHour;
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
     }
 
-    public Calendar getEndHour() {
-        return endHour;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setEndHour(Calendar endHour) {
-        this.endHour = endHour;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public LessonStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(LessonStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -134,6 +139,14 @@ public class Lesson implements Serializable {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    public Discipline getDiscipline() {
+      return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+      this.discipline = discipline;
     }
 
     public List<Student> getStudents() {
@@ -146,7 +159,7 @@ public class Lesson implements Serializable {
 
     @Override
     public String toString() {
-        return "Lesson{" + "name=" + name + ", tp=" + tp + ", test=" + test + ", beginHour=" + beginHour + ", endHour=" + endHour + ", status=" + status + ", teacher=" + teacher + ", students=" + students + '}';
+        return "Lesson{" + "name=" + name + ", tp=" + tp + ", test=" + test + ", status=" + status + ", teacher=" + teacher + ", students=" + students + '}';
     }
     
     

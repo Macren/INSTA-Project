@@ -192,7 +192,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `user` WHERE `id_role` = ?;";
+      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, ID_ROLE_ADMINISTRATOR);
       

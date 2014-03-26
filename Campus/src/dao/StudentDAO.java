@@ -69,23 +69,24 @@ public class StudentDAO implements IDAO<Student> {
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?,`id_promo`=? WHERE `id`=?;";
+      String sql = "UPDATE `campus_bdd`.`user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?,`id_school`=?,`id_education`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String myDate = sdf.format(pStudent.getBirthDate().getTime());
+      String birthDate = sdf.format(pStudent.getBirthDate().getTime());
       
       stat.setString(1, pStudent.getLogin());
       stat.setString(2, pStudent.getPasswd());
       stat.setString(3, pStudent.getMail());
-      stat.setString(4, myDate);
+      stat.setString(4, birthDate);
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
-      stat.setInt(8, 0); // pStudent.getPromo().getId() ///////////////// !!!!!
+      stat.setInt(8, pStudent.getSchool().getId());
+      stat.setInt(9, pStudent.getEducation().getId());
       
-      stat.setInt(9, pStudent.getId());
+      stat.setInt(10, pStudent.getId());
       
       stat.executeUpdate();
       

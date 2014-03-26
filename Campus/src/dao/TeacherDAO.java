@@ -10,13 +10,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import metier.Education;
 import metier.Lesson;
+import metier.School;
 import metier.Teacher;
 
 /**
@@ -40,16 +41,12 @@ public class TeacherDAO implements IDAO<Teacher>{
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String date = sdf.format(pTeacher.getBirthDate().getTime());
+      String birthDate = sdf.format(pTeacher.getBirthDate().getTime());
       
       stat.setString(1, pTeacher.getLogin());
       stat.setString(2, pTeacher.getPasswd());
       stat.setString(3, pTeacher.getMail());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      // Pour l'instant : String /////////////////////////////////////////!!!
-      stat.setString(4, date);
+      stat.setString(4, birthDate);
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
@@ -60,9 +57,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.executeUpdate();
       
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
@@ -81,12 +78,12 @@ public class TeacherDAO implements IDAO<Teacher>{
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      String myDate = sdf.format(pTeacher.getBirthDate().getTime());
+      String birthDate = sdf.format(pTeacher.getBirthDate().getTime());
       
       stat.setString(1, pTeacher.getLogin());
       stat.setString(2, pTeacher.getPasswd());
       stat.setString(3, pTeacher.getMail());
-      stat.setString(4, myDate);
+      stat.setString(4, birthDate);
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
@@ -96,9 +93,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.executeUpdate();
       
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
@@ -117,14 +114,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     
     try {
       cnx= db.connect();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer la liste des lessons
-      /////////////////////////////////////////////////////////////////////////
-      List<Lesson> listLessons = new ArrayList();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer l'id de l'école en fonction 
-      /////////////////////////////////////////////////////////////////////////
-      //
+      
       String sql = "SELECT * FROM `user` WHERE  `id` = ? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
@@ -134,11 +124,24 @@ public class TeacherDAO implements IDAO<Teacher>{
       // S'il y a un resultat
       if(res.first())
       {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        // On récupère l'education (la formation)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
+        // On récupère la liste des Lesson pour ce Teacher
+        LessonDAO lessonDao = new LessonDAO();
+        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
+      
           teacher = new Teacher(res.getInt("id"), res.getString("login"),
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+                              school, education,
+                              listLessons);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -158,14 +161,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     
     try {
       cnx= db.connect();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer la liste des lessons
-      /////////////////////////////////////////////////////////////////////////
-      List<Lesson> listLessons = new ArrayList();
-      /////////////////////////////////////////////////////////////////////////
-      // Ici récupérer l'id de l'école en fonction 
-      /////////////////////////////////////////////////////////////////////////
-      //
+      
       String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
@@ -176,11 +172,24 @@ public class TeacherDAO implements IDAO<Teacher>{
       // S'il y a un resultat
       if(res.first())
       {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        // On récupère l'education (la formation)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
+        // On récupère la liste des Lesson pour ce Teacher
+        LessonDAO lessonDao = new LessonDAO();
+        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
+      
           teacher = new Teacher(res.getInt("id"), res.getString("login"),
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+                              school, education,
+                              listLessons);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -209,18 +218,31 @@ public class TeacherDAO implements IDAO<Teacher>{
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
-          Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
-                                      res.getString("pwd"), res.getString("mail"),
-                                      res.getDate("birth_date"), res.getString("first_name"),
-                                      res.getString("last_name"), res.getInt("phone"),
-                                      null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        // On récupère l'education (la formation)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
+        // On récupère la liste des Lesson pour ce Teacher
+        LessonDAO lessonDao = new LessonDAO();
+        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
+        
+        Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                                    res.getString("pwd"), res.getString("mail"),
+                                    res.getDate("birth_date"), res.getString("first_name"),
+                                    res.getString("last_name"), res.getInt("phone"),
+                                    school, education,
+                                    listLessons);
         listTeachers.add(teacher);
       }
 
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }

@@ -10,11 +10,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import metier.Discipline;
 import metier.Lesson;
+import metier.Student;
+import metier.Teacher;
 
 /**
  *
@@ -29,20 +35,23 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
+      
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String beginDate = sdf.format(pLesson.getBeginDate().getTime());
+      String endDate = sdf.format(pLesson.getEndDate().getTime());
       
       stat.setString(1, pLesson.getName());
       stat.setBoolean(2, pLesson.isTp());
       stat.setBoolean(3, pLesson.isTest());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setDate(4, (java.sql.Date) new Date(), pLesson.getBeginHour());
-      stat.setDate(5, (java.sql.Date) new Date(), pLesson.getEndHour());
-      stat.setInt(6, 0); // pLesson.getDiscipline.getId()
+      stat.setString(4, beginDate);
+      stat.setString(5, endDate);
+      stat.setInt(6, pLesson.getDiscipline().getId());
       stat.setInt(7, pLesson.getTeacher().getId());
+      stat.setInt(8, 0); // id lesson status
       
       stat.executeUpdate();
       
@@ -62,22 +71,25 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`id_discipline`=?,`id_user_teacher`=? WHERE `id`=?;";
+      String sql = "UPDATE `campus_bdd`.`lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`id_discipline`=?,`id_user_teacher`=[value-8],`id_lesson_status`=[value-9] WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
+      
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String beginDate = sdf.format(pLesson.getBeginDate().getTime());
+      String endDate = sdf.format(pLesson.getEndDate().getTime());
       
       stat.setString(1, pLesson.getName());
       stat.setBoolean(2, pLesson.isTp());
       stat.setBoolean(3, pLesson.isTest());
-      // pour la modification des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setDate(4, (java.sql.Date) new Date(), pLesson.getBeginHour());
-      stat.setDate(5, (java.sql.Date) new Date(), pLesson.getEndHour());
-      stat.setInt(6, 0); // pLesson.getDiscipline.getId()
+      stat.setString(4, beginDate);
+      stat.setString(5, endDate);
+      stat.setInt(6, pLesson.getDiscipline().getId());
       stat.setInt(7, pLesson.getTeacher().getId());
+      stat.setInt(8, 0); //id lesson status
       
-      stat.setInt(8, pLesson.getId());
+      stat.setInt(9, pLesson.getId());
       
       stat.executeUpdate();
       
@@ -104,7 +116,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `lesson` WHERE `id` = ?;";
+      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -115,26 +127,33 @@ public class LessonDAO implements IDAO<Lesson>{
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer le status de la lesson
         /////////////////////////////////////////////////////////////////////////
-        // C'est la discipline qui à un status
+        String status = "STATUS";
         /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le teacher de la lesson
+        // Ici récupérer la liste des Students
         /////////////////////////////////////////////////////////////////////////
-        // Teacher teacher = selectbyid res.getInt("id_user_teacher")
-        // res.getDate("begin_date")
-        // res.getDate("end_date")
+        List<Student> listStudents = new ArrayList();
+        
+        
+        // On récupère la discipline de la lesson
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        // On récupère le Teacher de la Lesson
+        TeacherDAO teacherDAO = new TeacherDAO();
+        Teacher teacher = teacherDAO.selectById(res.getInt("id_user_teacher"));
         
         lesson = new Lesson(res.getInt("id"), res.getString("name"),
                             res.getBoolean("is_tp"), res.getBoolean("is_test"),
-                            null, null,
-                            null , null,
-                            null ); // avant dernier arg education id education.. ?pb classe metier?
+                            res.getDate("begin_date"), res.getDate("end_date"),
+                            status , teacher,
+                            discipline, listStudents);
         
       }
       
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
@@ -143,7 +162,106 @@ public class LessonDAO implements IDAO<Lesson>{
 
   @Override
   public List<Lesson> selectAll() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    List<Lesson> listLessons = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`lesson`;";
+      Statement stat = cnx.createStatement();
+      ResultSet res = stat.executeQuery(sql);
+      
+      while (res.next()) {
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status de la lesson
+        /////////////////////////////////////////////////////////////////////////
+        String status = "STATUS";
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste des Students
+        /////////////////////////////////////////////////////////////////////////
+        List<Student> listStudents = new ArrayList();
+        
+        
+        // On récupère la discipline de la lesson
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        // On récupère le Teacher de la Lesson
+        TeacherDAO teacherDAO = new TeacherDAO();
+        Teacher teacher = teacherDAO.selectById(res.getInt("id_user_teacher"));
+        
+        Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
+                                    res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getDate("begin_date"), res.getDate("end_date"),
+                                    status , teacher,
+                                    discipline, listStudents);
+        listLessons.add(lesson);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listLessons;
+  }
+  
+  
+  
+  public List<Lesson> selectAllByTeacherId(int pTeacherId) {
+    List<Lesson> listLessons = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_user_teacher` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pTeacherId);
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status de la lesson
+        /////////////////////////////////////////////////////////////////////////
+        String status = "STATUS";
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste des Students
+        /////////////////////////////////////////////////////////////////////////
+        List<Student> listStudents = new ArrayList();
+        
+        
+        // On récupère la discipline de la lesson
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        // On récupère le Teacher de la Lesson
+        TeacherDAO teacherDAO = new TeacherDAO();
+        Teacher teacher = teacherDAO.selectById(res.getInt("id_user_teacher"));
+        
+        Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
+                                    res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getDate("begin_date"), res.getDate("end_date"),
+                                    status , teacher,
+                                    discipline, listStudents);
+        listLessons.add(lesson);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listLessons;
   }
   
 }
