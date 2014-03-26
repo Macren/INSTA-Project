@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,12 +39,14 @@ public class DisciplineDAO implements IDAO<Discipline> {
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String beginDate = sdf.format(pDiscipline.getBeginDate().getTime());
+      String endDate = sdf.format(pDiscipline.getEndDate().getTime());
+      
       stat.setString(1, pDiscipline.getName());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(2, null); //pDiscipline.getBeginDate());
-      stat.setString(3, null); //pDiscipline.getEndDate());
+      stat.setString(2, beginDate);
+      stat.setString(3, endDate);
       stat.setInt(4, pDiscipline.getEducation().getId());
       
       switch (pDiscipline.getStatus()) {
@@ -80,12 +83,14 @@ public class DisciplineDAO implements IDAO<Discipline> {
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
+      // create date like string with format
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String beginDate = sdf.format(pDiscipline.getBeginDate().getTime());
+      String endDate = sdf.format(pDiscipline.getEndDate().getTime());
+      
       stat.setString(1, pDiscipline.getName());
-      // pour l'insertion des dates, il faut les caster avant...
-      // type de l'objet : Calendar
-      // type en Bdd : DATETIME
-      stat.setString(2, null); //pDiscipline.getBeginDate());
-      stat.setString(3, null); //pDiscipline.getEndDate());
+      stat.setString(2, beginDate);
+      stat.setString(3, endDate);
       stat.setInt(4, pDiscipline.getEducation().getId());
       
       switch (pDiscipline.getStatus()) {
@@ -127,7 +132,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE  `id` = ?;";
+      String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -135,21 +140,20 @@ public class DisciplineDAO implements IDAO<Discipline> {
       // S'il y a un resultat
       if(res.first())
       {
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer l' Education
-        /////////////////////////////////////////////////////////////////////////
-        Education education = null;
+        // On récupère l'Education (la formation) de la Discipline (matiere)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
         // On recupère le status
         String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        
         String status = resStatus.getString("label");
         
         
         discipline = new Discipline(res.getInt("id"), res.getString("name"),
-                                    null, null, //res.getInt("begin_date"), res.getInt("end_date"),
+                                    res.getDate("begin_date"), res.getDate("end_date"),
                                     education, status);
       }
       

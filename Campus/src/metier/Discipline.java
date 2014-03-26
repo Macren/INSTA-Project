@@ -1,8 +1,7 @@
 package metier;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.List;
+import java.sql.Date;
 
 /**
  *
@@ -15,8 +14,8 @@ public class Discipline implements Serializable {
      */
     private int       id;
     private String    name;
-    private Calendar  beginDate;
-    private Calendar  endDate;
+    private Date      beginDate;
+    private Date      endDate;
     private Education education;
     private String    status;
     
@@ -29,7 +28,7 @@ public class Discipline implements Serializable {
      * @param education
      * @param status
      */
-    public Discipline(int id, String name, Calendar beginDate, Calendar endDate, Education education, String status) {
+    public Discipline(int id, String name, Date beginDate, Date endDate, Education education, String status) {
         this.id         = id;
         this.name       = name;
         this.beginDate  = beginDate;
@@ -45,7 +44,7 @@ public class Discipline implements Serializable {
      * @param education
      * @param status
      */
-    public Discipline(String name, Calendar beginDate, Calendar endDate, Education education, String status) {
+    public Discipline(String name, Date beginDate, Date endDate, Education education, String status) {
         this.name       = name;
         this.beginDate  = beginDate;
         this.endDate    = endDate;
@@ -73,19 +72,19 @@ public class Discipline implements Serializable {
         this.name = name;
     }
 
-    public Calendar getBeginDate() {
+    public Date getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(Calendar beginDate) {
+    public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;
     }
 
-    public Calendar getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -106,14 +105,10 @@ public class Discipline implements Serializable {
   }
   
   
-    
-    
-    @Override
-    public String toString() {
-        return "Discipline{" + "name=" + name + ", beginDate=" + beginDate + ", endDate=" + endDate + '}';
-    }
-    
-    
-    
-    
+  
+  @Override
+  public String toString() {
+      return this.name;
+  }
+  
 }

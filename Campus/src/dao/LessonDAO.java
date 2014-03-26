@@ -264,4 +264,109 @@ public class LessonDAO implements IDAO<Lesson>{
     return listLessons;
   }
   
+  
+  public List<Lesson> selectAllTpsByDisciplineId(int pDisciplineId) {
+    List<Lesson> listLessons = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ? AND `is_tp` = 1;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pDisciplineId);
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status de la lesson
+        /////////////////////////////////////////////////////////////////////////
+        String status = "STATUS";
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste des Students
+        /////////////////////////////////////////////////////////////////////////
+        List<Student> listStudents = new ArrayList();
+        
+        
+        // On récupère la discipline de la lesson
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        // On récupère le Teacher de la Lesson
+        TeacherDAO teacherDAO = new TeacherDAO();
+        Teacher teacher = teacherDAO.selectById(res.getInt("id_user_teacher"));
+        
+        Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
+                                    res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getDate("begin_date"), res.getDate("end_date"),
+                                    status , teacher,
+                                    discipline, listStudents);
+        listLessons.add(lesson);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listLessons;
+  }
+  
+  
+  
+  public List<Lesson> selectAllTestsByDisciplineId(int pDisciplineId) {
+    List<Lesson> listLessons = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ? AND `is_test` = 1;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pDisciplineId);
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer le status de la lesson
+        /////////////////////////////////////////////////////////////////////////
+        String status = "STATUS";
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste des Students
+        /////////////////////////////////////////////////////////////////////////
+        List<Student> listStudents = new ArrayList();
+        
+        
+        // On récupère la discipline de la lesson
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        // On récupère le Teacher de la Lesson
+        TeacherDAO teacherDAO = new TeacherDAO();
+        Teacher teacher = teacherDAO.selectById(res.getInt("id_user_teacher"));
+        
+        Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
+                                    res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getDate("begin_date"), res.getDate("end_date"),
+                                    status , teacher,
+                                    discipline, listStudents);
+        listLessons.add(lesson);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listLessons;
+  }
+  
 }
