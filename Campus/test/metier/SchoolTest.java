@@ -43,13 +43,10 @@ public class SchoolTest {
    */
   @Test
   public void testGetId() {
-    System.out.println("getId");
-    School instance = null;
-    int expResult = 0;
-    int result = instance.getId();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    School school = new School(1, "INSTA");
+    
+    boolean result = school.getId() == 1;
+    assertTrue(result);
   }
 
   /**
@@ -57,12 +54,11 @@ public class SchoolTest {
    */
   @Test
   public void testSetId() {
-    System.out.println("setId");
-    int id = 0;
-    School instance = null;
-    instance.setId(id);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    School school = new School("INSTA");
+    
+    school.setId(1);
+    boolean result = school.getId() == 1;
+    assertTrue(result);
   }
 
   /**
@@ -70,13 +66,10 @@ public class SchoolTest {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
-    School instance = null;
-    String expResult = "";
-    String result = instance.getName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    School school = new School(1, "INSTA");
+    
+    boolean result = school.getName().equals("INSTA");
+    assertTrue(result);
   }
 
   /**
@@ -84,26 +77,21 @@ public class SchoolTest {
    */
   @Test
   public void testSetName() {
-    System.out.println("setName");
-    String name = "";
-    School instance = null;
-    instance.setName(name);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    School school = new School("INSTA2");
+    
+    school.setName("INSTA");
+    boolean result = school.getName().equals("INSTA");
+    assertTrue(result);
   }
 
   /**
    * Test of toString method, of class School.
    */
   @Test
-  public void testToString() {
-    System.out.println("toString");
-    School instance = null;
-    String expResult = "";
-    String result = instance.toString();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+  public void testToString() {School school = new School(1, "INSTA");
+    
+    boolean result = school.toString().equals("INSTA");
+    assertTrue(result);
   }
   
 }
