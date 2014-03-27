@@ -250,4 +250,53 @@ public class TeacherDAO implements IDAO<Teacher>{
     return listTeachers;
   }
   
+  
+  public List<Teacher> selectAllBySchoolId(int pSchoolId) {
+    List<Teacher> listTeachers = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `user` WHERE `id_role` = ? AND `id_school` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, ID_ROLE_TEACHER);
+      stat.setInt(2, pSchoolId);
+      
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        // On récupère l'education (la formation)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
+        // On récupère la liste des Lesson pour ce Teacher
+        LessonDAO lessonDao = new LessonDAO();
+        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
+        
+        Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                                    res.getString("pwd"), res.getString("mail"),
+                                    res.getDate("birth_date"), res.getString("first_name"),
+                                    res.getString("last_name"), res.getInt("phone"),
+                                    school, education,
+                                    listLessons);
+        listTeachers.add(teacher);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listTeachers;
+  }
+  
 }
