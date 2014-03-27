@@ -150,10 +150,10 @@ public class DisciplineDAO implements IDAO<Discipline> {
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = "";
-        while (resStatus.next())
-            status = resStatus.getString("label");
-        
+        String status = null;
+        while (resStatus.next()){
+          status = resStatus.getString("label");
+        }
         
         discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
@@ -161,14 +161,16 @@ public class DisciplineDAO implements IDAO<Discipline> {
       }
       
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
     return discipline;
   }
+  
+  
 
   @Override
   public List<Discipline> selectAll() {
@@ -184,29 +186,30 @@ public class DisciplineDAO implements IDAO<Discipline> {
       ResultSet res = stat.executeQuery(sql);
       
       while (res.next()) {
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer l' Education
-        /////////////////////////////////////////////////////////////////////////
-        Education education = null;
+        // On recupère l'Education (la formation)
+        EducationDAO educationDao = new EducationDAO();
+        Education education = educationDao.selectById(res.getInt("id_education"));
+        
         // On recupère le status
         String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = "";
-        while (resStatus.next())
-            status = resStatus.getString("label");
+        String status = null;
+        while (resStatus.next()){
+          status = resStatus.getString("label");
+        }
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
-                                                null, null, //res.getInt("begin_date"), res.getInt("end_date"),
+                                                res.getDate("begin_date"), res.getDate("end_date"),
                                                 education, status);
         listDisciplines.add(discipline);
       }
 
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
@@ -219,10 +222,10 @@ public class DisciplineDAO implements IDAO<Discipline> {
   /**
    * Retourne toutes les matières (Discipline) appartenant à une formation (Education)
    * 
-     * @param pEduId
+   * @param pEducationId
    * @return 
    */
-  public List<Discipline> selectAllByEducationId(int pEduId) {
+  public List<Discipline> selectAllByEducationId(int pEducationId) {
     List<Discipline> listDiscipline = new ArrayList();
     
     Connection cnx = null;
@@ -232,40 +235,79 @@ public class DisciplineDAO implements IDAO<Discipline> {
 
       String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE `id_education`=?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
-      stat.setInt(1, pEduId);
-        System.out.println("before res");
+      stat.setInt(1, pEducationId);
       ResultSet res = stat.executeQuery();
-        System.out.println("after res / before eduDAO");
         
       // On récupère l'éducation
       EducationDAO eduDAO = new EducationDAO();
-      Education edu = eduDAO.selectById(pEduId);
-        System.out.println("after eduDAO / before while (res)");
+      Education education = eduDAO.selectById(pEducationId);
+      
+      while (res.next()) {
+        // On recupère le status
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
+        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        ResultSet resStatus = statStatus.executeQuery();
+        String status = null;
+        while (resStatus.next()){
+          status = resStatus.getString("label");
+        }
+        
+        Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
+                                            res.getDate("begin_date"), res.getDate("end_date"),
+                                            education, status);
+        listDiscipline.add(discipline);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listDiscipline;
+  }
+  
+  
+  
+  public List<Discipline> selectAllByEducationIdAndEducationPromo(Education pEducation) {
+    List<Discipline> listDiscipline = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `discipline`, `education` WHERE `education`.`id` = `discipline`.`id_education` AND `education`.`id` = ? AND `education`.`promo` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pEducation.getId());
+      stat.setInt(1, pEducation.getPromo());
+      ResultSet res = stat.executeQuery();
+      
       while (res.next()) {
           
         // On recupère le status
         String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        int tmp = res.getInt("id_discipline_status");
-        statStatus.setInt(1, tmp);
+        statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = "";
-        while (resStatus.next())
-            status = resStatus.getString("label");
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste de matière
-        /////////////////////////////////////////////////////////////////////////
+        String status = null;
+        while (resStatus.next()){
+          status = resStatus.getString("label");
+        }
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                             res.getDate("begin_date"), res.getDate("end_date"),
-                                            edu, status);
+                                            pEducation, status);
         listDiscipline.add(discipline);
       }
 
     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } catch (SQLException ex) {
-        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
       db.disconnect(cnx);
     }
