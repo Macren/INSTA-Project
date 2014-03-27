@@ -328,13 +328,30 @@ INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_na
 -- -----------------------------------------------------
 -- Donnée Table `campus_bdd`.`lesson_status`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('AVAILABLE');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('CANCELED');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('FULL');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('ENDED');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Disponible');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Annulé');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Complet');
+INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Terminé');
 
 -- -----------------------------------------------------
 -- Donnée Table `campus_bdd`.`discipline_status`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('AVAILABLE');
-INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('FULL');
+INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('Disponible');
+INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('Complet');
+
+-- -----------------------------------------------------
+-- Donnée Table `campus_bdd`.`education`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`education` (`name`, `nb_hours`, `promo`, `id_school`) VALUES ('Analyste Informaticien', '200', '11', '1');
+
+-- -----------------------------------------------------
+-- Donnée Table `campus_bdd`.`discipline`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`discipline` (`name`, `begin_date`, `end_date`, `id_education`, `id_discipline_status`) VALUES ('Java', '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '1');
+
+-- -----------------------------------------------------
+-- Donnée Table `campus_bdd`.`lesson`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Premier cours Java', NULL, NULL, '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '2', '1');
+
+
