@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
  */
 public class SchoolTest {
   
+  private School school;
+  
   public SchoolTest() {
   }
   
@@ -32,6 +34,7 @@ public class SchoolTest {
   
   @Before
   public void setUp() {
+    this.school = new School(1, "INSTA");
   }
   
   @After
@@ -43,9 +46,7 @@ public class SchoolTest {
    */
   @Test
   public void testGetId() {
-    School school = new School(1, "INSTA");
-    
-    boolean result = school.getId() == 1;
+    boolean result = this.school.getId() == 1;
     assertTrue(result);
   }
 
@@ -54,10 +55,8 @@ public class SchoolTest {
    */
   @Test
   public void testSetId() {
-    School school = new School("INSTA");
-    
-    school.setId(1);
-    boolean result = school.getId() == 1;
+    this.school.setId(2);
+    boolean result = this.school.getId() == 2;
     assertTrue(result);
   }
 
@@ -66,9 +65,7 @@ public class SchoolTest {
    */
   @Test
   public void testGetName() {
-    School school = new School(1, "INSTA");
-    
-    boolean result = school.getName().equals("INSTA");
+    boolean result = this.school.getName().equals("INSTA");
     assertTrue(result);
   }
 
@@ -77,10 +74,8 @@ public class SchoolTest {
    */
   @Test
   public void testSetName() {
-    School school = new School("INSTA2");
-    
-    school.setName("INSTA");
-    boolean result = school.getName().equals("INSTA");
+    this.school.setName("INSTA2");
+    boolean result = this.school.getName().equals("INSTA2");
     assertTrue(result);
   }
 
@@ -89,9 +84,7 @@ public class SchoolTest {
    */
   @Test
   public void testToString() {
-    School school = new School(1, "INSTA");
-    
-    boolean result = school.toString().equals("INSTA");
+    boolean result = this.school.toString().equals("INSTA");
     assertTrue(result);
   }
   

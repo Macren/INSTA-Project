@@ -107,15 +107,10 @@ public class EducationDAO implements IDAO<Education> {
         // Ici récupérer la school
         /////////////////////////////////////////////////////////////////////////
         School school = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste de discipline
-        /////////////////////////////////////////////////////////////////////////
-        List<Discipline> listDisciplines = new ArrayList();
-        
         
         education = new Education(res.getInt("id"), res.getString("name"),
                                   res.getInt("nb_hours"), res.getInt("promo"),
-                                  school, listDisciplines);
+                                  school);
         
       }
       
@@ -148,14 +143,10 @@ public class EducationDAO implements IDAO<Education> {
         // Ici récupérer la school
         /////////////////////////////////////////////////////////////////////////
         School school = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste de discipline
-        /////////////////////////////////////////////////////////////////////////
-        List<Discipline> listDisciplines = new ArrayList();
         
         Education education = new Education(res.getInt("id"), res.getString("name"),
                                             res.getInt("nb_hours"), res.getInt("promo"),
-                                            school, listDisciplines);
+                                            school);
         listEducations.add(education);
       }
 
@@ -197,14 +188,10 @@ public class EducationDAO implements IDAO<Education> {
         // Ici récupérer la school (on a l'id)
         /////////////////////////////////////////////////////////////////////////
         School school = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste de discipline
-        /////////////////////////////////////////////////////////////////////////
-        List<Discipline> listDisciplines = new ArrayList();
         
         Education education = new Education(res.getInt("id"), res.getString("name"),
                                             res.getInt("nb_hours"), res.getInt("promo"),
-                                            school, listDisciplines);
+                                            school);
         listEducations.add(education);
       }
 

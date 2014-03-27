@@ -43,33 +43,24 @@ public class AbstractUserTest {
   @Before
   public void setUp() {
     this.school = new School(1, "INSTA");
-    this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school, null);
-    
-    this.listDisciplines = new ArrayList();
-    Discipline discipline1 = new Discipline(1, "Java", new Date(101), new Date(102), this.education, "Disponible");
-    Discipline discipline2 = new Discipline(2, "Php", new Date(201), new Date(202), this.education, "Disponible");
-    
-    listDisciplines.add(discipline1);
-    listDisciplines.add(discipline2);
-    
-    education.setDisciplines(listDisciplines);
+    this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school);
     
     this.administrator = new Administrator(1, "campus_admin",
                                                     "campus_admin", "campus_admin@campus.com",
                                                     new Date(666), "campus_admin",
                                                     "campus_admin", 666,
-                                                    school, education);
+                                                    this.school, this.education);
     this.teacher = new Teacher(2, "campus_teacher",
                                   "campus_teacher", "campus_teacher@campus.com",
                                   new Date(555), "campus_teacher",
                                   "campus_teacher", 555,
-                                  school, education,
+                                  this.school, this.education,
                                   null);
     this.student = new Student(3, "campus_student",
                                   "campus_student", "campus_student@campus.com",
                                   new Date(444), "campus_student",
                                   "campus_student", 444,
-                                  school, education,
+                                  this.school, this.education,
                                   null);
   }
   
@@ -331,7 +322,7 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetEducation() {
-    Education education2 = new Education(2, "Analyste Informaticien Reseau", 400, 12, this.school, null);
+    Education education2 = new Education(2, "Analyste Informaticien Reseau", 400, 12, this.school);
     
     this.administrator.setEducation(education2);
     this.teacher.setEducation(education2);
