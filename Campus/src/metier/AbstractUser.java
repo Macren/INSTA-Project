@@ -122,7 +122,7 @@ public abstract class AbstractUser implements Serializable {
 
     @Override
     public String toString() {
-        return "AbstractUser{" + "id=" + id + ", login=" + login + ", passwd=" + passwd + ", mail=" + mail + ", birthDate=" + birthDate + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", school=" + school + ", education=" + education + '}';
+        return login;
     }
     
     

@@ -88,7 +88,8 @@ public class SchoolTest {
    * Test of toString method, of class School.
    */
   @Test
-  public void testToString() {School school = new School(1, "INSTA");
+  public void testToString() {
+    School school = new School(1, "INSTA");
     
     boolean result = school.toString().equals("INSTA");
     assertTrue(result);

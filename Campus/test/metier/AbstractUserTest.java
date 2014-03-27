@@ -7,6 +7,8 @@
 package metier;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,6 +21,13 @@ import static org.junit.Assert.*;
  * @author biron
  */
 public class AbstractUserTest {
+  
+  private School            school;
+  private Education         education;
+  private List<Discipline>  listDisciplines;
+  private Administrator     administrator;
+  private Teacher           teacher;
+  private Student           student;
   
   public AbstractUserTest() {
   }
@@ -33,6 +42,35 @@ public class AbstractUserTest {
   
   @Before
   public void setUp() {
+    this.school = new School(1, "INSTA");
+    this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school, null);
+    
+    this.listDisciplines = new ArrayList();
+    Discipline discipline1 = new Discipline(1, "Java", new Date(101), new Date(102), this.education, "Disponible");
+    Discipline discipline2 = new Discipline(2, "Php", new Date(201), new Date(202), this.education, "Disponible");
+    
+    listDisciplines.add(discipline1);
+    listDisciplines.add(discipline2);
+    
+    education.setDisciplines(listDisciplines);
+    
+    this.administrator = new Administrator(1, "campus_admin",
+                                                    "campus_admin", "campus_admin@campus.com",
+                                                    new Date(666), "campus_admin",
+                                                    "campus_admin", 666,
+                                                    school, education);
+    this.teacher = new Teacher(2, "campus_teacher",
+                                  "campus_teacher", "campus_teacher@campus.com",
+                                  new Date(555), "campus_teacher",
+                                  "campus_teacher", 555,
+                                  school, education,
+                                  null);
+    this.student = new Student(3, "campus_student",
+                                  "campus_student", "campus_student@campus.com",
+                                  new Date(444), "campus_student",
+                                  "campus_student", 444,
+                                  school, education,
+                                  null);
   }
   
   @After
@@ -44,13 +82,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testToString() {
-    System.out.println("toString");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.toString();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.toString().equals("campus_admin")
+                      && this.teacher.toString().equals("campus_teacher")
+                      && this.student.toString().equals("campus_student");
+    assertTrue(result);
   }
 
   /**
@@ -58,13 +93,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetId() {
-    System.out.println("getId");
-    AbstractUser instance = null;
-    int expResult = 0;
-    int result = instance.getId();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getId() == 1
+                      && this.teacher.getId() == 2
+                      && this.student.getId() == 3;
+    assertTrue(result);
   }
 
   /**
@@ -72,13 +104,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetLogin() {
-    System.out.println("getLogin");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.getLogin();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getLogin().equals("campus_admin")
+                      && this.teacher.getLogin().equals("campus_teacher")
+                      && this.student.getLogin().equals("campus_student");
+    assertTrue(result);
   }
 
   /**
@@ -86,13 +115,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetPasswd() {
-    System.out.println("getPasswd");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.getPasswd();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getPasswd().equals("campus_admin")
+                      && this.teacher.getPasswd().equals("campus_teacher")
+                      && this.student.getPasswd().equals("campus_student");
+    assertTrue(result);
   }
 
   /**
@@ -100,13 +126,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetMail() {
-    System.out.println("getMail");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.getMail();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getMail().equals("campus_admin@campus.com")
+                      && this.teacher.getMail().equals("campus_teacher@campus.com")
+                      && this.student.getMail().equals("campus_student@campus.com");
+    assertTrue(result);
   }
 
   /**
@@ -114,13 +137,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetBirthDate() {
-    System.out.println("getBirthDate");
-    AbstractUser instance = null;
-    Date expResult = null;
-    Date result = instance.getBirthDate();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getBirthDate().equals(new Date(666))
+                      && this.teacher.getBirthDate().equals(new Date(555))
+                      && this.student.getBirthDate().equals(new Date(444));
+    assertTrue(result);
   }
 
   /**
@@ -128,13 +148,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetFirstName() {
-    System.out.println("getFirstName");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.getFirstName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getFirstName().equals("campus_admin")
+                      && this.teacher.getFirstName().equals("campus_teacher")
+                      && this.student.getFirstName().equals("campus_student");
+    assertTrue(result);
   }
 
   /**
@@ -142,13 +159,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetLastName() {
-    System.out.println("getLastName");
-    AbstractUser instance = null;
-    String expResult = "";
-    String result = instance.getLastName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getLastName().equals("campus_admin")
+                      && this.teacher.getLastName().equals("campus_teacher")
+                      && this.student.getLastName().equals("campus_student");
+    assertTrue(result);
   }
 
   /**
@@ -156,13 +170,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetPhone() {
-    System.out.println("getPhone");
-    AbstractUser instance = null;
-    int expResult = 0;
-    int result = instance.getPhone();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getPhone() == 666
+                      && this.teacher.getPhone() == 555
+                      && this.student.getPhone() == 444;
+    assertTrue(result);
   }
 
   /**
@@ -170,13 +181,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetSchool() {
-    System.out.println("getSchool");
-    AbstractUser instance = null;
-    School expResult = null;
-    School result = instance.getSchool();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getSchool().equals(this.school)
+                      && this.teacher.getSchool().equals(this.school)
+                      && this.student.getSchool().equals(this.school);
+    assertTrue(result);
   }
 
   /**
@@ -184,13 +192,10 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetEducation() {
-    System.out.println("getEducation");
-    AbstractUser instance = null;
-    Education expResult = null;
-    Education result = instance.getEducation();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.administrator.getEducation().equals(this.education)
+                      && this.teacher.getEducation().equals(this.education)
+                      && this.student.getEducation().equals(this.education);
+    assertTrue(result);
   }
 
   /**
@@ -198,12 +203,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetId() {
-    System.out.println("setId");
-    int id = 0;
-    AbstractUser instance = null;
-    instance.setId(id);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setId(666);
+    this.teacher.setId(667);
+    this.student.setId(668);
+    boolean result = this.administrator.getId() == 666
+                      && this.teacher.getId() == 667
+                      && this.student.getId() == 668;
+    assertTrue(result);
   }
 
   /**
@@ -211,12 +217,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetLogin() {
-    System.out.println("setLogin");
-    String login = "";
-    AbstractUser instance = null;
-    instance.setLogin(login);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setLogin("log_adm");
+    this.teacher.setLogin("log_tea");
+    this.student.setLogin("log_stu");
+    boolean result = this.administrator.getLogin().equals("log_adm")
+                      && this.teacher.getLogin().equals("log_tea")
+                      && this.student.getLogin().equals("log_stu");
+    assertTrue(result);
   }
 
   /**
@@ -224,12 +231,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetPasswd() {
-    System.out.println("setPasswd");
-    String passwd = "";
-    AbstractUser instance = null;
-    instance.setPasswd(passwd);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setPasswd("pwd_adm");
+    this.teacher.setPasswd("pwd_tea");
+    this.student.setPasswd("pwd_stu");
+    boolean result = this.administrator.getPasswd().equals("pwd_adm")
+                      && this.teacher.getPasswd().equals("pwd_tea")
+                      && this.student.getPasswd().equals("pwd_stu");
+    assertTrue(result);
   }
 
   /**
@@ -237,12 +245,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetMail() {
-    System.out.println("setMail");
-    String mail = "";
-    AbstractUser instance = null;
-    instance.setMail(mail);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setMail("mail_adm");
+    this.teacher.setMail("mail_tea");
+    this.student.setMail("mail_stu");
+    boolean result = this.administrator.getMail().equals("mail_adm")
+                      && this.teacher.getMail().equals("mail_tea")
+                      && this.student.getMail().equals("mail_stu");
+    assertTrue(result);
   }
 
   /**
@@ -250,12 +259,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetBirthDate() {
-    System.out.println("setBirthDate");
-    Date birthDate = null;
-    AbstractUser instance = null;
-    instance.setBirthDate(birthDate);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setBirthDate(new Date(777));
+    this.teacher.setBirthDate(new Date(778));
+    this.student.setBirthDate(new Date(779));
+    boolean result = this.administrator.getBirthDate().equals(new Date(777))
+                      && this.teacher.getBirthDate().equals(new Date(778))
+                      && this.student.getBirthDate().equals(new Date(779));
+    assertTrue(result);
   }
 
   /**
@@ -263,12 +273,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetFirstName() {
-    System.out.println("setFirstName");
-    String firstName = "";
-    AbstractUser instance = null;
-    instance.setFirstName(firstName);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setFirstName("fn_adm");
+    this.teacher.setFirstName("fn_tea");
+    this.student.setFirstName("fn_stu");
+    boolean result = this.administrator.getFirstName().equals("fn_adm")
+                      && this.teacher.getFirstName().equals("fn_tea")
+                      && this.student.getFirstName().equals("fn_stu");
+    assertTrue(result);
   }
 
   /**
@@ -276,12 +287,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetLastName() {
-    System.out.println("setLastName");
-    String lastName = "";
-    AbstractUser instance = null;
-    instance.setLastName(lastName);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setLastName("ln_adm");
+    this.teacher.setLastName("ln_tea");
+    this.student.setLastName("ln_stu");
+    boolean result = this.administrator.getLastName().equals("ln_adm")
+                      && this.teacher.getLastName().equals("ln_tea")
+                      && this.student.getLastName().equals("ln_stu");
+    assertTrue(result);
   }
 
   /**
@@ -289,12 +301,13 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetPhone() {
-    System.out.println("setPhone");
-    int phone = 0;
-    AbstractUser instance = null;
-    instance.setPhone(phone);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setPhone(1111);
+    this.teacher.setPhone(1112);
+    this.student.setPhone(1113);
+    boolean result = this.administrator.getPhone() == 1111
+                      && this.teacher.getPhone() == 1112
+                      && this.student.getPhone() == 1113;
+    assertTrue(result);
   }
 
   /**
@@ -302,12 +315,15 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetSchool() {
-    System.out.println("setSchool");
-    School school = null;
-    AbstractUser instance = null;
-    instance.setSchool(school);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    School school2 = new School(2, "INSTA2");
+    
+    this.administrator.setSchool(school2);
+    this.teacher.setSchool(school2);
+    this.student.setSchool(school2);
+    boolean result = this.administrator.getSchool().equals(school2)
+                      && this.teacher.getSchool().equals(school2)
+                      && this.student.getSchool().equals(school2);
+    assertTrue(result);
   }
 
   /**
@@ -315,12 +331,15 @@ public class AbstractUserTest {
    */
   @Test
   public void testSetEducation() {
-    System.out.println("setEducation");
-    Education education = null;
-    AbstractUser instance = null;
-    instance.setEducation(education);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Education education2 = new Education(2, "Analyste Informaticien Reseau", 400, 12, this.school, null);
+    
+    this.administrator.setEducation(education2);
+    this.teacher.setEducation(education2);
+    this.student.setEducation(education2);
+    boolean result = this.administrator.getEducation().equals(education2)
+                      && this.teacher.getEducation().equals(education2)
+                      && this.student.getEducation().equals(education2);
+    assertTrue(result);
   }
 
   public class AbstractUserImpl extends AbstractUser {
