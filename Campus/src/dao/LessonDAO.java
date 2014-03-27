@@ -173,11 +173,6 @@ public class LessonDAO implements IDAO<Lesson>{
           status = resStatus.getString("label");
         }
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -191,7 +186,7 @@ public class LessonDAO implements IDAO<Lesson>{
                             res.getBoolean("is_tp"), res.getBoolean("is_test"),
                             res.getDate("begin_date"), res.getDate("end_date"),
                             status , teacher,
-                            discipline, listStudents);
+                            discipline);
         
       }
       
@@ -230,11 +225,6 @@ public class LessonDAO implements IDAO<Lesson>{
           status = resStatus.getString("label");
         }
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -248,7 +238,7 @@ public class LessonDAO implements IDAO<Lesson>{
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
-                                    discipline, listStudents);
+                                    discipline);
         listLessons.add(lesson);
       }
 
@@ -290,11 +280,6 @@ public class LessonDAO implements IDAO<Lesson>{
           status = resStatus.getString("label");
         }
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -308,7 +293,7 @@ public class LessonDAO implements IDAO<Lesson>{
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
-                                    discipline, listStudents);
+                                    discipline);
         listLessons.add(lesson);
       }
 
@@ -349,11 +334,6 @@ public class LessonDAO implements IDAO<Lesson>{
         while (resStatus.next()){
           status = resStatus.getString("label");
         }
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -367,7 +347,7 @@ public class LessonDAO implements IDAO<Lesson>{
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
-                                    discipline, listStudents);
+                                    discipline);
         listLessons.add(lesson);
       }
 
@@ -409,11 +389,6 @@ public class LessonDAO implements IDAO<Lesson>{
           status = resStatus.getString("label");
         }
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -427,7 +402,7 @@ public class LessonDAO implements IDAO<Lesson>{
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
-                                    discipline, listStudents);
+                                    discipline);
         listLessons.add(lesson);
       }
 
@@ -469,11 +444,6 @@ public class LessonDAO implements IDAO<Lesson>{
           status = resStatus.getString("label");
         }
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la liste des Students
-        /////////////////////////////////////////////////////////////////////////
-        List<Student> listStudents = new ArrayList();
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -487,7 +457,7 @@ public class LessonDAO implements IDAO<Lesson>{
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
-                                    discipline, listStudents);
+                                    discipline);
         listLessons.add(lesson);
       }
 
