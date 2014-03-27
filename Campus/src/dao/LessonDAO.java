@@ -163,9 +163,9 @@ public class LessonDAO implements IDAO<Lesson>{
       if(res.first())
       {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
         String status = resStatus.getString("label");
         
@@ -216,9 +216,9 @@ public class LessonDAO implements IDAO<Lesson>{
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
         String status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
@@ -271,9 +271,9 @@ public class LessonDAO implements IDAO<Lesson>{
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
         String status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
@@ -325,9 +325,9 @@ public class LessonDAO implements IDAO<Lesson>{
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
         String status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
@@ -380,9 +380,9 @@ public class LessonDAO implements IDAO<Lesson>{
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
         String status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
