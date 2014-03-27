@@ -102,6 +102,27 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
         });
         
+        addEducationItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addEduMenuItemActionPerformed(evt);
+            }
+        });
+        
+        addDisciplineItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addDisciMenuItemActionPerformed(evt);
+            }
+        });
+        
+        addLessonItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLessonMenuItemActionPerformed(evt);
+            }
+        });
+        
         addItem.add(addUserItem);
         addItem.add(addLessonItem);
         addItem.add(addDisciplineItem);
@@ -217,10 +238,27 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        int pSchoolId = this.myAdmin.getSchool().getId();
-        AddUserUI addUserUI = new AddUserUI(pSchoolId);
+        AddUserUI addUserUI = new AddUserUI(this.myAdmin.getSchool());
         addUserUI.setVisible(true);
-    }       
+    }                                                   
+
+    private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        AddEducationUI addEduUI = new AddEducationUI(this.myAdmin.getSchool());
+        addEduUI.setVisible(true);
+    }                                                
+
+    private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        AddDisciplineUI addDisciUI = new AddDisciplineUI(this.myAdmin.getSchool());
+        addDisciUI.setVisible(true);
+    }                                          
+
+    private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        AddLessonUI addLessonUI = new AddLessonUI(this.myAdmin.getSchool());
+        addLessonUI.setVisible(true);
+    }  
     /**
      * @param args the command line arguments
      */

@@ -8,7 +8,6 @@ package swing;
 
 import dao.AdministratorDAO;
 import dao.EducationDAO;
-import dao.SchoolDAO;
 import dao.StudentDAO;
 import dao.TeacherDAO;
 import java.sql.Date;
@@ -30,7 +29,7 @@ import utils.UserType;
  */
 public class AddUserUI extends javax.swing.JFrame {
 
-    private int mySchoolID;
+    private School mySchool;
     /**
      * Creates new form AddUserUI
      */
@@ -38,11 +37,11 @@ public class AddUserUI extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AddUserUI(int pSchoolId) {
+    public AddUserUI(School pSchool) {
         initComponents();
         // saving user schoolID
         // --------------------
-        this.mySchoolID = pSchoolId;
+        this.mySchool = pSchool;
         this.initComboBox();
     }
     
@@ -58,7 +57,7 @@ public class AddUserUI extends javax.swing.JFrame {
         String  typeValue[] = new String[3];
         
         EducationDAO eduDAO = new EducationDAO();
-        List    listEdu = eduDAO.selectAllBySchoolId(this.mySchoolID); //getting all education from a school
+        List    listEdu = eduDAO.selectAllBySchoolId(this.mySchool.getId()); //getting all education from a school
         DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
         
         // Education Value from School
@@ -288,8 +287,6 @@ public class AddUserUI extends javax.swing.JFrame {
         Education       anEdu = (Education)this.combob_education.getSelectedItem();
         AbstractUser    aUser = null;
         UserType        anUserType = null;
-        SchoolDAO schoolDAO = new SchoolDAO();
-        School aSchool = schoolDAO.selectById(this.mySchoolID);
         
         System.out.println("type d'utilisateur: " + strType);
         System.out.println("login: " + aLogin);
@@ -300,27 +297,27 @@ public class AddUserUI extends javax.swing.JFrame {
         System.out.println("last name: " + aLastName);
         System.out.println("date de naissance:" + aBirthDate);
         System.out.println("formation:" + anEdu);
-        System.out.println("école:" + aSchool);
+        System.out.println("école:" + this.mySchool);
 
         // setting user type
         // -----------------
         if (strType.compareTo("Eleve") == 0) { // a student
             anUserType = UserType.STUDENT;
-            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, aSchool, anEdu, null);
+            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, anEdu, null);
             System.out.println(aUser);
             StudentDAO studentDAO = new StudentDAO();
             studentDAO.insert((Student)aUser);
         }
         else if (strType.compareTo("Professeur") == 0) { // a teacher
             anUserType = UserType.TEACHER;
-            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, aSchool, anEdu, null);
+            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, null, null);
             System.out.println(aUser);
             TeacherDAO teacherDAO = new TeacherDAO();
             teacherDAO.insert((Teacher)aUser);
         }
         else if (strType.compareTo("Administration") == 0) { // an admin user
             anUserType = UserType.ADMIN;
-            aUser = new Administrator(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, aSchool, anEdu);
+            aUser = new Administrator(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, null);
             System.out.println(aUser);
             AdministratorDAO adminDAO = new AdministratorDAO();
             adminDAO.insert((Administrator)aUser);

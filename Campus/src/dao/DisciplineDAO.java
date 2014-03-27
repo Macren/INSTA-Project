@@ -6,6 +6,7 @@
 
 package dao;
 
+import static dao.IDAO.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,10 +51,10 @@ public class DisciplineDAO implements IDAO<Discipline> {
       stat.setInt(4, pDiscipline.getEducation().getId());
       
       switch (pDiscipline.getStatus()) {
-        case "AVAILABLE":
+        case "Disponible":
           stat.setInt(5, DISCIPLINE_STATUS_AVAILABLE);
           break;
-        case "FULL":
+        case "Complet":
           stat.setInt(5, DISCIPLINE_STATUS_FULL);
           break;
         default:
@@ -94,10 +95,10 @@ public class DisciplineDAO implements IDAO<Discipline> {
       stat.setInt(4, pDiscipline.getEducation().getId());
       
       switch (pDiscipline.getStatus()) {
-        case "AVAILABLE":
+        case "Disponible":
           stat.setInt(5, DISCIPLINE_STATUS_AVAILABLE);
           break;
-        case "FULL":
+        case "Complet":
           stat.setInt(5, DISCIPLINE_STATUS_FULL);
           break;
         default:
@@ -208,6 +209,63 @@ public class DisciplineDAO implements IDAO<Discipline> {
     }
     
     return listDisciplines;
+  }
+  
+  
+  
+  /**
+   * Retourne toutes les matières (Discipline) appartenant à une formation (Education)
+   * 
+     * @param pEduId
+   * @return 
+   */
+  public List<Discipline> selectAllByEducationId(int pEduId) {
+    List<Discipline> listDiscipline = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE `id_education`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pEduId);
+        System.out.println("before res");
+      ResultSet res = stat.executeQuery();
+        System.out.println("after res / before eduDAO");
+        
+      // On récupère l'éducation
+      EducationDAO eduDAO = new EducationDAO();
+      Education edu = eduDAO.selectById(pEduId);
+        System.out.println("after eduDAO / before while (res)");
+      while (res.next()) {
+          
+        // On recupère le status
+        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
+        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        ResultSet resStatus = statStatus.executeQuery();
+        
+        String status = resStatus.getString("label");
+        /////////////////////////////////////////////////////////////////////////
+        // Ici récupérer la liste de matière
+        /////////////////////////////////////////////////////////////////////////
+        
+        Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
+                                            res.getDate("nb_hours"), res.getDate("promo"),
+                                            edu, status);
+        listDiscipline.add(discipline);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listDiscipline;
   }
   
 }
