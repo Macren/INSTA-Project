@@ -133,16 +133,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         EducationDAO educationDao = new EducationDAO();
         Education education = educationDao.selectById(res.getInt("id_education"));
         
-        // On récupère la liste des Lesson pour ce Teacher
-        LessonDAO lessonDao = new LessonDAO();
-        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
-      
-          teacher = new Teacher(res.getInt("id"), res.getString("login"),
-                              res.getString("pwd"), res.getString("mail"),
-                              res.getDate("birth_date"), res.getString("first_name"),
-                              res.getString("last_name"), res.getInt("phone"),
-                              school, education,
-                              listLessons);
+        teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                            res.getString("pwd"), res.getString("mail"),
+                            res.getDate("birth_date"), res.getString("first_name"),
+                            res.getString("last_name"), res.getInt("phone"),
+                            school, education);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -181,16 +176,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         EducationDAO educationDao = new EducationDAO();
         Education education = educationDao.selectById(res.getInt("id_education"));
         
-        // On récupère la liste des Lesson pour ce Teacher
-        LessonDAO lessonDao = new LessonDAO();
-        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
-      
-          teacher = new Teacher(res.getInt("id"), res.getString("login"),
-                              res.getString("pwd"), res.getString("mail"),
-                              res.getDate("birth_date"), res.getString("first_name"),
-                              res.getString("last_name"), res.getInt("phone"),
-                              school, education,
-                              listLessons);
+        teacher = new Teacher(res.getInt("id"), res.getString("login"),
+                            res.getString("pwd"), res.getString("mail"),
+                            res.getDate("birth_date"), res.getString("first_name"),
+                            res.getString("last_name"), res.getInt("phone"),
+                            school, education);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -227,16 +217,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         EducationDAO educationDao = new EducationDAO();
         Education education = educationDao.selectById(res.getInt("id_education"));
         
-        // On récupère la liste des Lesson pour ce Teacher
-        LessonDAO lessonDao = new LessonDAO();
-        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
-        
         Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, education,
-                                    listLessons);
+                                    school, education);
         listTeachers.add(teacher);
       }
 
@@ -276,16 +261,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         EducationDAO educationDao = new EducationDAO();
         Education education = educationDao.selectById(res.getInt("id_education"));
         
-        // On récupère la liste des Lesson pour ce Teacher
-        LessonDAO lessonDao = new LessonDAO();
-        List<Lesson> listLessons = lessonDao.selectAllByTeacherId(res.getInt("id"));
-        
         Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, education,
-                                    listLessons);
+                                    school, education);
         listTeachers.add(teacher);
       }
 
