@@ -35,7 +35,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_promo`, `id_school`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `campus_bdd`.`user`(`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -51,8 +51,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
       stat.setInt(8, ID_ROLE_TEACHER);
-      stat.setString(9, null);  // null, car un teacher n'appartient à aucune promo
-      stat.setInt(10, pTeacher.getSchool().getId());
+      stat.setInt(9, pTeacher.getSchool().getId());
+      stat.setString(10, null);  // null, car un teacher n'a aucune Education (formation)
+      
       
       stat.executeUpdate();
       
