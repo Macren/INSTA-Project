@@ -6,8 +6,11 @@
 
 package swing;
 
+import dao.DisciplineDAO;
+import dao.EducationDAO;
 import dao.LessonDAO;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,6 +18,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import metier.AbstractUser;
 import metier.Administrator;
+import metier.Discipline;
+import metier.Education;
 import metier.Lesson;
 import metier.Student;
 import metier.Teacher;
@@ -27,7 +32,9 @@ import utils.UserType;
 public class GeneralMDI extends javax.swing.JFrame {
 
  private DefaultMutableTreeNode racine;    
- 
+ private int myLesson;
+ private int myTest;
+ private int myTP;
     /**
      * ===============
      * User Attributes
@@ -69,6 +76,8 @@ public class GeneralMDI extends javax.swing.JFrame {
             case ADMIN:
                 myAdmin = new Administrator(user);
                 this.initMenuForAdmin();
+                this.initComboBox();
+                this.initTree();
                 break;
         }
         if (myStudent != null)
@@ -165,20 +174,67 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
     public void     initTree() {
         
-        LessonDAO lessonDAO = new LessonDAO();
-        List<Lesson> l = lessonDAO.selectAll();
-        this.racine = new DefaultMutableTreeNode("Matière");
-        TreeModel model = new DefaultTreeModel(racine);
-        for (Lesson lesson : l) {
-            DefaultMutableTreeNode noeud = new DefaultMutableTreeNode(lesson.getDiscipline());
-            DefaultMutableTreeNode noeudLesson = new DefaultMutableTreeNode(lesson.getName());
+        DisciplineDAO disciplineDAO = new DisciplineDAO();
+        List<Discipline> listDiscipline = disciplineDAO.selectAllByEducationIdAndEducationPromo((Education)this.combob_education.getSelectedItem());
+    
+        DefaultMutableTreeNode racine = new DefaultMutableTreeNode("Matière");
+        
+        for (Discipline discipline : listDiscipline) {
+            DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline);
+            //DefaultMutableTreeNode noeudLesson = new DefaultMutableTreeNode(lesson.getName());
            // noeudLesson.add(new DefaultMutableTreeNode (lesson.getTP) );
-            noeud.add(noeudLesson);
-            this.racine.add(noeud);
+            //noeud.add(noeudLesson);
+           // this.racine.add(noeud);
+            
+            LessonDAO       lessonDAO =     new LessonDAO();
+            List<Lesson>    listLesson =    lessonDAO.selectAllByDisciplineId(myLesson);
+            List<Lesson>    listTP =        lessonDAO.selectAllTpsByDisciplineId(myTP);
+            List<Lesson>    listTest =      lessonDAO.selectAllTestsByDisciplineId(myTest);
+            
+            DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
+            disciplineNode.add(lessonTitleNode);
+            for (Lesson lesson : listLesson){
+                DefaultMutableTreeNode  lessonNode =   new DefaultMutableTreeNode(lesson);
+                lessonTitleNode.add(lessonNode);
+            }
+            
+            DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
+            disciplineNode.add(tpTitleNode);
+            for (Lesson tp : listTP){
+                DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(tp);
+                tpTitleNode.add(tpNode);
+            }
+            
+            DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
+            disciplineNode.add(testTitleNode);
+            for (Lesson test : listTest){
+                DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
+                testTitleNode.add(testNode);
+            }
+            disciplineNode.add(lessonTitleNode);
+            disciplineNode.add(tpTitleNode);
+            disciplineNode.add(testTitleNode);
+            racine.add(disciplineNode);
         }
+        TreeModel model = new DefaultTreeModel(racine);
 
         this.jTree2.setModel(model);
         
+    }
+    
+    private void initComboBox() {
+        
+        EducationDAO eduDAO = new EducationDAO();
+        List    listEdu = eduDAO.selectAllBySchoolId(this.myAdmin.getSchool().getId()); //getting all education from a school
+        DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
+        
+        // Education Value from School
+        // ---------------------------
+        for (Object o : listEdu) {
+            Education myEdu = (Education) o;
+            dcbmEdu.addElement(myEdu);
+        }
+        this.combob_education.setModel(dcbmEdu);
     }
     
     
@@ -200,7 +256,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         jTree2 = new javax.swing.JTree();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jComboBox2 = new javax.swing.JComboBox();
+        combob_education = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
@@ -235,7 +291,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(jTable2);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_education.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setText("+");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -260,7 +316,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                         .addGap(25, 25, 25))
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -270,7 +326,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -400,6 +456,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox combob_education;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem disconnectMenuItem;
     private javax.swing.JMenu fileMenuBar;
@@ -407,7 +464,6 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane3;
