@@ -9,7 +9,9 @@ package swing;
 import dao.DisciplineDAO;
 import dao.EducationDAO;
 import dao.LessonDAO;
+import dao.TeacherDAO;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -17,6 +19,7 @@ import metier.Discipline;
 import metier.Education;
 import metier.Lesson;
 import metier.School;
+import metier.Teacher;
 
 /**
  *
@@ -57,11 +60,22 @@ public class AddLessonUI extends javax.swing.JFrame {
         List    listEdu = eduDAO.selectAllBySchoolId(this.mySchool.getId()); //getting all education from a school
         DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
         
+        TeacherDAO  teacherDAO = new TeacherDAO();
+        List        listTeacher = teacherDAO.selectAllBySchoolId(this.mySchool.getId()); //getting all education from a school
+        DefaultComboBoxModel dcbmTeach = new DefaultComboBoxModel();
+        
         // Education Value from School
         // ---------------------------
         for (Object o : listEdu) {
             Education anEdu = (Education) o;
             dcbmEdu.addElement(anEdu);
+        }
+        
+        // Education Value from School
+        // ---------------------------
+        for (Object o : listTeacher) {
+            Teacher aTeach = (Teacher) o;
+            dcbmTeach.addElement(aTeach);
         }
         
         // Hour in Month Value
@@ -87,6 +101,7 @@ public class AddLessonUI extends javax.swing.JFrame {
         this.combob_eHour.setModel(dcbmEHour);
         this.combob_eMin.setModel(dcbmEMin);
         this.combob_edu.setModel(dcbmEdu);
+        this.combob_teacher.setModel(dcbmTeach);
         this.initComboBoxDisci();
     }
     
@@ -130,6 +145,10 @@ public class AddLessonUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         combob_edu = new javax.swing.JComboBox();
         combob_disci = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        combob_teacher = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -176,6 +195,14 @@ public class AddLessonUI extends javax.swing.JFrame {
 
         combob_disci.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel6.setText("Professeur:");
+
+        combob_teacher.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel7.setText("heure");
+
+        jLabel8.setText("minute");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,43 +210,48 @@ public class AddLessonUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbl_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(checkb_tp)
+                            .addGap(46, 46, 46)
+                            .addComponent(checkb_interro))
+                        .addComponent(bt_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(58, 58, 58)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(jLabel7)
+                                    .addGap(33, 33, 33)
+                                    .addComponent(jLabel8))
+                                .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(combob_edu, 0, 145, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(combob_eHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(combob_eMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(combob_bHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(combob_bMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(checkb_tp))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(checkb_interro)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(combob_disci, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lbl_winTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(combob_edu, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(combob_eHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(combob_eMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(tf_name)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(combob_bHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(combob_bMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(bt_addLesson, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel6))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(combob_teacher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(combob_disci, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +262,11 @@ public class AddLessonUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(combob_bHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -249,7 +285,11 @@ public class AddLessonUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(combob_disci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(combob_teacher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkb_tp)
                     .addComponent(checkb_interro))
@@ -269,32 +309,31 @@ public class AddLessonUI extends javax.swing.JFrame {
         String          aName = this.tf_name.getText();
 
         Calendar        myCal = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal.set(Calendar.YEAR, ((Integer)combob_bHour.getSelectedItem()).intValue());
-        myCal.set(Calendar.MONTH, ((Integer)combob_bMin.getSelectedItem()).intValue());
-        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_bHour.getSelectedItem()).intValue());
+        myCal.set(Calendar.HOUR, ((Integer)combob_bHour.getSelectedItem()).intValue());
+        myCal.set(Calendar.MINUTE, ((Integer)combob_bMin.getSelectedItem()).intValue());
         Date            aBeginDate = new Date(myCal.getTime().getTime());
 
         Calendar        myCal1 = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal.set(Calendar.YEAR, ((Integer)combob_eHour.getSelectedItem()).intValue());
-        myCal.set(Calendar.MONTH, ((Integer)combob_eMin.getSelectedItem()).intValue());
-        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_eHour.getSelectedItem()).intValue());
+        myCal1.set(Calendar.HOUR, ((Integer)combob_eHour.getSelectedItem()).intValue());
+        myCal1.set(Calendar.MINUTE, ((Integer)combob_eMin.getSelectedItem()).intValue());
         Date            anEndDate = new Date(myCal1.getTime().getTime());
         
         boolean         isTP = this.checkb_tp.isSelected();
         boolean         isTest = this.checkb_interro.isSelected();
 
-        Discipline aDisci = (Discipline)this.combob_disci.getSelectedItem();
+        Discipline  aDisci = (Discipline)this.combob_disci.getSelectedItem();
+        Teacher     aTeacher = (Teacher)this.combob_teacher.getSelectedItem();
 
         System.out.println("name: " + aName);
-        System.out.println("beginDate: " + aBeginDate);
-        System.out.println("endDate: " + anEndDate);
+        System.out.println("beginDate: " + new Time(aBeginDate.getTime()));
+        System.out.println("endDate: " + new Time(anEndDate.getTime()));
         System.out.println("discipline:" + aDisci);
         System.out.println("isTP: " + isTP);
         System.out.println("isTest:" + isTest);
 
         // setting lesson
         // --------------
-        Lesson myLesson = new Lesson(aName, isTP, isTest, aBeginDate, anEndDate, "Disponible", null, aDisci, null);
+        Lesson myLesson = new Lesson(aName, isTP, isTest, aBeginDate, anEndDate, "Disponible", aTeacher, aDisci, null);
         System.out.println(myLesson);
 
         // saving lesson in DB
@@ -355,11 +394,15 @@ public class AddLessonUI extends javax.swing.JFrame {
     private javax.swing.JComboBox combob_eHour;
     private javax.swing.JComboBox combob_eMin;
     private javax.swing.JComboBox combob_edu;
+    private javax.swing.JComboBox combob_teacher;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel lbl_winTitle;
     private javax.swing.JTextField tf_name;
     // End of variables declaration//GEN-END:variables
