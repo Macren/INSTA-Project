@@ -150,7 +150,9 @@ public class DisciplineDAO implements IDAO<Discipline> {
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         
         
         discipline = new Discipline(res.getInt("id"), res.getString("name"),
@@ -191,8 +193,9 @@ public class DisciplineDAO implements IDAO<Discipline> {
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
                                                 null, null, //res.getInt("begin_date"), res.getInt("end_date"),
@@ -243,16 +246,18 @@ public class DisciplineDAO implements IDAO<Discipline> {
         // On recupère le status
         String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
-        statStatus.setInt(1, res.getInt("id_discipline_status"));
+        int tmp = res.getInt("id_discipline_status");
+        statStatus.setInt(1, tmp);
         ResultSet resStatus = statStatus.executeQuery();
-        
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste de matière
         /////////////////////////////////////////////////////////////////////////
         
         Discipline discipline = new Discipline(res.getInt("id"), res.getString("name"),
-                                            res.getDate("nb_hours"), res.getDate("promo"),
+                                            res.getDate("begin_date"), res.getDate("end_date"),
                                             edu, status);
         listDiscipline.add(discipline);
       }

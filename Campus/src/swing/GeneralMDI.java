@@ -6,9 +6,7 @@
 
 package swing;
 
-import dao.DisciplineDAO;
 import dao.LessonDAO;
-import java.sql.Date;
 import java.util.List;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -17,8 +15,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import metier.AbstractUser;
 import metier.Administrator;
-import metier.Discipline;
-import metier.Education;
 import metier.Lesson;
 import metier.Student;
 import metier.Teacher;

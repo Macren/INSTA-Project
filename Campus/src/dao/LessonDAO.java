@@ -167,7 +167,9 @@ public class LessonDAO implements IDAO<Lesson>{
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste des Students
@@ -220,7 +222,9 @@ public class LessonDAO implements IDAO<Lesson>{
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste des Students
         /////////////////////////////////////////////////////////////////////////
@@ -275,7 +279,9 @@ public class LessonDAO implements IDAO<Lesson>{
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste des Students
         /////////////////////////////////////////////////////////////////////////
@@ -329,7 +335,9 @@ public class LessonDAO implements IDAO<Lesson>{
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste des Students
         /////////////////////////////////////////////////////////////////////////
@@ -384,7 +392,9 @@ public class LessonDAO implements IDAO<Lesson>{
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
-        String status = resStatus.getString("label");
+        String status = "";
+        while (resStatus.next())
+            status = resStatus.getString("label");
         /////////////////////////////////////////////////////////////////////////
         // Ici récupérer la liste des Students
         /////////////////////////////////////////////////////////////////////////
