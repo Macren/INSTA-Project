@@ -27,6 +27,13 @@ import metier.Teacher;
 public class TeacherDAO implements IDAO<Teacher>{
   
   private static final int ID_ROLE_TEACHER = 2;
+  
+  public TeacherDAO() {
+  }
+  
+  public TeacherDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
 
   @Override
   public boolean insert(Teacher pTeacher) {

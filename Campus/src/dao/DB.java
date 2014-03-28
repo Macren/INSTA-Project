@@ -19,7 +19,7 @@ public class DB {
 
   private Connection connection;
   private String user = "root";
-  private String passwd = "";
+  private String passwd = "nobody";
   private String url = "jdbc:mysql://localhost/campus_bdd";
 
   public Connection connect() throws ClassNotFoundException {

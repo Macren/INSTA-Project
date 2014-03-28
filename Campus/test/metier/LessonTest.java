@@ -43,7 +43,7 @@ public class LessonTest {
     this.education  = new Education(1, "Analyste Informaticien", 200, 11, this.school);
     this.discipline = new Discipline(1, "Java", new Date(101), new Date(102), this.education, "Disponible");
     this.teacher    = new Teacher(1, "tea", "tea", "tea", new Date(555), "tea", "tea", 888, this.school, this.education);
-    this.lesson     = new Lesson(1, "Cours Java 1", false, false, new Date(111), new Date(112), "Disponible", this.teacher, this.discipline);
+    this.lesson     = new Lesson(1, "Cours Java 1", false, false, 25, new Date(111), new Date(112), "Disponible", this.teacher, this.discipline);
   }
   
   @After
@@ -127,6 +127,25 @@ public class LessonTest {
   }
 
   /**
+   * Test of getNbMaxStudent method, of class Lesson.
+   */
+  @Test
+  public void testGetNbMaxStudent() {
+    boolean result = this.lesson.getNbMaxStudent() == 25;
+    assertTrue(result);
+  }
+
+  /**
+   * Test of setNbMaxStudent method, of class Lesson.
+   */
+  @Test
+  public void testSetNbMaxStudent() {
+    this.lesson.setNbMaxStudent(30);
+    boolean result = this.lesson.getNbMaxStudent() == 30;
+    assertTrue(result);
+  }
+  
+  /**
    * Test of getBeginDate method, of class Lesson.
    */
   @Test
@@ -209,13 +228,8 @@ public class LessonTest {
    */
   @Test
   public void testGetDiscipline() {
-    System.out.println("getDiscipline");
-    Lesson instance = null;
-    Discipline expResult = null;
-    Discipline result = instance.getDiscipline();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.lesson.getDiscipline().equals(this.discipline);
+    assertTrue(result);
   }
 
   /**
@@ -223,12 +237,11 @@ public class LessonTest {
    */
   @Test
   public void testSetDiscipline() {
-    System.out.println("setDiscipline");
-    Discipline discipline = null;
-    Lesson instance = null;
-    instance.setDiscipline(discipline);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Discipline discipline2 = new Discipline(2, "Php", new Date(201), new Date(202), this.education, "Disponible");
+    
+    this.lesson.setDiscipline(discipline2);
+    boolean result = this.lesson.getDiscipline().equals(discipline2);
+    assertTrue(result);
   }
 
   /**
@@ -236,13 +249,8 @@ public class LessonTest {
    */
   @Test
   public void testToString() {
-    System.out.println("toString");
-    Lesson instance = null;
-    String expResult = "";
-    String result = instance.toString();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.lesson.toString().equals("Cours Java 1");
+    assertTrue(result);
   }
   
 }

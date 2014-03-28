@@ -6,13 +6,11 @@
 
 package dao;
 
-import java.sql.Connection;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import metier.Administrator;
-import metier.Education;
 import metier.School;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -74,7 +72,7 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testUpdate() {
-    this.administrator = this.administratorDao.selectById(4);
+    this.administrator = this.administratorDao.selectById(1);
     
     this.administrator.setLogin("campus_admin2");
     this.administrator.setPasswd("campus_admin2");
@@ -101,8 +99,8 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testSelectById() {
-    this.administrator = this.administratorDao.selectById(4);
-    assertTrue(this.administrator.getId() == 4);
+    this.administrator = this.administratorDao.selectById(1);
+    assertTrue(this.administrator.getId() == 1);
   }
 
   /**
@@ -111,8 +109,9 @@ public class AdministratorDAOTest {
   @Test
   public void testSelectByLoginPwd() {
     this.administrator = this.administratorDao.selectByLoginPwd("campus_admin2", "campus_admin2");
-    assertTrue(this.administrator.getLogin().equals("campus_admin2")
-              && this.administrator.getPasswd().equals("campus_admin2"));
+    boolean result = this.administrator.getLogin().equals("campus_admin2")
+                      && this.administrator.getPasswd().equals("campus_admin2");
+    assertTrue(result);
   }
 
   /**
@@ -120,13 +119,9 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testSelectAll() {
-    System.out.println("selectAll");
-    AdministratorDAO instance = new AdministratorDAO();
-    List<Administrator> expResult = null;
-    List<Administrator> result = instance.selectAll();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    List<Administrator> listAdministrators = new ArrayList();
+    listAdministrators = this.administratorDao.selectAll();
+    assertTrue(listAdministrators.size() > 0);
   }
   
 }

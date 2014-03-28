@@ -28,9 +28,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
 
   public AdministratorDAO() {
   }
-//  AdministratorDAO(Connection c) {
-//    this.db.setConnection(c);
-//  }
+  
   public AdministratorDAO(String pUrl) {
     this.db.setUrl(pUrl);
   }
