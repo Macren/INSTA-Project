@@ -49,12 +49,14 @@ public class AbstractUserTest {
                                                     "campus_admin", "campus_admin@campus.com",
                                                     new Date(666), "campus_admin",
                                                     "campus_admin", 666,
-                                                    this.school, this.education);
+                                                    this.school, null); // dernier arg : Education
+                                                    // Null car un admin n'a pas de formation
     this.teacher = new Teacher(2, "campus_teacher",
                                   "campus_teacher", "campus_teacher@campus.com",
                                   new Date(555), "campus_teacher",
                                   "campus_teacher", 555,
-                                  this.school, this.education);
+                                  this.school, null); // dernier arg : Education
+                                  // Null car un teacher n'a pas de formation
     this.student = new Student(3, "campus_student",
                                   "campus_student", "campus_student@campus.com",
                                   new Date(444), "campus_student",

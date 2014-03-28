@@ -121,7 +121,8 @@ public class AdministratorDAOTest {
   public void testSelectAll() {
     List<Administrator> listAdministrators = new ArrayList();
     listAdministrators = this.administratorDao.selectAll();
-    assertTrue(listAdministrators.size() > 0);
+    boolean result = listAdministrators.size() > 0;
+    assertTrue(result);
   }
   
 }

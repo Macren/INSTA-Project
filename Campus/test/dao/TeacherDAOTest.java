@@ -121,7 +121,8 @@ public class TeacherDAOTest {
   public void testSelectAll() {
     List<Teacher> listTeachers = new ArrayList();
     listTeachers = this.teacherDao.selectAll();
-    assertTrue(listTeachers.size() > 0);
+    boolean result = listTeachers.size() > 0;
+    assertTrue(result);
   }
 
   /**
@@ -129,14 +130,19 @@ public class TeacherDAOTest {
    */
   @Test
   public void testSelectAllBySchoolId() {
-    System.out.println("selectAllBySchoolId");
-    int pSchoolId = 0;
-    TeacherDAO instance = new TeacherDAO();
-    List<Teacher> expResult = null;
-    List<Teacher> result = instance.selectAllBySchoolId(pSchoolId);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    List<Teacher> listTeachers = new ArrayList();
+    listTeachers = this.teacherDao.selectAllBySchoolId(1);
+    
+    boolean resultBis = true;
+    for (Teacher t : listTeachers) {
+      if(t.getSchool().getId() != 1)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listTeachers.size() > 0;
+    assertTrue(result);
   }
   
 }
