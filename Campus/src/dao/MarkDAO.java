@@ -27,7 +27,7 @@ import metier.Teacher;
 public class MarkDAO implements IDAO<Mark> {
 
   @Override
-  public void insert(Mark pMark) {
+  public boolean insert(Mark pMark) {
     Connection cnx = null;
     
     try {
@@ -45,6 +45,7 @@ public class MarkDAO implements IDAO<Mark> {
       stat.setString(6, pMark.getComment());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,10 +54,11 @@ public class MarkDAO implements IDAO<Mark> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Mark pMark) {
+  public boolean update(Mark pMark) {
     Connection cnx = null;
     
     try {
@@ -76,6 +78,7 @@ public class MarkDAO implements IDAO<Mark> {
       stat.setInt(7, pMark.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,10 +87,11 @@ public class MarkDAO implements IDAO<Mark> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Mark objet) {
+  public boolean delete(Mark objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 

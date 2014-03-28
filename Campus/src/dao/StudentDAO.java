@@ -27,7 +27,7 @@ public class StudentDAO implements IDAO<Student> {
   private static final int ID_ROLE_STUDENT = 3;
 
   @Override
-  public void insert(Student pStudent) {
+  public boolean insert(Student pStudent) {
     Connection cnx = null;
     
     try {
@@ -52,6 +52,7 @@ public class StudentDAO implements IDAO<Student> {
       stat.setInt(10, pStudent.getEducation().getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,10 +61,11 @@ public class StudentDAO implements IDAO<Student> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Student pStudent) {
+  public boolean update(Student pStudent) {
     Connection cnx = null;
     
     try {
@@ -89,6 +91,7 @@ public class StudentDAO implements IDAO<Student> {
       stat.setInt(10, pStudent.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,10 +100,11 @@ public class StudentDAO implements IDAO<Student> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Student objet) {
+  public boolean delete(Student objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 

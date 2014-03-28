@@ -130,7 +130,7 @@ public class AddEducationUI extends javax.swing.JFrame {
 
         // setting user type
         // -----------------
-        Education myEdu = new Education(aName, aNbHour, aPromo, mySchool, null);
+        Education myEdu = new Education(aName, aNbHour, aPromo, mySchool);
         System.out.println(myEdu);
         EducationDAO eduDAO = new EducationDAO();
         eduDAO.insert(myEdu);

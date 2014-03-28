@@ -39,9 +39,8 @@ public class Education implements Serializable {
      * @param nbHours
      * @param promo
      * @param school
-     * @param disciplines 
      */
-    public Education(String name, int nbHours, int promo, School school, List<Discipline> disciplines) {
+    public Education(String name, int nbHours, int promo, School school) {
         this.name     = name;
         this.nbHours  = nbHours;
         this.promo    = promo;

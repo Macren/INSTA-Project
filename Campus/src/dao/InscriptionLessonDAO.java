@@ -27,7 +27,7 @@ import metier.Student;
 public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
 
   @Override
-  public void insert(InscriptionLesson pInscriptionLesson) {
+  public boolean insert(InscriptionLesson pInscriptionLesson) {
     Connection cnx = null;
     
     try {
@@ -49,6 +49,7 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
       stat.setBoolean(5, pInscriptionLesson.isAdminValidation());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,10 +58,11 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(InscriptionLesson pInscriptionLesson) {
+  public boolean update(InscriptionLesson pInscriptionLesson) {
     Connection cnx = null;
     
     try {
@@ -82,6 +84,7 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
       stat.setInt(5, pInscriptionLesson.getLesson().getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,10 +93,11 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(InscriptionLesson objet) {
+  public boolean delete(InscriptionLesson objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 

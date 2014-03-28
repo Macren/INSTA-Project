@@ -26,13 +26,13 @@ import metier.School;
 public class EducationDAO implements IDAO<Education> {
 
   @Override
-  public void insert(Education pEducation) {
+  public boolean insert(Education pEducation) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`education`(`name`, `nb_hours`, `promo`, `id_school`) VALUES (?,?,?,?);";
+      String sql = "INSERT INTO `education`(`name`, `nb_hours`, `promo`, `id_school`) VALUES (?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -42,6 +42,7 @@ public class EducationDAO implements IDAO<Education> {
       stat.setInt(4, pEducation.getSchool().getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,16 +51,17 @@ public class EducationDAO implements IDAO<Education> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Education pEducation) {
+  public boolean update(Education pEducation) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`education` SET `name`=?,`nb_hours`=?,`promo`=?,`id_school`=? WHERE `id`=?;";
+      String sql = "UPDATE `education` SET `name`=?,`nb_hours`=?,`promo`=?,`id_school`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -71,6 +73,7 @@ public class EducationDAO implements IDAO<Education> {
       stat.setInt(5, pEducation.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,10 +82,11 @@ public class EducationDAO implements IDAO<Education> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Education objet) {
+  public boolean delete(Education objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
@@ -95,7 +99,7 @@ public class EducationDAO implements IDAO<Education> {
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`education` WHERE  `id` = ?;";
+      String sql = "SELECT * FROM `education` WHERE  `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -133,7 +137,7 @@ public class EducationDAO implements IDAO<Education> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`education`;";
+      String sql = "SELECT * FROM `education`;";
       Statement stat = cnx.createStatement();
       ResultSet res = stat.executeQuery(sql);
       
@@ -177,7 +181,7 @@ public class EducationDAO implements IDAO<Education> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`education` WHERE `id_school`=?;";
+      String sql = "SELECT * FROM `education` WHERE `id_school`=?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pSchoolId);
       ResultSet res = stat.executeQuery();

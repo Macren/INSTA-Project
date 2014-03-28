@@ -30,7 +30,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
   private static final int DISCIPLINE_STATUS_FULL = 2;
   
   @Override
-  public void insert(Discipline pDiscipline) {
+  public boolean insert(Discipline pDiscipline) {
     Connection cnx = null;
     
     try {
@@ -63,6 +63,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
       }
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,10 +72,11 @@ public class DisciplineDAO implements IDAO<Discipline> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Discipline pDiscipline) {
+  public boolean update(Discipline pDiscipline) {
     Connection cnx = null;
     
     try {
@@ -109,6 +111,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
       stat.setInt(6, pDiscipline.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,10 +120,11 @@ public class DisciplineDAO implements IDAO<Discipline> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Discipline objet) {
+  public boolean delete(Discipline objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 

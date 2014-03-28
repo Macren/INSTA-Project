@@ -14,10 +14,10 @@ import java.util.List;
  */
 public interface IDAO<T> {
     
-    public  DB      db = new DB(); 
-    public  void    insert(T objet);
-    public  void    update(T objet);
-    public  void    delete(T objet);
-    public  T       selectById(int id);
-    public  List<T> selectAll();
+    public  DB        db = new DB(); 
+    public  boolean   insert(T objet);
+    public  boolean   update(T objet);
+    public  boolean   delete(T objet);
+    public  T         selectById(int id);
+    public  List<T>   selectAll();
 }

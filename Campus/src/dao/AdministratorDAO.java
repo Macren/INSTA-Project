@@ -25,15 +25,24 @@ import metier.School;
 public class AdministratorDAO implements IDAO<Administrator>{
   
   private static final int ID_ROLE_ADMINISTRATOR = 1;
+
+  public AdministratorDAO() {
+  }
+//  AdministratorDAO(Connection c) {
+//    this.db.setConnection(c);
+//  }
+  public AdministratorDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
   
   @Override
-  public void insert(Administrator pAdministrator) {
+  public boolean insert(Administrator pAdministrator) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_promo`, `id_school`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`id_role`,`id_school`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -49,10 +58,10 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
       stat.setInt(8, ID_ROLE_ADMINISTRATOR);
-      stat.setString(9, null);  // null, car un administrateur n'appartient à aucune promo
-      stat.setInt(10, pAdministrator.getSchool().getId());
+      stat.setInt(9, pAdministrator.getSchool().getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,16 +70,17 @@ public class AdministratorDAO implements IDAO<Administrator>{
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Administrator pAdministrator) {
+  public boolean update(Administrator pAdministrator) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
+      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -88,6 +98,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setInt(8, pAdministrator.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,10 +107,11 @@ public class AdministratorDAO implements IDAO<Administrator>{
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Administrator objet) {
+  public boolean delete(Administrator objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
@@ -112,7 +124,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE  `id` = ? AND `id_role` = ?;";
+      String sql = "SELECT * FROM `user` WHERE  `id` = ? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       stat.setInt(2, ID_ROLE_ADMINISTRATOR);
@@ -151,7 +163,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
+      String sql = "SELECT * FROM `user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
       stat.setString(2, pPwd);
@@ -192,7 +204,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `id_role` = ?;";
+      String sql = "SELECT * FROM `user` WHERE `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, ID_ROLE_ADMINISTRATOR);
       
