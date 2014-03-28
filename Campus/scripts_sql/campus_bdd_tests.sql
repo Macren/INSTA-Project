@@ -1,11 +1,11 @@
-CREATE DATABASE IF NOT EXISTS `campus_bdd`;
+CREATE DATABASE IF NOT EXISTS `campus_bdd_tests`;
 
-USE `campus_bdd` ;
+USE `campus_bdd_tests` ;
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`school`
+-- Table `campus_bdd_tests`.`school`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`school` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`school` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -13,9 +13,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`education`
+-- Table `campus_bdd_tests`.`education`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`education` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`education` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   `nb_hours` INT NULL ,
@@ -25,16 +25,16 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`education` (
   INDEX `fk_education_school_idx` (`id_school` ASC) ,
   CONSTRAINT `fk_education_school`
     FOREIGN KEY (`id_school` )
-    REFERENCES `campus_bdd`.`school` (`id` )
+    REFERENCES `campus_bdd_tests`.`school` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`discipline_status`
+-- Table `campus_bdd_tests`.`discipline_status`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`discipline_status` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`discipline_status` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `label` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -42,9 +42,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`discipline`
+-- Table `campus_bdd_tests`.`discipline`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`discipline` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`discipline` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   `begin_date` DATETIME NOT NULL ,
@@ -56,21 +56,21 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`discipline` (
   INDEX `fk_discipline_status_idx` (`id_discipline_status` ASC) ,
   CONSTRAINT `fk_discipline_education`
     FOREIGN KEY (`id_education` )
-    REFERENCES `campus_bdd`.`education` (`id` )
+    REFERENCES `campus_bdd_tests`.`education` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_discipline_status`
     FOREIGN KEY (`id_discipline_status` )
-    REFERENCES `campus_bdd`.`discipline_status` (`id` )
+    REFERENCES `campus_bdd_tests`.`discipline_status` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`role`
+-- Table `campus_bdd_tests`.`role`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`role` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`role` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `label` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -78,9 +78,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`user`
+-- Table `campus_bdd_tests`.`user`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(45) NOT NULL ,
   `pwd` VARCHAR(45) NOT NULL ,
@@ -98,26 +98,26 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
   INDEX `fk_user_education_idx` (`id_education` ASC) ,
   CONSTRAINT `fk_user_role`
     FOREIGN KEY (`id_role` )
-    REFERENCES `campus_bdd`.`role` (`id` )
+    REFERENCES `campus_bdd_tests`.`role` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_school`
     FOREIGN KEY (`id_school` )
-    REFERENCES `campus_bdd`.`school` (`id` )
+    REFERENCES `campus_bdd_tests`.`school` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_education`
     FOREIGN KEY (`id_education` )
-    REFERENCES `campus_bdd`.`education` (`id` )
+    REFERENCES `campus_bdd_tests`.`education` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`lesson_status`
+-- Table `campus_bdd_tests`.`lesson_status`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`lesson_status` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`lesson_status` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `label` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -125,9 +125,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`lesson`
+-- Table `campus_bdd_tests`.`lesson`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`lesson` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`lesson` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   `is_tp` TINYINT(1) NULL ,
@@ -144,17 +144,17 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`lesson` (
   INDEX `fk_lesson_status_lesson_idx` (`id_lesson_status` ASC) ,
   CONSTRAINT `fk_lesson_discipline`
     FOREIGN KEY (`id_discipline` )
-    REFERENCES `campus_bdd`.`discipline` (`id` )
+    REFERENCES `campus_bdd_tests`.`discipline` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_lesson_user_teacher`
     FOREIGN KEY (`id_user_teacher` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_lesson_status_lesson`
     FOREIGN KEY (`id_lesson_status` )
-    REFERENCES `campus_bdd`.`lesson_status` (`id` )
+    REFERENCES `campus_bdd_tests`.`lesson_status` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -163,9 +163,9 @@ COLLATE = big5_chinese_ci;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`participation_lesson`
+-- Table `campus_bdd_tests`.`participation_lesson`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`participation_lesson` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`participation_lesson` (
   `id_user_student` INT NOT NULL ,
   `id_lesson` INT NOT NULL ,
   `participation_date` DATETIME NOT NULL ,
@@ -174,21 +174,21 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`participation_lesson` (
   INDEX `fk_participation_lesson_idx` (`id_lesson` ASC) ,
   CONSTRAINT `fk_participation_user_student`
     FOREIGN KEY (`id_user_student` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_participation_lesson`
     FOREIGN KEY (`id_lesson` )
-    REFERENCES `campus_bdd`.`lesson` (`id` )
+    REFERENCES `campus_bdd_tests`.`lesson` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`mark`
+-- Table `campus_bdd_tests`.`mark`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`mark` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`mark` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `value` FLOAT NULL ,
   `value_max` FLOAT NULL ,
@@ -202,26 +202,26 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`mark` (
   INDEX `fk_mark_user_teacher_idx` (`id_user_teacher` ASC) ,
   CONSTRAINT `fk_mark_user_student`
     FOREIGN KEY (`id_user_student` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_mark_discipline`
     FOREIGN KEY (`id_discipline` )
-    REFERENCES `campus_bdd`.`discipline` (`id` )
+    REFERENCES `campus_bdd_tests`.`discipline` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_mark_user_teacher`
     FOREIGN KEY (`id_user_teacher` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`group`
+-- Table `campus_bdd_tests`.`group`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`group` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`group` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `id_user_creator` INT NOT NULL ,
@@ -229,16 +229,16 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`group` (
   INDEX `fk_group_user_creator_idx` (`id_user_creator` ASC) ,
   CONSTRAINT `fk_group_user_creator`
     FOREIGN KEY (`id_user_creator` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`inscription_discipline`
+-- Table `campus_bdd_tests`.`inscription_discipline`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`inscription_discipline` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`inscription_discipline` (
   `id_user_student` INT NOT NULL ,
   `id_discipline` INT NOT NULL ,
   `inscription_date` DATETIME NOT NULL ,
@@ -248,21 +248,21 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`inscription_discipline` (
   INDEX `fk_inscription_discipline_idx` (`id_discipline` ASC) ,
   CONSTRAINT `fk_inscription_user_student`
     FOREIGN KEY (`id_user_student` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_inscription_discipline`
     FOREIGN KEY (`id_discipline` )
-    REFERENCES `campus_bdd`.`discipline` (`id` )
+    REFERENCES `campus_bdd_tests`.`discipline` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`inscription_lesson`
+-- Table `campus_bdd_tests`.`inscription_lesson`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`inscription_lesson` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`inscription_lesson` (
   `id_user_student` INT NOT NULL ,
   `id_lesson` INT NOT NULL ,
   `inscription_date` DATETIME NOT NULL ,
@@ -273,21 +273,21 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`inscription_lesson` (
   INDEX `fk_inscription_lesson_lesson_idx` (`id_lesson` ASC) ,
   CONSTRAINT `fk_inscription_lesson_user_student`
     FOREIGN KEY (`id_user_student` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_inscription_lesson_lesson`
     FOREIGN KEY (`id_lesson` )
-    REFERENCES `campus_bdd`.`lesson` (`id` )
+    REFERENCES `campus_bdd_tests`.`lesson` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `campus_bdd`.`group_user`
+-- Table `campus_bdd_tests`.`group_user`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `campus_bdd`.`group_user` (
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`group_user` (
   `id_user` INT NOT NULL ,
   `id_group` INT NOT NULL ,
   PRIMARY KEY (`id_user`, `id_group`) ,
@@ -295,64 +295,64 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`group_user` (
   INDEX `fk_group_user_group_idx` (`id_group` ASC) ,
   CONSTRAINT `fk_group_user_user`
     FOREIGN KEY (`id_user` )
-    REFERENCES `campus_bdd`.`user` (`id` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_group_user_group`
     FOREIGN KEY (`id_group` )
-    REFERENCES `campus_bdd`.`group` (`id` )
+    REFERENCES `campus_bdd_tests`.`group` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`group_user`
+-- Données Table `campus_bdd_tests`.`group_user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`role` (`label`) VALUES ('Administrator');
-INSERT INTO `campus_bdd`.`role` (`label`) VALUES ('Teacher');
-INSERT INTO `campus_bdd`.`role` (`label`) VALUES ('Student');
+INSERT INTO `campus_bdd_tests`.`role` (`label`) VALUES ('Administrator');
+INSERT INTO `campus_bdd_tests`.`role` (`label`) VALUES ('Teacher');
+INSERT INTO `campus_bdd_tests`.`role` (`label`) VALUES ('Student');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`group_user`
+-- Données Table `campus_bdd_tests`.`group_user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`school` (`name`) VALUES ('School_guest');
+INSERT INTO `campus_bdd_tests`.`school` (`name`) VALUES ('School_guest');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`user`
+-- Données Table `campus_bdd_tests`.`user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_teacher', '61e99028e915e6caa4f1ddafacf9b3d7 ', 'campus_teacher', '2014-03-24 00:00:00.000000', 'campus_teacher', OLD_PASSWORD('campus_teacher'), '0000000000', '2', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_student', 'a0016406b5f15f7f3f1e1300154c6d10 ', 'campus_student', '2014-03-24 00:00:00.000000', 'campus_student', OLD_PASSWORD('campus_student'), '0000000000', '3', '1');
+INSERT INTO `campus_bdd_tests`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', OLD_PASSWORD('campus_admin'), '0000000000', '1', '1');
+INSERT INTO `campus_bdd_tests`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_teacher', '61e99028e915e6caa4f1ddafacf9b3d7 ', 'campus_teacher', '2014-03-24 00:00:00.000000', 'campus_teacher', OLD_PASSWORD('campus_teacher'), '0000000000', '2', '1');
+INSERT INTO `campus_bdd_tests`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_student', 'a0016406b5f15f7f3f1e1300154c6d10 ', 'campus_student', '2014-03-24 00:00:00.000000', 'campus_student', OLD_PASSWORD('campus_student'), '0000000000', '3', '1');
 
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`lesson_status`
+-- Données Table `campus_bdd_tests`.`lesson_status`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Disponible');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Annulé');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Complet');
-INSERT INTO `campus_bdd`.`lesson_status` (`label`) VALUES ('Terminé');
+INSERT INTO `campus_bdd_tests`.`lesson_status` (`label`) VALUES ('Disponible');
+INSERT INTO `campus_bdd_tests`.`lesson_status` (`label`) VALUES ('Annulé');
+INSERT INTO `campus_bdd_tests`.`lesson_status` (`label`) VALUES ('Complet');
+INSERT INTO `campus_bdd_tests`.`lesson_status` (`label`) VALUES ('Terminé');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`discipline_status`
+-- Données Table `campus_bdd_tests`.`discipline_status`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('Disponible');
-INSERT INTO `campus_bdd`.`discipline_status` (`label`) VALUES ('Complet');
+INSERT INTO `campus_bdd_tests`.`discipline_status` (`label`) VALUES ('Disponible');
+INSERT INTO `campus_bdd_tests`.`discipline_status` (`label`) VALUES ('Complet');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`education`
+-- Données Table `campus_bdd_tests`.`education`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`education` (`name`, `nb_hours`, `promo`, `id_school`) VALUES ('Analyste Informaticien', '200', '11', '1');
+INSERT INTO `campus_bdd_tests`.`education` (`name`, `nb_hours`, `promo`, `id_school`) VALUES ('Analyste Informaticien', '200', '11', '1');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`discipline`
+-- Données Table `campus_bdd_tests`.`discipline`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`discipline` (`name`, `begin_date`, `end_date`, `id_education`, `id_discipline_status`) VALUES ('Java', '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '1');
+INSERT INTO `campus_bdd_tests`.`discipline` (`name`, `begin_date`, `end_date`, `id_education`, `id_discipline_status`) VALUES ('Java', '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '1');
 
 -- -----------------------------------------------------
--- Données Table `campus_bdd`.`lesson`
+-- Données Table `campus_bdd_tests`.`lesson`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Premier cours Java', NULL, NULL, '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '2', '1');
+INSERT INTO `campus_bdd_tests`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Premier cours Java', NULL, NULL, '2014-03-03 09:00:00.000000', '2014-03-10 17:30:00.000000', '1', '2', '1');
 
 
