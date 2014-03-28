@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Discipline;
 import metier.Lesson;
-import metier.Student;
 import metier.Teacher;
 
 /**
@@ -39,7 +38,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `nb_max_student`  `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `nb_max_student`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
