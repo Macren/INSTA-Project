@@ -145,7 +145,7 @@ public class EducationTest {
    */
   @Test
   public void testToString() {
-    boolean result = this.education.toString().equals("Analyste Informaticien");
+    boolean result = this.education.toString().equals("Analyste Informaticien - Promo 11");
     assertTrue(result);
   }
   
