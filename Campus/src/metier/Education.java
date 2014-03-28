@@ -12,12 +12,11 @@ public class Education implements Serializable {
     /**
      * Attributs
      */
-    private int                 id;
-    private String              name;
-    private int                 nbHours;
-    private int                 promo;
-    private School              school;
-    private List<Discipline>    disciplines;
+    private int     id;
+    private String  name;
+    private int     nbHours;
+    private int     promo;
+    private School  school;
     
     /**
      * Contructeur
@@ -26,15 +25,13 @@ public class Education implements Serializable {
      * @param nbHours
      * @param promo
      * @param school
-     * @param disciplines 
      */
-    public Education(int id, String name, int nbHours, int promo, School school, List<Discipline> disciplines) {
-        this.id           = id;
-        this.name         = name;
-        this.nbHours      = nbHours;
-        this.promo        = promo;
-        this.school       = school;
-        this.disciplines  = disciplines;
+    public Education(int id, String name, int nbHours, int promo, School school) {
+        this.id       = id;
+        this.name     = name;
+        this.nbHours  = nbHours;
+        this.promo    = promo;
+        this.school   = school;
     }
     /**
      * Constructeur sans id
@@ -45,11 +42,10 @@ public class Education implements Serializable {
      * @param disciplines 
      */
     public Education(String name, int nbHours, int promo, School school, List<Discipline> disciplines) {
-        this.name         = name;
-        this.nbHours      = nbHours;
-        this.promo        = promo;
-        this.school       = school;
-        this.disciplines  = disciplines;
+        this.name     = name;
+        this.nbHours  = nbHours;
+        this.promo    = promo;
+        this.school   = school;
     }
     
     /**
@@ -94,14 +90,6 @@ public class Education implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Discipline> getDisciplines() {
-        return disciplines;
-    }
-
-    public void setDisciplines(List<Discipline> disciplines) {
-        this.disciplines = disciplines;
     }
 
     @Override

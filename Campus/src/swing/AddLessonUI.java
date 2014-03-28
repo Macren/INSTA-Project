@@ -333,7 +333,7 @@ public class AddLessonUI extends javax.swing.JFrame {
 
         // setting lesson
         // --------------
-        Lesson myLesson = new Lesson(aName, isTP, isTest, aBeginDate, anEndDate, "Disponible", aTeacher, aDisci, null);
+        Lesson myLesson = new Lesson(aName, isTP, isTest, aBeginDate, anEndDate, "Disponible", aTeacher, aDisci);
         System.out.println(myLesson);
 
         // saving lesson in DB

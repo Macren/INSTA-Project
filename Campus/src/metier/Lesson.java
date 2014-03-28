@@ -22,7 +22,6 @@ public class Lesson implements Serializable {
     private String          status;
     private Teacher         teacher;
     private Discipline      discipline;
-    private List<Student>   students;
     
     /**
      * Constructeur
@@ -35,9 +34,8 @@ public class Lesson implements Serializable {
      * @param status
      * @param teacher
      * @param discipline
-     * @param students 
      */
-    public Lesson(int id, String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline, List<Student> students) {
+    public Lesson(int id, String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
         this.id         = id;
         this.name       = name;
         this.tp         = tp;
@@ -47,7 +45,6 @@ public class Lesson implements Serializable {
         this.status     = status;
         this.teacher    = teacher;
         this.discipline = discipline;
-        this.students   = students;
     }
     /**
      * Constructeur sans id
@@ -59,9 +56,8 @@ public class Lesson implements Serializable {
      * @param status
      * @param teacher
      * @param discipline
-     * @param students 
      */
-    public Lesson(String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline, List<Student> students) {
+    public Lesson(String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
         this.name       = name;
         this.tp         = tp;
         this.test       = test;
@@ -70,7 +66,6 @@ public class Lesson implements Serializable {
         this.status     = status;
         this.teacher    = teacher;
         this.discipline = discipline;
-        this.students   = students;
     }
     
     /**
@@ -149,17 +144,10 @@ public class Lesson implements Serializable {
       this.discipline = discipline;
     }
 
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
 
     @Override
     public String toString() {
-        return "Lesson{" + "name=" + name + ", tp=" + tp + ", test=" + test + ", status=" + status + ", teacher=" + teacher + ", students=" + students + '}';
+        return name;
     }
     
     

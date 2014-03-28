@@ -283,7 +283,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
       String sql = "SELECT * FROM `discipline`, `education` WHERE `education`.`id` = `discipline`.`id_education` AND `education`.`id` = ? AND `education`.`promo` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pEducation.getId());
-      stat.setInt(1, pEducation.getPromo());
+      stat.setInt(2, pEducation.getPromo());
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {

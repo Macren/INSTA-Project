@@ -133,7 +133,7 @@ public class StudentDAO implements IDAO<Student> {
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+                              null, null);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -175,7 +175,7 @@ public class StudentDAO implements IDAO<Student> {
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+                              null, null);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -208,7 +208,7 @@ public class StudentDAO implements IDAO<Student> {
                                       res.getString("pwd"), res.getString("mail"),
                                       res.getDate("birth_date"), res.getString("first_name"),
                                       res.getString("last_name"), res.getInt("phone"),
-                                      null, null, null); // avant dernier arg education id education.. ?pb classe metier?
+                                      null, null);
         listStudents.add(student);
       }
 
