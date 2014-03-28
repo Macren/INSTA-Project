@@ -89,7 +89,7 @@ public class Lesson implements Serializable {
     }
 
     public boolean isTp() {
-        return true;
+        return this.tp;
     }
 
     public void setTp(boolean tp) {
@@ -97,7 +97,7 @@ public class Lesson implements Serializable {
     }
 
     public boolean isTest() {
-        return true;
+        return this.test;
     }
 
     public void setTest(boolean test) {
