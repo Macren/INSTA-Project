@@ -209,7 +209,7 @@ public class GeneralMDI extends javax.swing.JFrame {
             // getting all lessons/TPs/Tests for this discipline
             // -------------------------------------------------
             LessonDAO       lessonDAO =     new LessonDAO();
-            List<Lesson>    listLesson =    lessonDAO.selectAllByDisciplineId(discipline.getId());
+            List<Lesson>    listLesson =    lessonDAO.selectAllLessonsByDisciplineId(discipline.getId());
             List<Lesson>    listTP =        lessonDAO.selectAllTpsByDisciplineId(discipline.getId());
             List<Lesson>    listTest =      lessonDAO.selectAllTestsByDisciplineId(discipline.getId());
             

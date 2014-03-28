@@ -2,7 +2,6 @@ package metier;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 
 /**
  *
@@ -17,6 +16,7 @@ public class Lesson implements Serializable {
     private String          name;
     private boolean         tp;
     private boolean         test;
+    private int             nbMaxStudent;
     private Date            beginDate;
     private Date            endDate;
     private String          status;
@@ -29,22 +29,24 @@ public class Lesson implements Serializable {
      * @param name
      * @param tp
      * @param test
+     * @param nbMaxStudent
      * @param beginDate
      * @param endDate
      * @param status
      * @param teacher
      * @param discipline
      */
-    public Lesson(int id, String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
-        this.id         = id;
-        this.name       = name;
-        this.tp         = tp;
-        this.test       = test;
-        this.beginDate  = beginDate;
-        this.endDate    = endDate;
-        this.status     = status;
-        this.teacher    = teacher;
-        this.discipline = discipline;
+    public Lesson(int id, String name, boolean tp, boolean test, int nbMaxStudent, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
+        this.id             = id;
+        this.name           = name;
+        this.tp             = tp;
+        this.test           = test;
+        this.nbMaxStudent   = nbMaxStudent;
+        this.beginDate      = beginDate;
+        this.endDate        = endDate;
+        this.status         = status;
+        this.teacher        = teacher;
+        this.discipline     = discipline;
     }
     /**
      * Constructeur sans id
@@ -57,15 +59,16 @@ public class Lesson implements Serializable {
      * @param teacher
      * @param discipline
      */
-    public Lesson(String name, boolean tp, boolean test, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
-        this.name       = name;
-        this.tp         = tp;
-        this.test       = test;
-        this.beginDate  = beginDate;
-        this.endDate    = endDate;
-        this.status     = status;
-        this.teacher    = teacher;
-        this.discipline = discipline;
+    public Lesson(String name, boolean tp, boolean test, int nbMaxStudent, Date beginDate, Date endDate, String status, Teacher teacher, Discipline discipline) {
+        this.name           = name;
+        this.tp             = tp;
+        this.test           = test;
+        this.nbMaxStudent   = nbMaxStudent;
+        this.beginDate      = beginDate;
+        this.endDate        = endDate;
+        this.status         = status;
+        this.teacher        = teacher;
+        this.discipline     = discipline;
     }
     
     /**
@@ -104,6 +107,14 @@ public class Lesson implements Serializable {
         this.test = test;
     }
 
+    public int getNbMaxStudent() {
+        return nbMaxStudent;
+    }
+
+    public void setNbMaxStudent(int nbMaxStudent) {
+        this.nbMaxStudent = nbMaxStudent;
+    }
+    
     public Date getBeginDate() {
         return beginDate;
     }

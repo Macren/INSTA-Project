@@ -39,7 +39,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `nb_max_student`  `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -53,24 +53,25 @@ public class LessonDAO implements IDAO<Lesson>{
       stat.setBoolean(3, pLesson.isTest());
       stat.setString(4, beginDate);
       stat.setString(5, endDate);
-      stat.setInt(6, pLesson.getDiscipline().getId());
-      stat.setInt(7, pLesson.getTeacher().getId());
+      stat.setInt(6, pLesson.getNbMaxStudent());
+      stat.setInt(7, pLesson.getDiscipline().getId());
+      stat.setInt(8, pLesson.getTeacher().getId());
       
       switch (pLesson.getStatus()) {
         case "Disponible":
-          stat.setInt(8, LESSON_STATUS_AVAILABLE);
+          stat.setInt(9, LESSON_STATUS_AVAILABLE);
           break;
         case "Complet":
-          stat.setInt(8, LESSON_STATUS_FULL);
+          stat.setInt(9, LESSON_STATUS_FULL);
           break;
         case "Annulé":
-          stat.setInt(8, LESSON_STATUS_CANCEL);
+          stat.setInt(9, LESSON_STATUS_CANCEL);
           break;
         case "Terminé":
-          stat.setInt(8, LESSON_STATUS_ENDED);
+          stat.setInt(9, LESSON_STATUS_ENDED);
           break;
         default:
-          stat.setInt(8, 0); // pDiscipline.getStatus.getId();
+          stat.setInt(9, 0); // pDiscipline.getStatus.getId();
           break;
       }
       
@@ -94,7 +95,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`id_discipline`=?,`id_user_teacher`=[value-8],`id_lesson_status`=[value-9] WHERE `id`=?;";
+      String sql = "UPDATE `campus_bdd`.`lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`nb_max_student`=?,`id_discipline`=?,`id_user_teacher`=[value-8],`id_lesson_status`=[value-9] WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -108,28 +109,29 @@ public class LessonDAO implements IDAO<Lesson>{
       stat.setBoolean(3, pLesson.isTest());
       stat.setString(4, beginDate);
       stat.setString(5, endDate);
-      stat.setInt(6, pLesson.getDiscipline().getId());
-      stat.setInt(7, pLesson.getTeacher().getId());
+      stat.setInt(6, pLesson.getNbMaxStudent());
+      stat.setInt(7, pLesson.getDiscipline().getId());
+      stat.setInt(8, pLesson.getTeacher().getId());
       
       switch (pLesson.getStatus()) {
         case "Disponible":
-          stat.setInt(8, LESSON_STATUS_AVAILABLE);
+          stat.setInt(9, LESSON_STATUS_AVAILABLE);
           break;
         case "Complet":
-          stat.setInt(8, LESSON_STATUS_FULL);
+          stat.setInt(9, LESSON_STATUS_FULL);
           break;
         case "Annulé":
-          stat.setInt(8, LESSON_STATUS_CANCEL);
+          stat.setInt(9, LESSON_STATUS_CANCEL);
           break;
         case "Terminé":
-          stat.setInt(8, LESSON_STATUS_ENDED);
+          stat.setInt(9, LESSON_STATUS_ENDED);
           break;
         default:
-          stat.setInt(8, 0); // pDiscipline.getStatus.getId();
+          stat.setInt(9, 0); // pDiscipline.getStatus.getId();
           break;
       }
       
-      stat.setInt(9, pLesson.getId());
+      stat.setInt(10, pLesson.getId());
       
       stat.executeUpdate();
       return true;
@@ -188,6 +190,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         lesson = new Lesson(res.getInt("id"), res.getString("name"),
                             res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                            res.getInt("nb_max_student"),
                             res.getDate("begin_date"), res.getDate("end_date"),
                             status , teacher,
                             discipline);
@@ -240,6 +243,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
@@ -295,6 +299,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
@@ -349,6 +354,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
@@ -406,6 +412,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
@@ -461,6 +468,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
@@ -516,6 +524,7 @@ public class LessonDAO implements IDAO<Lesson>{
         
         Lesson lesson = new Lesson(res.getInt("id"), res.getString("name"),
                                     res.getBoolean("is_tp"), res.getBoolean("is_test"),
+                                    res.getInt("nb_max_student"),
                                     res.getDate("begin_date"), res.getDate("end_date"),
                                     status , teacher,
                                     discipline);
