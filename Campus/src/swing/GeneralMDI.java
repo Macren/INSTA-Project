@@ -172,6 +172,12 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.toolsMenuBar.add(infoEducItem);
         this.toolsMenuBar.add(contactManagerItem);
     }
+    
+    /**
+     * ==========
+     * Init JTree
+     * ==========
+     */
     public void     initTree() {
         
         DisciplineDAO disciplineDAO = new DisciplineDAO();
@@ -181,10 +187,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         
         for (Discipline discipline : listDiscipline) {
             DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline);
-            //DefaultMutableTreeNode noeudLesson = new DefaultMutableTreeNode(lesson.getName());
-           // noeudLesson.add(new DefaultMutableTreeNode (lesson.getTP) );
-            //noeud.add(noeudLesson);
-           // this.racine.add(noeud);
             
             LessonDAO       lessonDAO =     new LessonDAO();
             List<Lesson>    listLesson =    lessonDAO.selectAllByDisciplineId(myLesson);
@@ -192,23 +194,28 @@ public class GeneralMDI extends javax.swing.JFrame {
             List<Lesson>    listTest =      lessonDAO.selectAllTestsByDisciplineId(myTest);
             
             DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
+            
+            DefaultMutableTreeNode  lessonNode = null;
+            DefaultMutableTreeNode  tpNode = null;
+            DefaultMutableTreeNode  testNode = null;
+            
             disciplineNode.add(lessonTitleNode);
             for (Lesson lesson : listLesson){
-                DefaultMutableTreeNode  lessonNode =   new DefaultMutableTreeNode(lesson);
+                lessonNode =   new DefaultMutableTreeNode(lesson);
                 lessonTitleNode.add(lessonNode);
             }
             
             DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
             disciplineNode.add(tpTitleNode);
             for (Lesson tp : listTP){
-                DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(tp);
+                tpNode =   new DefaultMutableTreeNode(tp);
                 tpTitleNode.add(tpNode);
             }
             
             DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
             disciplineNode.add(testTitleNode);
             for (Lesson test : listTest){
-                DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
+                testNode =   new DefaultMutableTreeNode(test);
                 testTitleNode.add(testNode);
             }
             disciplineNode.add(lessonTitleNode);
