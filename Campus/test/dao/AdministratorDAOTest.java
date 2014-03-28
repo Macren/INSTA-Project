@@ -63,7 +63,7 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.administratorDao.insert(this.administrator);;
+    boolean result = this.administratorDao.insert(this.administrator);
     assertTrue(result);
   }
 

@@ -78,7 +78,6 @@ public class Administrator extends AbstractUser {
      * Methods
      */
     
-        
     
     
     /**

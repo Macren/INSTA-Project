@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Education;
-import metier.Lesson;
 import metier.School;
 import metier.Teacher;
 
@@ -42,7 +41,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`user`(`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `user`(`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?,?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -82,7 +81,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
+      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -140,15 +139,12 @@ public class TeacherDAO implements IDAO<Teacher>{
         SchoolDAO schoolDao = new SchoolDAO();
         School school = schoolDao.selectById(res.getInt("id_school"));
         
-        // On récupère l'education (la formation)
-        EducationDAO educationDao = new EducationDAO();
-        Education education = educationDao.selectById(res.getInt("id_education"));
-        
         teacher = new Teacher(res.getInt("id"), res.getString("login"),
                             res.getString("pwd"), res.getString("mail"),
                             res.getDate("birth_date"), res.getString("first_name"),
                             res.getString("last_name"), res.getInt("phone"),
-                            school, education);
+                            school, null); // dernier arg : Education
+                                          // Un admin n'a pas de formation (Education)
       }
       
     } catch (ClassNotFoundException ex) {
@@ -161,6 +157,8 @@ public class TeacherDAO implements IDAO<Teacher>{
     return teacher;
   }
   
+  
+  
   public Teacher selectByLoginPwd(String pLogin, String pPwd) {
     Teacher teacher = null;
     
@@ -169,7 +167,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
+      String sql = "SELECT * FROM `user` WHERE `login`=? AND `pwd`=? AND `id_role` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setString(1, pLogin);
       stat.setString(2, pPwd);
@@ -183,15 +181,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         SchoolDAO schoolDao = new SchoolDAO();
         School school = schoolDao.selectById(res.getInt("id_school"));
         
-        // On récupère l'education (la formation)
-        EducationDAO educationDao = new EducationDAO();
-        Education education = educationDao.selectById(res.getInt("id_education"));
-        
         teacher = new Teacher(res.getInt("id"), res.getString("login"),
                             res.getString("pwd"), res.getString("mail"),
                             res.getDate("birth_date"), res.getString("first_name"),
                             res.getString("last_name"), res.getInt("phone"),
-                            school, education);
+                            school, null);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -224,15 +218,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         SchoolDAO schoolDao = new SchoolDAO();
         School school = schoolDao.selectById(res.getInt("id_school"));
         
-        // On récupère l'education (la formation)
-        EducationDAO educationDao = new EducationDAO();
-        Education education = educationDao.selectById(res.getInt("id_education"));
-        
         Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, education);
+                                    school, null);
         listTeachers.add(teacher);
       }
 
@@ -268,15 +258,11 @@ public class TeacherDAO implements IDAO<Teacher>{
         SchoolDAO schoolDao = new SchoolDAO();
         School school = schoolDao.selectById(res.getInt("id_school"));
         
-        // On récupère l'education (la formation)
-        EducationDAO educationDao = new EducationDAO();
-        Education education = educationDao.selectById(res.getInt("id_education"));
-        
         Teacher teacher = new Teacher(res.getInt("id"), res.getString("login"),
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, education);
+                                    school, null);
         listTeachers.add(teacher);
       }
 

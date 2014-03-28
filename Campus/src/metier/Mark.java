@@ -36,18 +36,16 @@ public class Mark implements Serializable {
    * @param comment
    */
   public Mark(int id, float value, float valueMax, Student student, Teacher teacher, Discipline discipline, String comment) {
-    this.id = id;
-    this.value = value;
-    this.valueMax = valueMax;
-    this.student = student;
-    this.teacher = teacher;
+    this.id         = id;
+    this.value      = value;
+    this.valueMax   = valueMax;
+    this.student    = student;
+    this.teacher    = teacher;
     this.discipline = discipline;
-    this.comment = comment;
+    this.comment    = comment;
   }
   
-  /**
-   * Constructeur
-   * @param id
+  /**structeur
    * @param value
    * @param valueMax
    * @param student
@@ -56,12 +54,12 @@ public class Mark implements Serializable {
    * @param comment
    */
   public Mark(float value, float valueMax, Student student, Teacher teacher, Discipline discipline, String comment) {
-    this.value = value;
-    this.valueMax = valueMax;
-    this.student = student;
-    this.teacher = teacher;
+    this.value      = value;
+    this.valueMax   = valueMax;
+    this.student    = student;
+    this.teacher    = teacher;
     this.discipline = discipline;
-    this.comment = comment;
+    this.comment    = comment;
   }
 
   public int getId() {

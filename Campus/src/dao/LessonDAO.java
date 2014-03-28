@@ -26,10 +26,10 @@ import metier.Teacher;
  */
 public class LessonDAO implements IDAO<Lesson>{
 
-  private static final int LESSON_STATUS_AVAILABLE = 1;
-  private static final int LESSON_STATUS_FULL = 2;
-  private static final int LESSON_STATUS_CANCEL = 3;
-  private static final int LESSON_STATUS_ENDED = 4;
+  private static final int LESSON_STATUS_AVAILABLE  = 1;
+  private static final int LESSON_STATUS_FULL       = 2;
+  private static final int LESSON_STATUS_CANCEL     = 3;
+  private static final int LESSON_STATUS_ENDED      = 4;
   
   @Override
   public boolean insert(Lesson pLesson) {
@@ -511,7 +511,6 @@ public class LessonDAO implements IDAO<Lesson>{
         while (resStatus.next()){
           status = resStatus.getString("label");
         }
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();

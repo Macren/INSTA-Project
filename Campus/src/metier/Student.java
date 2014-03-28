@@ -7,7 +7,6 @@
 package metier;
 
 import java.sql.Date;
-import java.util.List;
 
 /**
  *
@@ -28,8 +27,7 @@ public class Student extends AbstractUser implements IDocUse {
      * @param lastName
      * @param phone
      * @param school 
-     * @param education 
-     * @param lessons 
+     * @param education
      */
     public Student(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);

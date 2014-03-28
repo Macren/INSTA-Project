@@ -63,7 +63,7 @@ public class TeacherDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.teacherDao.insert(this.teacher);;
+    boolean result = this.teacherDao.insert(this.teacher);
     assertTrue(result);
   }
 

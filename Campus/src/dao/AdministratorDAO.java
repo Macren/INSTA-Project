@@ -40,7 +40,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`id_role`,`id_school`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`id_role`,`id_school`) VALUES (?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -109,8 +109,29 @@ public class AdministratorDAO implements IDAO<Administrator>{
   }
 
   @Override
-  public boolean delete(Administrator objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Administrator pAdministrator) {
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `user` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pAdministrator.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
+    
   }
 
   @Override
@@ -152,6 +173,8 @@ public class AdministratorDAO implements IDAO<Administrator>{
     }
     return administrator;
   }
+  
+  
   
   public Administrator selectByLoginPwd(String pLogin, String pPwd) {
     Administrator administrator = null;

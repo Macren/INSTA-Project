@@ -48,11 +48,14 @@ public class Lesson implements Serializable {
         this.teacher        = teacher;
         this.discipline     = discipline;
     }
+    
+    
     /**
      * Constructeur sans id
      * @param name
      * @param tp
      * @param test
+     * @param nbMaxStudent
      * @param beginDate
      * @param endDate
      * @param status

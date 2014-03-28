@@ -7,6 +7,7 @@
 package dao;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import metier.Education;
 import metier.School;
@@ -47,11 +48,11 @@ public class StudentDAOTest {
     
     this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school);
     
-    this.student = new Student(3, "campus_student",
-                                  "campus_student", "campus_student@campus.com",
-                                  new Date(888), "campus_student",
-                                  "campus_student", 888,
-                                  this.school, this.education);
+    this.student = new Student(3, "campus_student", "campus_student",
+                              "campus_student@campus.com", new Date(888),
+                              "campus_student", "campus_student",
+                              888, this.school,
+                              this.education);
     
     this.studentDao = new StudentDAO("jdbc:mysql://localhost/campus_bdd_tests");
   }
@@ -65,14 +66,8 @@ public class StudentDAOTest {
    */
   @Test
   public void testInsert() {
-    System.out.println("insert");
-    Student pStudent = null;
-    StudentDAO instance = new StudentDAO();
-    boolean expResult = false;
-    boolean result = instance.insert(pStudent);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.studentDao.insert(this.student);
+    assertTrue(result);
   }
 
   /**
@@ -80,14 +75,17 @@ public class StudentDAOTest {
    */
   @Test
   public void testUpdate() {
-    System.out.println("update");
-    Student pStudent = null;
-    StudentDAO instance = new StudentDAO();
-    boolean expResult = false;
-    boolean result = instance.update(pStudent);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.student = this.studentDao.selectById(3);
+    
+    this.student.setLogin("campus_student2");
+    this.student.setPasswd("campus_student2");
+    this.student.setMail("campus_student2@campus.com");
+    this.student.setBirthDate(new Date(999));
+    this.student.setFirstName("campus_student2");
+    this.student.setLastName("campus_student2");
+    this.student.setPhone(999);
+    boolean result = this.studentDao.update(this.student);
+    assertTrue(result);
   }
 
   /**
@@ -95,12 +93,6 @@ public class StudentDAOTest {
    */
   @Test
   public void testDelete() {
-    System.out.println("delete");
-    Student objet = null;
-    StudentDAO instance = new StudentDAO();
-    boolean expResult = false;
-    boolean result = instance.delete(objet);
-    assertEquals(expResult, result);
     // TODO review the generated test code and remove the default call to fail.
     fail("The test case is a prototype.");
   }
@@ -110,14 +102,8 @@ public class StudentDAOTest {
    */
   @Test
   public void testSelectById() {
-    System.out.println("selectById");
-    int id = 0;
-    StudentDAO instance = new StudentDAO();
-    Student expResult = null;
-    Student result = instance.selectById(id);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.student = this.studentDao.selectById(3);
+    assertTrue(this.student.getId() == 3);
   }
 
   /**
@@ -125,15 +111,10 @@ public class StudentDAOTest {
    */
   @Test
   public void testSelectByLoginPwd() {
-    System.out.println("selectByLoginPwd");
-    String pLogin = "";
-    String pPwd = "";
-    StudentDAO instance = new StudentDAO();
-    Student expResult = null;
-    Student result = instance.selectByLoginPwd(pLogin, pPwd);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.student = this.studentDao.selectByLoginPwd("campus_student2", "campus_student2");
+    boolean result = this.student.getLogin().equals("campus_student2")
+                      && this.student.getPasswd().equals("campus_student2");
+    assertTrue(result);
   }
 
   /**
@@ -141,13 +122,10 @@ public class StudentDAOTest {
    */
   @Test
   public void testSelectAll() {
-    System.out.println("selectAll");
-    StudentDAO instance = new StudentDAO();
-    List<Student> expResult = null;
-    List<Student> result = instance.selectAll();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    List<Student> listStudents = new ArrayList();
+    listStudents = this.studentDao.selectAll();
+    boolean result = listStudents.size() > 0;
+    assertTrue(result);
   }
   
 }

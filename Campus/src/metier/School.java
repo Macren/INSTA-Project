@@ -17,8 +17,8 @@ public class School implements Serializable {
     /**
      * Attributs
      */
-    private int             id;
-    private String          name;
+    private int     id;
+    private String  name;
     
     /**
      * Constructeur
@@ -26,7 +26,7 @@ public class School implements Serializable {
      * @param name
      */
     public School(int id, String name) {
-        this.id = id;
+        this.id   = id;
         this.name = name;
     }
     /**
@@ -61,8 +61,6 @@ public class School implements Serializable {
     public String toString() {
         return name;
     }
-    
-    
     
     
     
