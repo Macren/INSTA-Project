@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.Discipline;
 import metier.Lesson;
-import metier.Student;
 import metier.Teacher;
 
 /**
