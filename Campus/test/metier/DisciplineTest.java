@@ -37,8 +37,8 @@ public class DisciplineTest {
   
   @Before
   public void setUp() {
-    this.school = new School(1, "INSTA");
-    this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school);
+    this.school     = new School(1, "INSTA");
+    this.education  = new Education(1, "Analyste Informaticien", 200, 11, this.school);
     this.discipline = new Discipline(1, "Java", new Date(101), new Date(102), this.education, "Disponible");
   }
   
@@ -51,13 +51,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetId() {
-    System.out.println("getId");
-    Discipline instance = null;
-    int expResult = 0;
-    int result = instance.getId();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getId() == 1;
+    assertTrue(result);
   }
 
   /**
@@ -65,12 +60,9 @@ public class DisciplineTest {
    */
   @Test
   public void testSetId() {
-    System.out.println("setId");
-    int id = 0;
-    Discipline instance = null;
-    instance.setId(id);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.discipline.setId(2);
+    boolean result = this.discipline.getId() == 2;
+    assertTrue(result);
   }
 
   /**
@@ -78,13 +70,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetName() {
-    System.out.println("getName");
-    Discipline instance = null;
-    String expResult = "";
-    String result = instance.getName();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getName().equals("Java");
+    assertTrue(result);
   }
 
   /**
@@ -92,12 +79,9 @@ public class DisciplineTest {
    */
   @Test
   public void testSetName() {
-    System.out.println("setName");
-    String name = "";
-    Discipline instance = null;
-    instance.setName(name);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.discipline.setName("Java EE");
+    boolean result = this.discipline.getName().equals("Java EE");
+    assertTrue(result);
   }
 
   /**
@@ -105,13 +89,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetBeginDate() {
-    System.out.println("getBeginDate");
-    Discipline instance = null;
-    Date expResult = null;
-    Date result = instance.getBeginDate();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getBeginDate().equals(new Date(101));
+    assertTrue(result);
   }
 
   /**
@@ -119,12 +98,9 @@ public class DisciplineTest {
    */
   @Test
   public void testSetBeginDate() {
-    System.out.println("setBeginDate");
-    Date beginDate = null;
-    Discipline instance = null;
-    instance.setBeginDate(beginDate);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.discipline.setBeginDate(new Date(201));
+    boolean result = this.discipline.getBeginDate().equals(new Date(201));
+    assertTrue(result);
   }
 
   /**
@@ -132,13 +108,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetEndDate() {
-    System.out.println("getEndDate");
-    Discipline instance = null;
-    Date expResult = null;
-    Date result = instance.getEndDate();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getEndDate().equals(new Date(102));
+    assertTrue(result);
   }
 
   /**
@@ -146,12 +117,9 @@ public class DisciplineTest {
    */
   @Test
   public void testSetEndDate() {
-    System.out.println("setEndDate");
-    Date endDate = null;
-    Discipline instance = null;
-    instance.setEndDate(endDate);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.discipline.setEndDate(new Date(202));
+    boolean result = this.discipline.getEndDate().equals(new Date(202));
+    assertTrue(result);
   }
 
   /**
@@ -159,13 +127,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetEducation() {
-    System.out.println("getEducation");
-    Discipline instance = null;
-    Education expResult = null;
-    Education result = instance.getEducation();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getEducation().equals(this.education);
+    assertTrue(result);
   }
 
   /**
@@ -173,12 +136,11 @@ public class DisciplineTest {
    */
   @Test
   public void testSetEducation() {
-    System.out.println("setEducation");
-    Education education = null;
-    Discipline instance = null;
-    instance.setEducation(education);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    Education education2 = new Education(2, "Analyste Informaticien Reseau", 400, 12, this.school);
+    
+    this.discipline.setEducation(education2);
+    boolean result = this.discipline.getEducation().equals(education2);
+    assertTrue(result);
   }
 
   /**
@@ -186,13 +148,8 @@ public class DisciplineTest {
    */
   @Test
   public void testGetStatus() {
-    System.out.println("getStatus");
-    Discipline instance = null;
-    String expResult = "";
-    String result = instance.getStatus();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.getStatus().equals("Disponible");
+    assertTrue(result);
   }
 
   /**
@@ -200,12 +157,9 @@ public class DisciplineTest {
    */
   @Test
   public void testSetStatus() {
-    System.out.println("setStatus");
-    String status = "";
-    Discipline instance = null;
-    instance.setStatus(status);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.discipline.setStatus("Complet");
+    boolean result = this.discipline.getStatus().equals("Complet");
+    assertTrue(result);
   }
 
   /**
@@ -213,13 +167,8 @@ public class DisciplineTest {
    */
   @Test
   public void testToString() {
-    System.out.println("toString");
-    Discipline instance = null;
-    String expResult = "";
-    String result = instance.toString();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.discipline.toString().equals("Java");
+    assertTrue(result);
   }
   
 }

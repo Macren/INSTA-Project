@@ -303,14 +303,14 @@ public class AddUserUI extends javax.swing.JFrame {
         // -----------------
         if (strType.compareTo("Eleve") == 0) { // a student
             anUserType = UserType.STUDENT;
-            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, anEdu, null);
+            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, anEdu);
             System.out.println(aUser);
             StudentDAO studentDAO = new StudentDAO();
             studentDAO.insert((Student)aUser);
         }
         else if (strType.compareTo("Professeur") == 0) { // a teacher
             anUserType = UserType.TEACHER;
-            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, null, null);
+            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.mySchool, null);
             System.out.println(aUser);
             TeacherDAO teacherDAO = new TeacherDAO();
             teacherDAO.insert((Teacher)aUser);

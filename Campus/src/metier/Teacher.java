@@ -15,12 +15,6 @@ import java.util.List;
  */
 public class Teacher extends AbstractUser implements IDocUse {
     
-    /**
-     * =========
-     * Attribute
-     * =========
-     */
-    private List<Lesson>    lessons;
 
     /**
      * ==============
@@ -35,12 +29,10 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param lastName
      * @param phone
      * @param school
-     * @param education 
-     * @param lessons 
+     * @param education
      */
-    public Teacher(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+    public Teacher(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
-        this.lessons = lessons;
     }
 
     /**
@@ -55,12 +47,10 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param lastName
      * @param phone
      * @param school
-     * @param education 
-     * @param lessons 
+     * @param education
      */
-    public Teacher(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education, List<Lesson> lessons) {
+    public Teacher(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
         super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
-        this.lessons = lessons;
     }
 
     
