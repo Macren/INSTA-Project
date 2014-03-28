@@ -205,7 +205,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         // -------------------
         for (Discipline discipline : listDiscipline) {
             DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline); // save the current discipline
-            
+
             // getting all lessons/TPs/Tests for this discipline
             // -------------------------------------------------
             LessonDAO       lessonDAO =     new LessonDAO();

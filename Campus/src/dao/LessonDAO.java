@@ -33,7 +33,7 @@ public class LessonDAO implements IDAO<Lesson>{
   private static final int LESSON_STATUS_ENDED = 4;
   
   @Override
-  public void insert(Lesson pLesson) {
+  public boolean insert(Lesson pLesson) {
     Connection cnx = null;
     
     try {
@@ -75,6 +75,7 @@ public class LessonDAO implements IDAO<Lesson>{
       }
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,10 +84,11 @@ public class LessonDAO implements IDAO<Lesson>{
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(Lesson pLesson) {
+  public boolean update(Lesson pLesson) {
     Connection cnx = null;
     
     try {
@@ -130,6 +132,7 @@ public class LessonDAO implements IDAO<Lesson>{
       stat.setInt(9, pLesson.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,10 +141,11 @@ public class LessonDAO implements IDAO<Lesson>{
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(Lesson objet) {
+  public boolean delete(Lesson objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 

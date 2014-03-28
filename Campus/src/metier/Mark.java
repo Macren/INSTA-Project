@@ -122,7 +122,7 @@ public class Mark implements Serializable {
   
   @Override
   public String toString() {
-    return "Mark{" + "id=" + id + ", value=" + value + ", valueMax=" + valueMax + ", student=" + student + ", discipline=" + discipline + '}';
+    return value + "/" + valueMax;
   }
   
   

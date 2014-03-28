@@ -23,20 +23,28 @@ import metier.School;
  */
 public class SchoolDAO implements IDAO<School> {
 
+  public SchoolDAO() {
+  }
+  
+  SchoolDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
+  
   @Override
-  public void insert(School pSchool) {
+  public boolean insert(School pSchool) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`school`(`name`) VALUES (?);";
+      String sql = "INSERT INTO `school`(`name`) VALUES (?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
       stat.setString(1, pSchool.getName());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(SchoolDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,16 +53,17 @@ public class SchoolDAO implements IDAO<School> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void update(School pSchool) {
+  public boolean update(School pSchool) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`school` SET `name`=? WHERE `id`=?;";
+      String sql = "UPDATE `school` SET `name`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -63,6 +72,7 @@ public class SchoolDAO implements IDAO<School> {
       stat.setInt(2, pSchool.getId());
       
       stat.executeUpdate();
+      return true;
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(SchoolDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,10 +81,11 @@ public class SchoolDAO implements IDAO<School> {
     } finally {
       db.disconnect(cnx);
     }
+    return false;
   }
 
   @Override
-  public void delete(School objet) {
+  public boolean delete(School objet) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
@@ -87,7 +98,7 @@ public class SchoolDAO implements IDAO<School> {
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`school` WHERE  `id` = ?;";
+      String sql = "SELECT * FROM `school` WHERE  `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -117,7 +128,7 @@ public class SchoolDAO implements IDAO<School> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`school`;";
+      String sql = "SELECT * FROM `school`;";
       Statement stat = cnx.createStatement();
       ResultSet res = stat.executeQuery(sql);
       

@@ -54,14 +54,12 @@ public class AbstractUserTest {
                                   "campus_teacher", "campus_teacher@campus.com",
                                   new Date(555), "campus_teacher",
                                   "campus_teacher", 555,
-                                  this.school, this.education,
-                                  null);
+                                  this.school, this.education);
     this.student = new Student(3, "campus_student",
                                   "campus_student", "campus_student@campus.com",
                                   new Date(444), "campus_student",
                                   "campus_student", 444,
-                                  this.school, this.education,
-                                  null);
+                                  this.school, this.education);
   }
   
   @After
