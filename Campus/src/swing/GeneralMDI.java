@@ -29,12 +29,9 @@ import utils.UserType;
  *
  * @author Madeleine
  */
-public class GeneralMDI extends javax.swing.JFrame {
 
- private DefaultMutableTreeNode racine;    
- private int myLesson;
- private int myTest;
- private int myTP;
+public class GeneralMDI extends javax.swing.JFrame {
+ 
     /**
      * ===============
      * User Attributes
@@ -94,6 +91,13 @@ public class GeneralMDI extends javax.swing.JFrame {
      * =================
      */
     
+    /**
+     * ====================
+     * initMenuForStudent()
+     * ====================
+     * 
+     * init menuBar when user is an Admin
+     */
     public  void        initMenuForAdmin() {
         
         // Menu Bar : Fichier
@@ -153,6 +157,13 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.toolsMenuBar.add(listAdminItem);
     }
     
+    /**
+     * ====================
+     * initMenuForStudent()
+     * ====================
+     * 
+     * init menuBar when user is a Student
+     */
     public  void        initMenuForStudent() {
         
         // Menu Bar : Fichier
@@ -172,25 +183,38 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.toolsMenuBar.add(infoEducItem);
         this.toolsMenuBar.add(contactManagerItem);
     }
+    
+    /**
+     * ==========
+     * initTree()
+     * ==========
+     * 
+     * init JTree with all discipline in a promo education
+     * 
+     */
     public void     initTree() {
-        
+       
+        // getting list of all discipline in a promo education
+        // ---------------------------------------------------
         DisciplineDAO disciplineDAO = new DisciplineDAO();
         List<Discipline> listDiscipline = disciplineDAO.selectAllByEducationIdAndEducationPromo((Education)this.combob_education.getSelectedItem());
     
-        DefaultMutableTreeNode racine = new DefaultMutableTreeNode("Matière");
+        DefaultMutableTreeNode racine = new DefaultMutableTreeNode();
         
+        // for each discipline
+        // -------------------
         for (Discipline discipline : listDiscipline) {
-            DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline);
-            //DefaultMutableTreeNode noeudLesson = new DefaultMutableTreeNode(lesson.getName());
-           // noeudLesson.add(new DefaultMutableTreeNode (lesson.getTP) );
-            //noeud.add(noeudLesson);
-           // this.racine.add(noeud);
+            DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline); // save the current discipline
             
+            // getting all lessons/TPs/Tests for this discipline
+            // -------------------------------------------------
             LessonDAO       lessonDAO =     new LessonDAO();
-            List<Lesson>    listLesson =    lessonDAO.selectAllByDisciplineId(myLesson);
-            List<Lesson>    listTP =        lessonDAO.selectAllTpsByDisciplineId(myTP);
-            List<Lesson>    listTest =      lessonDAO.selectAllTestsByDisciplineId(myTest);
+            List<Lesson>    listLesson =    lessonDAO.selectAllByDisciplineId(discipline.getId());
+            List<Lesson>    listTP =        lessonDAO.selectAllTpsByDisciplineId(discipline.getId());
+            List<Lesson>    listTest =      lessonDAO.selectAllTestsByDisciplineId(discipline.getId());
             
+            // insert in a lesson node each lesson
+            // -----------------------------------
             DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
             disciplineNode.add(lessonTitleNode);
             for (Lesson lesson : listLesson){
@@ -198,6 +222,8 @@ public class GeneralMDI extends javax.swing.JFrame {
                 lessonTitleNode.add(lessonNode);
             }
             
+            // insert in a tp node each tp
+            // ---------------------------
             DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
             disciplineNode.add(tpTitleNode);
             for (Lesson tp : listTP){
@@ -205,12 +231,17 @@ public class GeneralMDI extends javax.swing.JFrame {
                 tpTitleNode.add(tpNode);
             }
             
+            // insert in a test node each test
+            // -------------------------------
             DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
             disciplineNode.add(testTitleNode);
             for (Lesson test : listTest){
                 DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
                 testTitleNode.add(testNode);
             }
+            
+            // insert nodes in discipline node then root
+            // -----------------------------------------
             disciplineNode.add(lessonTitleNode);
             disciplineNode.add(tpTitleNode);
             disciplineNode.add(testTitleNode);
