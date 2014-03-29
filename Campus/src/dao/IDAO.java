@@ -14,8 +14,9 @@ import java.util.List;
  */
 public interface IDAO<T> {
     
-    public  DB        db = new DB(); 
-    public  boolean   insert(T objet);
+    public  DB        db = new DB();
+    // renvoie un int (l'id (généré par mysql) de l'objet inséré ou bien 0 (zéro)
+    public  int       insert(T objet);
     public  boolean   update(T objet);
     public  boolean   delete(T objet);
     public  T         selectById(int id);

@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
  */
 public class TeacherDAOTest {
   
+  private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
+  
   private School      school;
   private Teacher     teacher;
   private TeacherDAO  teacherDao;
@@ -41,7 +43,7 @@ public class TeacherDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
     this.school = schoolDao.selectById(1);
     
     this.teacher = new Teacher("campus_teacher", "campus_teacher",
@@ -51,7 +53,7 @@ public class TeacherDAOTest {
                                 null); // dernier arg : Education
                                 // null car un teacher n'a pas d'education( de formation)
     
-    this.teacherDao = new TeacherDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    this.teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -63,7 +65,7 @@ public class TeacherDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.teacherDao.insert(this.teacher);
+    boolean result = this.teacherDao.insert(this.teacher) > 0;
     assertTrue(result);
   }
 
@@ -90,8 +92,22 @@ public class TeacherDAOTest {
    */
   @Test
   public void testDelete() {
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.teacher.setLogin("a_suppr");
+    this.teacher.setPasswd("a_suppr");
+    this.teacher.setMail("a_suppr@campus.com");
+    this.teacher.setBirthDate(new Date(000));
+    this.teacher.setFirstName("a_suppr");
+    this.teacher.setLastName("a_suppr");
+    this.teacher.setPhone(000);
+    
+    int id; // On récupère le dernier id généré
+    id = this.teacherDao.insert(this.teacher);
+    
+    // On re-récupère l'objet, pour le suppr
+    this.teacher = this.teacherDao.selectById(id);
+    
+    boolean result = this.teacherDao.delete(this.teacher);
+    assertTrue(result);
   }
 
   /**

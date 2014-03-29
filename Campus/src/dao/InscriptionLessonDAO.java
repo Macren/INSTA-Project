@@ -27,7 +27,7 @@ import metier.Student;
 public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
 
   @Override
-  public boolean insert(InscriptionLesson pInscriptionLesson) {
+  public int insert(InscriptionLesson pInscriptionLesson) {
     Connection cnx = null;
     
     try {
@@ -49,7 +49,12 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
       stat.setBoolean(5, pInscriptionLesson.isAdminValidation());
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,7 +63,7 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override

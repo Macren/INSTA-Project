@@ -24,6 +24,8 @@ import static org.junit.Assert.*;
  */
 public class AdministratorDAOTest {
   
+  private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
+  
   private School            school;
   private Administrator     administrator;
   private AdministratorDAO  administratorDao;
@@ -41,7 +43,7 @@ public class AdministratorDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
     this.school = schoolDao.selectById(1);
     
     this.administrator = new Administrator("campus_admin", "campus_admin",
@@ -51,7 +53,7 @@ public class AdministratorDAOTest {
                                             null); // dernier arg : Education
                                             // null car un administrator n'a pas d'education( de formation)
     
-    this.administratorDao = new AdministratorDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    this.administratorDao = new AdministratorDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -63,7 +65,7 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.administratorDao.insert(this.administrator);
+    boolean result = this.administratorDao.insert(this.administrator) > 0;
     assertTrue(result);
   }
 
@@ -90,8 +92,22 @@ public class AdministratorDAOTest {
    */
   @Test
   public void testDelete() {
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.administrator.setLogin("a_suppr");
+    this.administrator.setPasswd("a_suppr");
+    this.administrator.setMail("a_suppr@campus.com");
+    this.administrator.setBirthDate(new Date(000));
+    this.administrator.setFirstName("a_suppr");
+    this.administrator.setLastName("a_suppr");
+    this.administrator.setPhone(000);
+    
+    int id; // On récupère le dernier id généré
+    id = this.administratorDao.insert(this.administrator);
+    
+    // On re-récupère l'objet, pour le suppr
+    this.administrator = this.administratorDao.selectById(id);
+    
+    boolean result = this.administratorDao.delete(this.administrator);
+    assertTrue(result);
   }
 
   /**

@@ -25,6 +25,8 @@ import static org.junit.Assert.*;
  */
 public class StudentDAOTest {
   
+  private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
+  
   private School      school;
   private Education   education;
   private Student     student;
@@ -43,18 +45,19 @@ public class StudentDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
     this.school = schoolDao.selectById(1);
     
-    this.education = new Education(1, "Analyste Informaticien", 200, 11, this.school);
+    EducationDAO educationDao = new EducationDAO(CONNECTION_STRING_BDD_TESTS);
+    this.education = educationDao.selectById(1);
     
-    this.student = new Student(3, "campus_student", "campus_student",
+    this.student = new Student("campus_student", "campus_student",
                               "campus_student@campus.com", new Date(888),
                               "campus_student", "campus_student",
                               888, this.school,
                               this.education);
     
-    this.studentDao = new StudentDAO("jdbc:mysql://localhost/campus_bdd_tests");
+    this.studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -66,7 +69,7 @@ public class StudentDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.studentDao.insert(this.student);
+    boolean result = this.studentDao.insert(this.student) > 0;
     assertTrue(result);
   }
 
@@ -76,6 +79,9 @@ public class StudentDAOTest {
   @Test
   public void testUpdate() {
     this.student = this.studentDao.selectById(3);
+    
+    // Ne pas oublier de lui renseigner son Education (sa formation)
+    this.student.setEducation(this.education);
     
     this.student.setLogin("campus_student2");
     this.student.setPasswd("campus_student2");
@@ -93,8 +99,22 @@ public class StudentDAOTest {
    */
   @Test
   public void testDelete() {
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    this.student.setLogin("a_suppr");
+    this.student.setPasswd("a_suppr");
+    this.student.setMail("a_suppr@campus.com");
+    this.student.setBirthDate(new Date(000));
+    this.student.setFirstName("a_suppr");
+    this.student.setLastName("a_suppr");
+    this.student.setPhone(000);
+    
+    int id; // On récupère le dernier id généré
+    id = this.studentDao.insert(this.student);
+    
+    // On re-récupère l'objet, pour le suppr
+    this.student = this.studentDao.selectById(id);
+    
+    boolean result = this.studentDao.delete(this.student);
+    assertTrue(result);
   }
 
   /**

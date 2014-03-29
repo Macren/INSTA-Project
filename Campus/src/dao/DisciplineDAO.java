@@ -29,16 +29,23 @@ public class DisciplineDAO implements IDAO<Discipline> {
   private static final int DISCIPLINE_STATUS_AVAILABLE = 1;
   private static final int DISCIPLINE_STATUS_FULL = 2;
   
+  public DisciplineDAO() {
+  }
+  
+  public DisciplineDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
+  
   @Override
-  public boolean insert(Discipline pDiscipline) {
+  public int insert(Discipline pDiscipline) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`discipline`(`name`, `begin_date`, `end_date`, `id_education`, `id_discipline_status`) VALUES (?,?,?,?,?);";
+      String sql = "INSERT INTO `discipline`(`name`, `begin_date`, `end_date`, `id_education`, `id_discipline_status`) VALUES (?,?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -63,7 +70,12 @@ public class DisciplineDAO implements IDAO<Discipline> {
       }
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,7 +84,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -82,7 +94,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`discipline` SET `name`=?,`begin_date`=?,`end_date`=?,`id_education`=?,`id_discipline_status`=? WHERE `id`=?;";
+      String sql = "UPDATE `discipline` SET `name`=?,`begin_date`=?,`end_date`=?,`id_education`=?,`id_discipline_status`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -124,8 +136,27 @@ public class DisciplineDAO implements IDAO<Discipline> {
   }
 
   @Override
-  public boolean delete(Discipline objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Discipline pDiscipline) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `discipline` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pDiscipline.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override
@@ -137,7 +168,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE `id` = ?;";
+      String sql = "SELECT * FROM `discipline` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -150,7 +181,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
         Education education = educationDao.selectById(res.getInt("id_education"));
         
         // On recupère le status
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -185,7 +216,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`discipline`;";
+      String sql = "SELECT * FROM `discipline`;";
       Statement stat = cnx.createStatement();
       ResultSet res = stat.executeQuery(sql);
       
@@ -195,7 +226,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
         Education education = educationDao.selectById(res.getInt("id_education"));
         
         // On recupère le status
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -237,7 +268,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`discipline` WHERE `id_education`=?;";
+      String sql = "SELECT * FROM `discipline` WHERE `id_education`=?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pEducationId);
       ResultSet res = stat.executeQuery();
@@ -248,7 +279,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
       
       while (res.next()) {
         // On recupère le status
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -293,7 +324,7 @@ public class DisciplineDAO implements IDAO<Discipline> {
       while (res.next()) {
           
         // On recupère le status
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`discipline_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `discipline_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_discipline_status"));
         ResultSet resStatus = statStatus.executeQuery();

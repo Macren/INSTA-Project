@@ -31,16 +31,23 @@ public class LessonDAO implements IDAO<Lesson>{
   private static final int LESSON_STATUS_CANCEL     = 3;
   private static final int LESSON_STATUS_ENDED      = 4;
   
+  public LessonDAO() {
+  }
+  
+  public LessonDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
+  
   @Override
-  public boolean insert(Lesson pLesson) {
+  public int insert(Lesson pLesson) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `nb_max_student`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `lesson`(`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `nb_max_student`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES (?,?,?,?,?,?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -75,7 +82,12 @@ public class LessonDAO implements IDAO<Lesson>{
       }
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,7 +96,7 @@ public class LessonDAO implements IDAO<Lesson>{
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -94,7 +106,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`nb_max_student`=?,`id_discipline`=?,`id_user_teacher`=[value-8],`id_lesson_status`=[value-9] WHERE `id`=?;";
+      String sql = "UPDATE `lesson` SET `name`=?,`is_tp`=?,`is_test`=?,`begin_date`=?,`end_date`=?,`nb_max_student`=?,`id_discipline`=?,`id_user_teacher`=?,`id_lesson_status`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -146,8 +158,27 @@ public class LessonDAO implements IDAO<Lesson>{
   }
 
   @Override
-  public boolean delete(Lesson objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Lesson pLesson) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `lesson` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pLesson.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(LessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override
@@ -159,7 +190,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id` = ?;";
+      String sql = "SELECT * FROM `lesson` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -168,7 +199,7 @@ public class LessonDAO implements IDAO<Lesson>{
       if(res.first())
       {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -177,7 +208,6 @@ public class LessonDAO implements IDAO<Lesson>{
         while (resStatus.next()){
           status = resStatus.getString("label");
         }
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -215,13 +245,13 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson`;";
+      String sql = "SELECT * FROM `lesson`;";
       Statement stat = cnx.createStatement();
       ResultSet res = stat.executeQuery(sql);
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -230,7 +260,6 @@ public class LessonDAO implements IDAO<Lesson>{
         while (resStatus.next()){
           status = resStatus.getString("label");
         }
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -270,14 +299,14 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_user_teacher` = ?;";
+      String sql = "SELECT * FROM `lesson` WHERE `id_user_teacher` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pTeacherId);
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -286,7 +315,6 @@ public class LessonDAO implements IDAO<Lesson>{
         while (resStatus.next()){
           status = resStatus.getString("label");
         }
-        
         
         // On récupère la discipline de la lesson
         DisciplineDAO disciplineDao = new DisciplineDAO();
@@ -326,14 +354,14 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ?;";
+      String sql = "SELECT * FROM `lesson` WHERE `id_discipline` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pDisciplineId);
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -382,7 +410,7 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ? AND `is_tp` = ? AND `is_test` = ?;";
+      String sql = "SELECT * FROM `lesson` WHERE `id_discipline` = ? AND `is_tp` = ? AND `is_test` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pDisciplineId);
       stat.setBoolean(2, false);
@@ -391,7 +419,7 @@ public class LessonDAO implements IDAO<Lesson>{
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -439,14 +467,14 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ? AND `is_tp` = 1;";
+      String sql = "SELECT * FROM `lesson` WHERE `id_discipline` = ? AND `is_tp` = 1;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pDisciplineId);
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -495,14 +523,14 @@ public class LessonDAO implements IDAO<Lesson>{
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`lesson` WHERE `id_discipline` = ? AND `is_test` = 1;";
+      String sql = "SELECT * FROM `lesson` WHERE `id_discipline` = ? AND `is_test` = 1;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pDisciplineId);
       ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         // On récupère le status de la lesson
-        String sqlRecupStatus = "SELECT * FROM `campus_bdd`.`lesson_status` WHERE `id` =?;";
+        String sqlRecupStatus = "SELECT * FROM `lesson_status` WHERE `id` =?;";
         PreparedStatement statStatus = cnx.prepareStatement(sqlRecupStatus);
         statStatus.setInt(1, res.getInt("id_lesson_status"));
         ResultSet resStatus = statStatus.executeQuery();
@@ -541,3 +569,4 @@ public class LessonDAO implements IDAO<Lesson>{
   }
   
 }
+

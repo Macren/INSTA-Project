@@ -10,12 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import metier.Education;
 import metier.School;
 import metier.Teacher;
 
@@ -35,7 +35,7 @@ public class TeacherDAO implements IDAO<Teacher>{
   }
 
   @Override
-  public boolean insert(Teacher pTeacher) {
+  public int insert(Teacher pTeacher) {
     Connection cnx = null;
     
     try {
@@ -43,7 +43,7 @@ public class TeacherDAO implements IDAO<Teacher>{
       
       String sql = "INSERT INTO `user`(`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?,?,?,?,?,?,?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -60,9 +60,13 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.setInt(9, pTeacher.getSchool().getId());
       stat.setString(10, null);  // null, car un teacher n'a aucune Education (formation)
       
-      
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,7 +75,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -113,8 +117,27 @@ public class TeacherDAO implements IDAO<Teacher>{
   }
 
   @Override
-  public boolean delete(Teacher objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Teacher pTeacher) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `user` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pTeacher.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override

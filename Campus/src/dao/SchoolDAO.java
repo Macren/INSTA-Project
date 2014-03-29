@@ -31,7 +31,7 @@ public class SchoolDAO implements IDAO<School> {
   }
   
   @Override
-  public boolean insert(School pSchool) {
+  public int insert(School pSchool) {
     Connection cnx = null;
     
     try {
@@ -39,12 +39,17 @@ public class SchoolDAO implements IDAO<School> {
       
       String sql = "INSERT INTO `school`(`name`) VALUES (?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       stat.setString(1, pSchool.getName());
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(SchoolDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +58,7 @@ public class SchoolDAO implements IDAO<School> {
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -85,8 +90,27 @@ public class SchoolDAO implements IDAO<School> {
   }
 
   @Override
-  public boolean delete(School objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(School pSchool) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `school` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pSchool.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(SchoolDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(SchoolDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override

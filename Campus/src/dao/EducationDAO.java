@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import metier.Discipline;
 import metier.Education;
 import metier.School;
 
@@ -24,9 +23,16 @@ import metier.School;
  * @author biron
  */
 public class EducationDAO implements IDAO<Education> {
+  
+  public EducationDAO() {
+  }
+  
+  public EducationDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
 
   @Override
-  public boolean insert(Education pEducation) {
+  public int insert(Education pEducation) {
     Connection cnx = null;
     
     try {
@@ -34,7 +40,7 @@ public class EducationDAO implements IDAO<Education> {
       
       String sql = "INSERT INTO `education`(`name`, `nb_hours`, `promo`, `id_school`) VALUES (?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       stat.setString(1, pEducation.getName());
       stat.setInt(2, pEducation.getNbHours());
@@ -42,7 +48,12 @@ public class EducationDAO implements IDAO<Education> {
       stat.setInt(4, pEducation.getSchool().getId());
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,7 +62,7 @@ public class EducationDAO implements IDAO<Education> {
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -86,8 +97,27 @@ public class EducationDAO implements IDAO<Education> {
   }
 
   @Override
-  public boolean delete(Education objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Education pEducation) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `education` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pEducation.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(EducationDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override
@@ -107,10 +137,9 @@ public class EducationDAO implements IDAO<Education> {
       // S'il y a un resultat
       if(res.first())
       {
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la school
-        /////////////////////////////////////////////////////////////////////////
-        School school = null;
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
         
         education = new Education(res.getInt("id"), res.getString("name"),
                                   res.getInt("nb_hours"), res.getInt("promo"),
@@ -143,10 +172,9 @@ public class EducationDAO implements IDAO<Education> {
       
       while (res.next()) {
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la school
-        /////////////////////////////////////////////////////////////////////////
-        School school = null;
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
         
         Education education = new Education(res.getInt("id"), res.getString("name"),
                                             res.getInt("nb_hours"), res.getInt("promo"),
@@ -188,10 +216,9 @@ public class EducationDAO implements IDAO<Education> {
       
       while (res.next()) {
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la school (on a l'id)
-        /////////////////////////////////////////////////////////////////////////
-        School school = null;
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
         
         Education education = new Education(res.getInt("id"), res.getString("name"),
                                             res.getInt("nb_hours"), res.getInt("promo"),

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
   }
   
   @Override
-  public boolean insert(Administrator pAdministrator) {
+  public int insert(Administrator pAdministrator) {
     Connection cnx = null;
     
     try {
@@ -42,7 +43,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
       
       String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`id_role`,`id_school`) VALUES (?,?,?,?,?,?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       // create date like string with format
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -59,7 +60,12 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setInt(9, pAdministrator.getSchool().getId());
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,7 +74,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -110,7 +116,6 @@ public class AdministratorDAO implements IDAO<Administrator>{
 
   @Override
   public boolean delete(Administrator pAdministrator) {
-    
     Connection cnx = null;
     
     try {
@@ -131,7 +136,6 @@ public class AdministratorDAO implements IDAO<Administrator>{
       db.disconnect(cnx);
     }
     return false;
-    
   }
 
   @Override

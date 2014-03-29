@@ -25,17 +25,24 @@ import metier.Teacher;
  * @author biron
  */
 public class MarkDAO implements IDAO<Mark> {
+  
+  public MarkDAO() {
+  }
+  
+  public MarkDAO(String pUrl) {
+    this.db.setUrl(pUrl);
+  }
 
   @Override
-  public boolean insert(Mark pMark) {
+  public int insert(Mark pMark) {
     Connection cnx = null;
     
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `campus_bdd`.`mark`(`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES (?,?,?,?,?,?);";
+      String sql = "INSERT INTO `mark`(`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES (?,?,?,?,?,?);";
       
-      PreparedStatement stat = cnx.prepareStatement(sql);
+      PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
       stat.setFloat(1, pMark.getValue());
       stat.setFloat(2, pMark.getValueMax());
@@ -45,7 +52,12 @@ public class MarkDAO implements IDAO<Mark> {
       stat.setString(6, pMark.getComment());
       
       stat.executeUpdate();
-      return true;
+      // On récupère le dernier id généré
+      ResultSet rs = stat.getGeneratedKeys();
+      if(rs != null && rs.first()){
+        long generatedId = rs.getLong(1);
+        return (int)generatedId;
+      }
       
     } catch (ClassNotFoundException ex) {
         Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,7 +66,7 @@ public class MarkDAO implements IDAO<Mark> {
     } finally {
       db.disconnect(cnx);
     }
-    return false;
+    return 0;
   }
 
   @Override
@@ -64,7 +76,7 @@ public class MarkDAO implements IDAO<Mark> {
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `campus_bdd`.`mark` SET `value`=?,`value_max`=?,`id_user_student`=?,`id_user_teacher`=?,`id_discipline`=?,`comment`=? WHERE `id`=?;";
+      String sql = "UPDATE `mark` SET `value`=?,`value_max`=?,`id_user_student`=?,`id_user_teacher`=?,`id_discipline`=?,`comment`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -91,8 +103,27 @@ public class MarkDAO implements IDAO<Mark> {
   }
 
   @Override
-  public boolean delete(Mark objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(Mark pMark) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `mark` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pMark.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override
@@ -104,7 +135,7 @@ public class MarkDAO implements IDAO<Mark> {
     try {
       cnx= db.connect();
       
-      String sql = "SELECT * FROM `campus_bdd`.`mark` WHERE `id` = ?;";
+      String sql = "SELECT * FROM `mark` WHERE `id` = ?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, id);
       ResultSet res = stat.executeQuery();
@@ -112,18 +143,17 @@ public class MarkDAO implements IDAO<Mark> {
       // S'il y a un resultat
       if(res.first())
       {
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le Student
-        /////////////////////////////////////////////////////////////////////////
-        Student student = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le Teacher
-        /////////////////////////////////////////////////////////////////////////
-        Teacher teacher = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la Discipline
-        /////////////////////////////////////////////////////////////////////////
-        Discipline discipline = null;
+        // On récupère le student
+        StudentDAO studentDao = new StudentDAO();
+        Student student = studentDao.selectById(res.getInt("id_user_student"));
+        
+        // On récupère le teacher
+        TeacherDAO teacherDao = new TeacherDAO();
+        Teacher teacher = teacherDao.selectById(res.getInt("id_user_teacher"));
+        
+        // On récupère la discipline
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
         
         mark = new Mark(res.getInt("id"), res.getFloat("value"),
                         res.getFloat("value_max"), student,
@@ -151,24 +181,23 @@ public class MarkDAO implements IDAO<Mark> {
     try {
       cnx = db.connect();
 
-      String sql = "SELECT * FROM `campus_bdd`.`mark`;";
+      String sql = "SELECT * FROM `mark`;";
       Statement stat = cnx.createStatement();
       ResultSet res = stat.executeQuery(sql);
       
       while (res.next()) {
         
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le Student
-        /////////////////////////////////////////////////////////////////////////
-        Student student = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer le Teacher
-        /////////////////////////////////////////////////////////////////////////
-        Teacher teacher = null;
-        /////////////////////////////////////////////////////////////////////////
-        // Ici récupérer la Discipline
-        /////////////////////////////////////////////////////////////////////////
-        Discipline discipline = null;
+        // On récupère le student
+        StudentDAO studentDao = new StudentDAO();
+        Student student = studentDao.selectById(res.getInt("id_user_student"));
+        
+        // On récupère le teacher
+        TeacherDAO teacherDao = new TeacherDAO();
+        Teacher teacher = teacherDao.selectById(res.getInt("id_user_teacher"));
+        
+        // On récupère la discipline
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
         
         Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
                               res.getFloat("value_max"), student,
