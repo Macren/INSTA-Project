@@ -206,6 +206,38 @@ public class DisciplineDAO implements IDAO<Discipline> {
   }
   
   
+  
+  public Discipline selectByLessonId(int pLessonId) {
+    Discipline discipline = null;
+    
+    Connection cnx = null;
+    
+    try {
+      cnx= db.connect();
+      
+      String sqlLesson = "SELECT * FROM `lesson` WHERE `id` = ?;";
+      PreparedStatement statLesson = cnx.prepareStatement(sqlLesson);
+      statLesson.setInt(1, pLessonId);
+      ResultSet resLesson = statLesson.executeQuery();
+      
+      // S'il y a un resultat (une lesson)
+      if(resLesson.first())
+      {
+        // On récupère la discipline de la lesson
+        discipline = this.selectById(resLesson.getInt("id_discipline"));
+      }
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(DisciplineDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return discipline;
+  }
+  
+  
 
   @Override
   public List<Discipline> selectAll() {

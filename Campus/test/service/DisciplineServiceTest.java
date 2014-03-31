@@ -115,6 +115,15 @@ public class DisciplineServiceTest {
     this.discipline = this.disciplineService.selectById(1);
     assertTrue(this.discipline.getId() == 1);
   }
+  
+  /**
+   * Test of selectByLessonId method, of class DisciplineService.
+   */
+  @Test
+  public void testSelectByLessonId() {
+    this.discipline = this.disciplineService.selectByLessonId(1);
+    assertTrue(this.discipline.getId() == 1);
+  }
 
   /**
    * Test of selectAll method, of class DisciplineService.

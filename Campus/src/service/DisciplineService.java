@@ -49,6 +49,10 @@ public class DisciplineService {
     return this.disciplineDao.selectById(id);
   }
   
+  public Discipline selectByLessonId(int pLessonId) {
+    return this.disciplineDao.selectByLessonId(pLessonId);
+  }
+  
   public List<Discipline> selectAll() {
     return this.disciplineDao.selectAll();
   }

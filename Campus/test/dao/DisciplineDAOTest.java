@@ -115,6 +115,15 @@ public class DisciplineDAOTest {
     this.discipline = this.disciplineDao.selectById(1);
     assertTrue(this.discipline.getId() == 1);
   }
+  
+  /**
+   * Test of selectByLessonId method, of class DisciplineDAO.
+   */
+  @Test
+  public void testSelectByLessonId() {
+    this.discipline = this.disciplineDao.selectByLessonId(1);
+    assertTrue(this.discipline.getId() == 1);
+  }
 
   /**
    * Test of selectAll method, of class DisciplineDAO.
