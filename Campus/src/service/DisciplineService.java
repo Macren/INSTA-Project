@@ -19,8 +19,18 @@ public class DisciplineService {
   
   private final DisciplineDAO disciplineDao;
   
+  /**
+   * Ctor
+   */
   public DisciplineService(){
     this.disciplineDao = new DisciplineDAO();
+  }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public DisciplineService(String pUrl){
+    this.disciplineDao = new DisciplineDAO(pUrl);
   }
   
   public int insert(Discipline pDiscipline) {

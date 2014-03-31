@@ -26,7 +26,7 @@ public class SchoolDAO implements IDAO<School> {
   public SchoolDAO() {
   }
   
-  SchoolDAO(String pUrl) {
+  public SchoolDAO(String pUrl) {
     this.db.setUrl(pUrl);
   }
   

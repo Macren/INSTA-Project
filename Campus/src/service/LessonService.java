@@ -18,8 +18,18 @@ public class LessonService {
   
   private final LessonDAO lessonDao;
   
+  /**
+   * Ctor
+   */
   public LessonService(){
     this.lessonDao = new LessonDAO();
+  }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public LessonService(String pUrl){
+    this.lessonDao = new LessonDAO(pUrl);
   }
   
   public int insert(Lesson pLesson) {

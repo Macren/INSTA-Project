@@ -18,9 +18,20 @@ public class TeacherService {
   
   private final TeacherDAO teacherDao;
   
+  /**
+   * Ctor
+   */
   public TeacherService(){
     this.teacherDao = new TeacherDAO();
   }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public TeacherService(String pUrl){
+    this.teacherDao = new TeacherDAO(pUrl);
+  }
+  
   
   public int insert(Teacher pTeacher) {
     return this.teacherDao.insert(pTeacher);

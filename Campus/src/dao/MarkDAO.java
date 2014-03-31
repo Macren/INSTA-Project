@@ -218,4 +218,248 @@ public class MarkDAO implements IDAO<Mark> {
     return listMarks;
   }
   
+  
+  
+  public List<Mark> selectAllByStudentId(int pStudentId) {
+    List<Mark> listMarks = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `mark` WHERE `id_user_student` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pStudentId);
+      ResultSet res = stat.executeQuery();
+      
+      // On récupère le student
+      StudentDAO studentDao = new StudentDAO();
+      Student student = studentDao.selectById(pStudentId);
+      
+      while (res.next()) {
+        
+        // On récupère le teacher
+        TeacherDAO teacherDao = new TeacherDAO();
+        Teacher teacher = teacherDao.selectById(res.getInt("id_user_teacher"));
+        
+        // On récupère la discipline
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
+                              res.getFloat("value_max"), student,
+                              teacher, discipline,
+                              res.getString("comment"));
+        
+        listMarks.add(mark);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listMarks;
+  }
+  
+  
+  
+  public List<Mark> selectAllByTeacherId(int pTeacherId) {
+    List<Mark> listMarks = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `mark` WHERE `id_user_teacher` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pTeacherId);
+      ResultSet res = stat.executeQuery();
+      
+      // On récupère le teacher
+      TeacherDAO teacherDao = new TeacherDAO();
+      Teacher teacher = teacherDao.selectById(pTeacherId);
+      
+      while (res.next()) {
+        
+        // On récupère le student
+        StudentDAO studentDao = new StudentDAO();
+        Student student = studentDao.selectById(res.getInt("id_user_student"));
+        
+        // On récupère la discipline
+        DisciplineDAO disciplineDao = new DisciplineDAO();
+        Discipline discipline = disciplineDao.selectById(res.getInt("id_discipline"));
+        
+        Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
+                              res.getFloat("value_max"), student,
+                              teacher, discipline,
+                              res.getString("comment"));
+        
+        listMarks.add(mark);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listMarks;
+  }
+  
+  
+  public List<Mark> selectAllByDisciplineId(int pDisciplineId) {
+    List<Mark> listMarks = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `mark` WHERE `id_discipline` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pDisciplineId);
+      ResultSet res = stat.executeQuery();
+      
+      // On récupère la discipline
+      DisciplineDAO disciplineDao = new DisciplineDAO();
+      Discipline discipline = disciplineDao.selectById(pDisciplineId);
+      
+      while (res.next()) {
+        
+        // On récupère le student
+        StudentDAO studentDao = new StudentDAO();
+        Student student = studentDao.selectById(res.getInt("id_user_student"));
+        
+        // On récupère le teacher
+        TeacherDAO teacherDao = new TeacherDAO();
+        Teacher teacher = teacherDao.selectById(res.getInt("id_user_teacher"));
+        
+        Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
+                              res.getFloat("value_max"), student,
+                              teacher, discipline,
+                              res.getString("comment"));
+        
+        listMarks.add(mark);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listMarks;
+  }
+  
+  
+  
+  public List<Mark> selectAllByStudentIdAndDisciplineId(int pStudentId, int pDisciplineId) {
+    List<Mark> listMarks = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `mark` WHERE `id_user_student` = ? AND `id_discipline` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pStudentId);
+      stat.setInt(2, pDisciplineId);
+      ResultSet res = stat.executeQuery();
+      
+      // On récupère le student
+      StudentDAO studentDao = new StudentDAO();
+      Student student = studentDao.selectById(pStudentId);
+      // On récupère la discipline
+      DisciplineDAO disciplineDao = new DisciplineDAO();
+      Discipline discipline = disciplineDao.selectById(pDisciplineId);
+      
+      while (res.next()) {
+        
+        // On récupère le teacher
+        TeacherDAO teacherDao = new TeacherDAO();
+        Teacher teacher = teacherDao.selectById(res.getInt("id_user_teacher"));
+        
+        Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
+                              res.getFloat("value_max"), student,
+                              teacher, discipline,
+                              res.getString("comment"));
+        
+        listMarks.add(mark);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listMarks;
+  }
+  
+  
+  
+  public List<Mark> selectAllByTeacherIdAndDisciplineId(int pTeacherId, int pDisciplineId) {
+    List<Mark> listMarks = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `mark` WHERE `id_user_teacher` = ? AND `id_discipline` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pTeacherId);
+      stat.setInt(2, pDisciplineId);
+      ResultSet res = stat.executeQuery();
+      
+      // On récupère le teacher
+      TeacherDAO teacherDao = new TeacherDAO();
+      Teacher teacher = teacherDao.selectById(pTeacherId);
+      // On récupère la discipline
+      DisciplineDAO disciplineDao = new DisciplineDAO();
+      Discipline discipline = disciplineDao.selectById(pDisciplineId);
+      
+      while (res.next()) {
+        
+        // On récupère le student
+        StudentDAO studentDao = new StudentDAO();
+        Student student = studentDao.selectById(res.getInt("id_user_student"));
+        
+        Mark mark = new Mark(res.getInt("id"), res.getFloat("value"),
+                              res.getFloat("value_max"), student,
+                              teacher, discipline,
+                              res.getString("comment"));
+        
+        listMarks.add(mark);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(MarkDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listMarks;
+  }
+  
+  
+  
+  
+  
+  
 }
