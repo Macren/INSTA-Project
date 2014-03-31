@@ -6,7 +6,7 @@
 
 package swing;
 
-
+// <editor-fold defaultstate="collapsed" desc="Import">  
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
@@ -34,7 +34,7 @@ import service.TeacherService;
 import utils.PasswordUtils;
 import utils.UIUtils;
 import utils.UserType;
-
+//</editor-fold>
 
 /**
  *
@@ -43,6 +43,7 @@ import utils.UserType;
 
 public class GeneralMDI extends javax.swing.JFrame {
  
+    // <editor-fold defaultstate="collapsed" desc="Attributes">  
     /**
      * ===============
      * User Attributes
@@ -58,8 +59,10 @@ public class GeneralMDI extends javax.swing.JFrame {
     private DisciplineService       disciService = new DisciplineService();
     private EducationService        eduService = new EducationService();
     
+    // </editor-fold>
     
     
+    // <editor-fold defaultstate="collapsed" desc="Constructors">  
     /**
      * ============
      * Constructors
@@ -77,14 +80,6 @@ public class GeneralMDI extends javax.swing.JFrame {
     
     public GeneralMDI(UserType userType, AbstractUser user) {
         initComponents();
-        this.jif_addEdu.setVisible(false);
-        this.jif_addEdu.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.jif_addDisci.setVisible(false);
-        this.jif_addDisci.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.jif_addLesson.setVisible(false);
-        this.jif_addLesson.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.jif_addUser.setVisible(false);
-        this.jif_addUser.setDefaultCloseOperation(HIDE_ON_CLOSE);
         
         this.bt_home_addUser.setOpaque(false);
         this.bt_home_addUser.setContentAreaFilled(false);
@@ -114,6 +109,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         if (myAdmin != null)
             System.out.println(myAdmin);
     }
+    // </editor-fold>
     
     
     // <editor-fold defaultstate="collapsed" desc="Init UI Functions">  
@@ -587,9 +583,16 @@ public class GeneralMDI extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jif_addEdu.setClosable(true);
-        jif_addEdu.setVisible(true);
+        jif_addEdu.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jif_addEdu.setVisible(false);
+        jif_addEdu.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jif_addEduComponentHidden(evt);
+            }
+        });
 
         jLabel4.setText("Nombre d'heure:");
 
@@ -727,10 +730,10 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                     .addGroup(jif_homeLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_home_addUser)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 47, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -738,7 +741,13 @@ public class GeneralMDI extends javax.swing.JFrame {
         jif_home.setBounds(0, 0, 780, 580);
 
         jif_addDisci.setClosable(true);
-        jif_addDisci.setVisible(true);
+        jif_addDisci.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jif_addDisci.setVisible(false);
+        jif_addDisci.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jif_addDisciComponentHidden(evt);
+            }
+        });
 
         lbl_addDisci_winTitle.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
         lbl_addDisci_winTitle.setForeground(new java.awt.Color(0, 102, 204));
@@ -842,7 +851,13 @@ public class GeneralMDI extends javax.swing.JFrame {
         jif_addDisci.setBounds(0, 0, 317, 278);
 
         jif_addLesson.setClosable(true);
-        jif_addLesson.setVisible(true);
+        jif_addLesson.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jif_addLesson.setVisible(false);
+        jif_addLesson.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jif_addLessonComponentHidden(evt);
+            }
+        });
 
         combob_addLesson_bHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -904,53 +919,56 @@ public class GeneralMDI extends javax.swing.JFrame {
             .addGroup(jif_addLessonLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lbl_addLesson_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jif_addLessonLayout.createSequentialGroup()
-                            .addComponent(checkb_addLesson_tp)
-                            .addGap(46, 46, 46)
-                            .addComponent(checkb_addLesson_test))
-                        .addComponent(bt_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jif_addLessonLayout.createSequentialGroup()
-                            .addComponent(jLabel17)
-                            .addGap(58, 58, 58)
-                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jif_addLessonLayout.createSequentialGroup()
-                                    .addGap(10, 10, 10)
-                                    .addComponent(jLabel12)
-                                    .addGap(33, 33, 33)
-                                    .addComponent(jLabel11))
-                                .addComponent(tf_addLesson_name, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel17)
                     .addGroup(jif_addLessonLayout.createSequentialGroup()
                         .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel13))
-                        .addGap(27, 27, 27)
-                        .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(combob_addLesson_teacher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(combob_addLesson_disci, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jif_addLessonLayout.createSequentialGroup()
-                            .addComponent(jLabel9)
-                            .addGap(18, 18, 18)
-                            .addComponent(spin_addLesson_nbMax))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jif_addLessonLayout.createSequentialGroup()
-                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel15)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel16))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(combob_addLesson_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jif_addLessonLayout.createSequentialGroup()
-                                    .addComponent(combob_eHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(combob_addLesson_eMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jif_addLessonLayout.createSequentialGroup()
-                                    .addComponent(combob_addLesson_bHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(combob_addLesson_bMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lbl_addLesson_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jif_addLessonLayout.createSequentialGroup()
+                                            .addComponent(jLabel9)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(spin_addLesson_nbMax))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jif_addLessonLayout.createSequentialGroup()
+                                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel15)
+                                                .addComponent(jLabel10)
+                                                .addComponent(jLabel16))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(combob_addLesson_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                                    .addComponent(combob_eHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addComponent(combob_addLesson_eMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                                    .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(combob_addLesson_bHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel12))
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                    .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel11)
+                                                        .addComponent(combob_addLesson_bMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                        .addGap(82, 82, 82)
+                                        .addComponent(tf_addLesson_name, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                        .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel14)
+                                            .addComponent(jLabel13))
+                                        .addGap(27, 27, 27)
+                                        .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jif_addLessonLayout.createSequentialGroup()
+                                                .addComponent(checkb_addLesson_tp)
+                                                .addGap(46, 46, 46)
+                                                .addComponent(checkb_addLesson_test))
+                                            .addGroup(jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(combob_addLesson_disci, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(combob_addLesson_teacher, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(bt_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         jif_addLessonLayout.setVerticalGroup(
             jif_addLessonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -998,14 +1016,20 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(checkb_addLesson_test))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bt_addLesson)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addLesson);
-        jif_addLesson.setBounds(0, 0, 264, 353);
+        jif_addLesson.setBounds(0, 0, 352, 402);
 
         jif_addUser.setClosable(true);
-        jif_addUser.setVisible(true);
+        jif_addUser.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jif_addUser.setVisible(false);
+        jif_addUser.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jif_addUserComponentHidden(evt);
+            }
+        });
 
         combob_addUser_year.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -1250,56 +1274,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.initTree();
     }//GEN-LAST:event_combob_educationActionPerformed
 
-    private void combob_addLesson_eduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combob_addLesson_eduActionPerformed
-        // TODO add your handling code here:
-        this.initComboBoxDisciForAddLessonUI();
-    }//GEN-LAST:event_combob_addLesson_eduActionPerformed
-
-    private void bt_addLessonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addLessonActionPerformed
-        // TODO add your handling code here:
-
-        // getting data from form
-        // ----------------------
-        String          aName = this.tf_addLesson_name.getText();
-
-        Calendar        myCal = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal.set(Calendar.HOUR, ((Integer)combob_addLesson_bHour.getSelectedItem()).intValue());
-        myCal.set(Calendar.MINUTE, ((Integer)combob_addLesson_bMin.getSelectedItem()).intValue());
-        Date            aBeginDate = new Date(myCal.getTime().getTime());
-
-        Calendar        myCal1 = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal1.set(Calendar.HOUR, ((Integer)combob_eHour.getSelectedItem()).intValue());
-        myCal1.set(Calendar.MINUTE, ((Integer)combob_addLesson_eMin.getSelectedItem()).intValue());
-        Date            anEndDate = new Date(myCal1.getTime().getTime());
-
-        boolean         isTP = this.checkb_addLesson_tp.isSelected();
-        boolean         isTest = this.checkb_addLesson_test.isSelected();
-        int             nbMax = (int)this.spin_addLesson_nbMax.getValue();
-
-        Discipline  aDisci = (Discipline)this.combob_addLesson_disci.getSelectedItem();
-        Teacher     aTeacher = (Teacher)this.combob_addLesson_teacher.getSelectedItem();
-
-        System.out.println("name: " + aName);
-        System.out.println("beginDate: " + new Time(aBeginDate.getTime()));
-        System.out.println("endDate: " + new Time(anEndDate.getTime()));
-        System.out.println("discipline:" + aDisci);
-        System.out.println("isTP: " + isTP);
-        System.out.println("isTest:" + isTest);
-
-        // setting lesson
-        // --------------
-        Lesson myLesson = new Lesson(aName, isTP, isTest, nbMax, aBeginDate, anEndDate, "Disponible", aTeacher, aDisci);
-        System.out.println(myLesson);
-
-        // saving lesson in DB
-        // -------------------
-        this.lessonService.insert(myLesson);
-
-        this.initTree();
-        ((DefaultTreeModel)this.myTree.getModel()).reload();
-        this.jif_addLesson.setVisible(false);
-    }//GEN-LAST:event_bt_addLessonActionPerformed
-
     private void bt_addUser_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addUser_addActionPerformed
         // TODO add your handling code here:
 
@@ -1360,48 +1334,119 @@ public class GeneralMDI extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.initComboBoxForAddUserUI();
         this.refreshAddUserUI();
-        UIUtils.maxJIF(this.jif_addUser, this.desktopPane);
-        this.jif_addUser.setVisible(true);
+        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
+        this.jif_home.setVisible(false);
     }//GEN-LAST:event_bt_home_addUserActionPerformed
 
     private void bt_home_addUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addUserMousePressed
         // TODO add your handling code here:
-        ImageIcon icon = new ImageIcon("res/img/bt_addUser_unclick.png");
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser_unclick.png" ));
         this.bt_home_addUser.setIcon(icon);
-        this.bt_home_addUser.repaint();
         
     }//GEN-LAST:event_bt_home_addUserMousePressed
 
     private void bt_home_addUserMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addUserMouseReleased
         // TODO add your handling code here:
-        ImageIcon icon = new ImageIcon("res/img/bt_addUser.png");
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser.png" ));
         this.bt_home_addUser.setIcon(icon);
-        this.bt_home_addUser.repaint();
     }//GEN-LAST:event_bt_home_addUserMouseReleased
+
+    private void jif_addLessonComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jif_addLessonComponentHidden
+        // TODO add your handling code here:
+        this.jif_home.setVisible(true);
+    }//GEN-LAST:event_jif_addLessonComponentHidden
+
+    private void bt_addLessonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addLessonActionPerformed
+        // TODO add your handling code here:
+
+        // getting data from form
+        // ----------------------
+        String          aName = this.tf_addLesson_name.getText();
+
+        Calendar        myCal = Calendar.getInstance(); // set a calendar to init sql.Date
+        myCal.set(Calendar.HOUR, ((Integer)combob_addLesson_bHour.getSelectedItem()).intValue());
+        myCal.set(Calendar.MINUTE, ((Integer)combob_addLesson_bMin.getSelectedItem()).intValue());
+        Date            aBeginDate = new Date(myCal.getTime().getTime());
+
+        Calendar        myCal1 = Calendar.getInstance(); // set a calendar to init sql.Date
+        myCal1.set(Calendar.HOUR, ((Integer)combob_eHour.getSelectedItem()).intValue());
+        myCal1.set(Calendar.MINUTE, ((Integer)combob_addLesson_eMin.getSelectedItem()).intValue());
+        Date            anEndDate = new Date(myCal1.getTime().getTime());
+
+        boolean         isTP = this.checkb_addLesson_tp.isSelected();
+        boolean         isTest = this.checkb_addLesson_test.isSelected();
+        int             nbMax = (int)this.spin_addLesson_nbMax.getValue();
+
+        Discipline  aDisci = (Discipline)this.combob_addLesson_disci.getSelectedItem();
+        Teacher     aTeacher = (Teacher)this.combob_addLesson_teacher.getSelectedItem();
+
+        System.out.println("name: " + aName);
+        System.out.println("beginDate: " + new Time(aBeginDate.getTime()));
+        System.out.println("endDate: " + new Time(anEndDate.getTime()));
+        System.out.println("discipline:" + aDisci);
+        System.out.println("isTP: " + isTP);
+        System.out.println("isTest:" + isTest);
+
+        // setting lesson
+        // --------------
+        Lesson myLesson = new Lesson(aName, isTP, isTest, nbMax, aBeginDate, anEndDate, "Disponible", aTeacher, aDisci);
+        System.out.println(myLesson);
+
+        // saving lesson in DB
+        // -------------------
+        this.lessonService.insert(myLesson);
+
+        this.initTree();
+        ((DefaultTreeModel)this.myTree.getModel()).reload();
+        this.jif_addLesson.setVisible(false);
+    }//GEN-LAST:event_bt_addLessonActionPerformed
+
+    private void combob_addLesson_eduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combob_addLesson_eduActionPerformed
+        // TODO add your handling code here:
+        this.initComboBoxDisciForAddLessonUI();
+    }//GEN-LAST:event_combob_addLesson_eduActionPerformed
+
+    private void jif_addDisciComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jif_addDisciComponentHidden
+        // TODO add your handling code here:
+        this.jif_home.setVisible(true);
+    }//GEN-LAST:event_jif_addDisciComponentHidden
+
+    private void jif_addUserComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jif_addUserComponentHidden
+        // TODO add your handling code here:
+        this.jif_home.setVisible(true);
+    }//GEN-LAST:event_jif_addUserComponentHidden
+
+    private void jif_addEduComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jif_addEduComponentHidden
+        // TODO add your handling code here:
+        this.jif_home.setVisible(true);
+    }//GEN-LAST:event_jif_addEduComponentHidden
 
     private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
         this.initComboBoxForAddUserUI();
         this.refreshAddUserUI();
-        UIUtils.maxJIF(this.jif_addUser, this.desktopPane);
+        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
+        this.jif_home.setVisible(false);
     }                                                   
 
     private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        UIUtils.maxJIF(this.jif_addEdu, this.desktopPane);
-        UIUtils.centerPanel(this.panel_addEdu, this.desktopPane);
+        UIUtils.centerJIF(this.jif_addEdu, this.desktopPane);
+        this.jif_home.setVisible(false);
     }                                                
 
     private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
         this.initComboBoxForAddDisciUI();
-        UIUtils.maxJIF(this.jif_addDisci, this.desktopPane);
+        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
+        this.jif_home.setVisible(false);
     }                                          
 
     private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
         this.initComboBoxForAddLessonUI();
-        UIUtils.maxJIF(this.jif_addLesson, this.desktopPane);
+        UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
+        this.jif_home.setVisible(false);
     }  
     /**
      * @param args the command line arguments
