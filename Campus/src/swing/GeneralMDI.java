@@ -84,6 +84,18 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addUser.setOpaque(false);
         this.bt_home_addUser.setContentAreaFilled(false);
         this.bt_home_addUser.setBorderPainted(false);
+        
+        this.bt_home_addDisci.setOpaque(false);
+        this.bt_home_addDisci.setContentAreaFilled(false);
+        this.bt_home_addDisci.setBorderPainted(false);
+        
+        this.bt_home_addEdu.setOpaque(false);
+        this.bt_home_addEdu.setContentAreaFilled(false);
+        this.bt_home_addEdu.setBorderPainted(false);
+        
+        this.bt_home_addLesson.setOpaque(false);
+        this.bt_home_addLesson.setContentAreaFilled(false);
+        this.bt_home_addLesson.setBorderPainted(false);
         switch (userType) {
             case STUDENT:
                 myStudent = new Student(user);
@@ -538,6 +550,9 @@ public class GeneralMDI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_detail = new javax.swing.JTextPane();
         bt_home_addUser = new javax.swing.JButton();
+        bt_home_addEdu = new javax.swing.JButton();
+        bt_home_addDisci = new javax.swing.JButton();
+        bt_home_addLesson = new javax.swing.JButton();
         jif_addDisci = new javax.swing.JInternalFrame();
         lbl_addDisci_winTitle = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -715,6 +730,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txt_detail);
 
         bt_home_addUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addUser_unclick.png"))); // NOI18N
+        bt_home_addUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         bt_home_addUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 bt_home_addUserMousePressed(evt);
@@ -726,6 +742,54 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_home_addUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_home_addUserActionPerformed(evt);
+            }
+        });
+
+        bt_home_addEdu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addEdu_unclick.png"))); // NOI18N
+        bt_home_addEdu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addEdu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_addEduMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_addEduMouseReleased(evt);
+            }
+        });
+        bt_home_addEdu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_addEduActionPerformed(evt);
+            }
+        });
+
+        bt_home_addDisci.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addDisci_unclick.png"))); // NOI18N
+        bt_home_addDisci.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addDisci.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_addDisciMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_addDisciMouseReleased(evt);
+            }
+        });
+        bt_home_addDisci.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_addDisciActionPerformed(evt);
+            }
+        });
+
+        bt_home_addLesson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addLesson_unclick.png"))); // NOI18N
+        bt_home_addLesson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addLesson.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_addLessonMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_addLessonMouseReleased(evt);
+            }
+        });
+        bt_home_addLesson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_addLessonActionPerformed(evt);
             }
         });
 
@@ -742,8 +806,14 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(jif_homeLayout.createSequentialGroup()
-                        .addComponent(bt_home_addUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 335, Short.MAX_VALUE)))
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bt_home_addUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bt_home_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 210, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jif_homeLayout.setVerticalGroup(
@@ -753,12 +823,18 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
                     .addGroup(jif_homeLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bt_home_addUser)
-                        .addGap(0, 47, Short.MAX_VALUE)))
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bt_home_addUser)
+                            .addComponent(bt_home_addDisci))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bt_home_addEdu)
+                            .addComponent(bt_home_addLesson))
+                        .addGap(7, 7, 7)))
                 .addContainerGap())
         );
 
@@ -1336,14 +1412,14 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void bt_home_addUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addUserMousePressed
         // TODO add your handling code here:
-        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser_unclick.png" ));
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser.png" ));
         this.bt_home_addUser.setIcon(icon);
         
     }//GEN-LAST:event_bt_home_addUserMousePressed
 
     private void bt_home_addUserMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addUserMouseReleased
         // TODO add your handling code here:
-        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser.png" ));
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser_unclick.png" ));
         this.bt_home_addUser.setIcon(icon);
     }//GEN-LAST:event_bt_home_addUserMouseReleased
 
@@ -1445,6 +1521,63 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_addEdu.setVisible(false);
     }//GEN-LAST:event_bt_addEduActionPerformed
 
+    private void bt_home_addEduMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addEduMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addEdu.png" ));
+        this.bt_home_addEdu.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addEduMousePressed
+
+    private void bt_home_addEduMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addEduMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addEdu_unclick.png" ));
+        this.bt_home_addEdu.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addEduMouseReleased
+
+    private void bt_home_addDisciMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addDisciMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addDisci.png" ));
+        this.bt_home_addDisci.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addDisciMousePressed
+
+    private void bt_home_addDisciMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addDisciMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addDisci_unclick.png" ));
+        this.bt_home_addDisci.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addDisciMouseReleased
+
+    private void bt_home_addLessonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addLessonMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addLesson.png" ));
+        this.bt_home_addLesson.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addLessonMousePressed
+
+    private void bt_home_addLessonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addLessonMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addLesson_unclick.png" ));
+        this.bt_home_addLesson.setIcon(icon);
+    }//GEN-LAST:event_bt_home_addLessonMouseReleased
+
+    private void bt_home_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addEduActionPerformed
+        // TODO add your handling code here:
+        this.refreshAddEducUI();
+        UIUtils.centerJIF(this.jif_addEdu, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }//GEN-LAST:event_bt_home_addEduActionPerformed
+
+    private void bt_home_addDisciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addDisciActionPerformed
+        // TODO add your handling code here:
+        this.refreshAddDisciUI();
+        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }//GEN-LAST:event_bt_home_addDisciActionPerformed
+
+    private void bt_home_addLessonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addLessonActionPerformed
+        // TODO add your handling code here:
+        this.refreshAddLessonUI();
+        UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }//GEN-LAST:event_bt_home_addLessonActionPerformed
+
     private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
         this.refreshAddUserUI();
@@ -1512,6 +1645,9 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JButton bt_addEdu;
     private javax.swing.JButton bt_addLesson;
     private javax.swing.JButton bt_addUser_add;
+    private javax.swing.JButton bt_home_addDisci;
+    private javax.swing.JButton bt_home_addEdu;
+    private javax.swing.JButton bt_home_addLesson;
     private javax.swing.JButton bt_home_addUser;
     private javax.swing.JCheckBox checkb_addLesson_test;
     private javax.swing.JCheckBox checkb_addLesson_tp;
