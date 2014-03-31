@@ -183,8 +183,8 @@ public class AbstractUserTest {
    */
   @Test
   public void testGetEducation() {
-    boolean result = this.administrator.getEducation().equals(this.education)
-                      && this.teacher.getEducation().equals(this.education)
+    boolean result = this.administrator.getEducation() == null
+                      && this.teacher.getEducation() == null
                       && this.student.getEducation().equals(this.education);
     assertTrue(result);
   }
