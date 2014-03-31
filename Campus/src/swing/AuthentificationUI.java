@@ -24,6 +24,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
      */
     public AuthentificationUI() {
         initComponents();
+        setLocationRelativeTo(null);
         this.setTitle("Campus");
         this.lbl_error.setText("");
         this.lbl_error.setVisible(false);
@@ -189,6 +190,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
         // ------------
         if (aUser != null) { // if user exist in database
             mdi = new GeneralMDI(userType, aUser);
+            mdi.setLocationRelativeTo(null);
             mdi.setVisible(true);
             System.out.println(aUser);
             this.dispose();
