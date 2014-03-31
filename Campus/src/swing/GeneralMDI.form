@@ -97,6 +97,7 @@
       <SubComponents>
         <Container class="javax.swing.JInternalFrame" name="jif_addEdu">
           <Properties>
+            <Property name="closable" type="boolean" value="true"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
           <AuxValues>
@@ -249,7 +250,15 @@
                           <Component id="combob_education" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" pref="291" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="463" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane2" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="bt_home_addUser" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="335" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -259,7 +268,15 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="combob_education" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="502" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" pref="506" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane2" min="-2" pref="369" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                              <Component id="bt_home_addUser" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -292,10 +309,34 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextPane" name="txt_detail">
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JButton" name="bt_home_addUser">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/res/img/bt_addUser_unclick.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_addUserMousePressed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_addUserMouseReleased"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_home_addUserActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JInternalFrame" name="jif_addDisci">
           <Properties>
+            <Property name="closable" type="boolean" value="true"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
           <Constraints>
@@ -311,34 +352,32 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="bt_addDisci_add" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lbl_addDisci_winTitle" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbl_addDisci_winTitle" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="combob_addDisci_bDay" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="combob_addDisci_bMonth" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="combob_addDisci_Year" min="-2" pref="80" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="combob_addDisci_bDay" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="combob_addDisci_bMonth" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="combob_addDisci_Year" min="-2" pref="80" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="combob_addDisci_eDay" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="combob_addDisci_eMonth" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="combob_addDisci_eYear" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Component id="combob_addDisci_edu" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="tf_addDisci_name" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="combob_addDisci_eDay" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="combob_addDisci_eMonth" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="combob_addDisci_eYear" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="combob_addDisci_edu" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="tf_addDisci_name" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -515,6 +554,7 @@
         </Container>
         <Container class="javax.swing.JInternalFrame" name="jif_addLesson">
           <Properties>
+            <Property name="closable" type="boolean" value="true"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
           <Constraints>
@@ -827,6 +867,7 @@
         </Container>
         <Container class="javax.swing.JInternalFrame" name="jif_addUser">
           <Properties>
+            <Property name="closable" type="boolean" value="true"/>
             <Property name="visible" type="boolean" value="true"/>
           </Properties>
           <Constraints>
@@ -842,38 +883,36 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="bt_addUser_add" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lbl_addUser_winTitle" alignment="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="combob_addUser_type" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="combob_addUser_day" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="combob_addUser_month" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="combob_addUser_year" min="-2" pref="75" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="tf_addUser_firstName" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tf_addUser_mail" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tf_addUser_login" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tf_addUser_passwd" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="combob_addUser_education" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="tf_addUser_lastName" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
+                          <Component id="lbl_addUser_winTitle" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="combob_addUser_type" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="combob_addUser_day" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="combob_addUser_month" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="combob_addUser_year" min="-2" pref="75" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="tf_addUser_firstName" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tf_addUser_mail" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tf_addUser_login" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tf_addUser_passwd" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="combob_addUser_education" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tf_addUser_lastName" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
+                              <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
