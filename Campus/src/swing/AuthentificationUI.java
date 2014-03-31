@@ -6,10 +6,10 @@
 
 package swing;
 
-import dao.AdministratorDAO;
-import dao.StudentDAO;
-import dao.TeacherDAO;
 import metier.AbstractUser;
+import service.AdministratorService;
+import service.StudentService;
+import service.TeacherService;
 import utils.PasswordUtils;
 import utils.UserType;
 
@@ -24,6 +24,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
      */
     public AuthentificationUI() {
         initComponents();
+        setLocationRelativeTo(null);
         this.setTitle("Campus");
         this.lbl_error.setText("");
         this.lbl_error.setVisible(false);
@@ -69,7 +70,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
         checkb_remember.setText("Se souvenir de moi");
 
         bt_connect.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
-        bt_connect.setText("Ouvrir session");
+        bt_connect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/btAuthen.png"))); // NOI18N
         bt_connect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_connectActionPerformed(evt);
@@ -97,18 +98,21 @@ public class AuthentificationUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bt_connect, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tf_login)
                     .addComponent(lbl_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lbl_pwd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tf_pwd)
                     .addComponent(lbl_error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(combob_userType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(checkb_remember)
-                        .addGap(0, 98, Short.MAX_VALUE))
-                    .addComponent(lbl_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(bt_connect, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,7 +133,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
                 .addComponent(checkb_remember)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbl_error)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bt_connect)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -167,18 +171,18 @@ public class AuthentificationUI extends javax.swing.JFrame {
         // getting user from database
         // --------------------------
         if (strType.compareTo("Eleve") == 0) { // a student
-            StudentDAO studentDAO = new StudentDAO();
-            aUser = studentDAO.selectByLoginPwd(aLogin, cryptPwd);
+            StudentService studentService = new StudentService();
+            aUser = studentService.selectByLoginPwd(aLogin, cryptPwd);
             userType = UserType.STUDENT;
         }
         else if (strType.compareTo("Professeur") == 0) { // a teacher
-            TeacherDAO teacherDAO = new TeacherDAO();
-            aUser = teacherDAO.selectByLoginPwd(aLogin, cryptPwd);
+            TeacherService teacherService = new TeacherService();
+            aUser = teacherService.selectByLoginPwd(aLogin, cryptPwd);
             userType = UserType.TEACHER;
         }
         else if (strType.compareTo("Administration") == 0) { // an admin user
-            AdministratorDAO adminDAO = new AdministratorDAO();
-            aUser = adminDAO.selectByLoginPwd(aLogin, cryptPwd);
+            AdministratorService adminService = new AdministratorService();
+            aUser = adminService.selectByLoginPwd(aLogin, cryptPwd);
             userType = UserType.ADMIN;
         }
         
@@ -186,6 +190,7 @@ public class AuthentificationUI extends javax.swing.JFrame {
         // ------------
         if (aUser != null) { // if user exist in database
             mdi = new GeneralMDI(userType, aUser);
+            mdi.setLocationRelativeTo(null);
             mdi.setVisible(true);
             System.out.println(aUser);
             this.dispose();

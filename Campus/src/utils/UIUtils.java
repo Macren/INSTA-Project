@@ -13,6 +13,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 /**
+ * 
  *
  * @author Madeleine
  */
@@ -40,11 +41,23 @@ public class UIUtils {
      * @param jif 
      */
         public static void centerPanel(JPanel panel, JDesktopPane jif) {
-//        Dimension jInternalFrameSize = jif.getSize();
-//        Dimension  panelSize = panel.getSize();
+          Dimension jInternalFrameSize = jif.getSize();
+          Dimension  panelSize = panel.getSize();
 //        int width = (jInternalFrameSize.width - panelSize.width) / 2;
 //        int height = (jInternalFrameSize.height - panelSize.height) / 2;
-//        panel.setLocation(width, height);
+        int widthPanel =    panelSize.width;
+        int widthJif =      jInternalFrameSize.width;
+        int heightPanel =   panelSize.height;
+        int heightJif =     jInternalFrameSize.height;
+        int newWidth =      (widthJif - widthPanel)/2;
+        int newHeight =     (heightJif - heightPanel)/2;
+        
+        //Rectangle rect = new Rectangle();
+        //panel.setBounds(rect);
+        //panel.setBounds(heightPanel,widthPanel,newHeight,newWidth);
+        jif.setBounds(heightPanel,widthPanel,newHeight,newWidth);
+        jif.setVisible(true);
+       
     }
     
 
@@ -58,6 +71,7 @@ public class UIUtils {
         Rectangle desktopBounds = desktopPane.getBounds();
         
         jif.setBounds(desktopBounds);
+            
         jif.setVisible(true);
     }
 }
