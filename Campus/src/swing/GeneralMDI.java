@@ -62,6 +62,7 @@ public class GeneralMDI extends javax.swing.JFrame {
      */
     public GeneralMDI() {
         initComponents();
+        //setLocationRelativeTo(null);
         initTree();
     }
     
