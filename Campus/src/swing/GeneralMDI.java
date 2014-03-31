@@ -9,6 +9,8 @@ package swing;
 import dao.DisciplineDAO;
 import dao.EducationDAO;
 import dao.LessonDAO;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JMenu;
@@ -23,6 +25,7 @@ import metier.Education;
 import metier.Lesson;
 import metier.Student;
 import metier.Teacher;
+import utils.UIUtils;
 import utils.UserType;
 
 /**
@@ -59,7 +62,8 @@ public class GeneralMDI extends javax.swing.JFrame {
     
     public GeneralMDI(UserType userType, AbstractUser user) {
         initComponents();
-        this.jLabel1.setText("Victoryyyyyy");
+        this.jif_addEdu.setVisible(false);
+        this.jif_addDisci.setVisible(false);
         switch (userType) {
             case STUDENT:
                 myStudent = new Student(user);
@@ -77,6 +81,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                 this.initTree();
                 break;
         }
+        UIUtils.maxJIF(jif_home, desktopPane);
         if (myStudent != null)
             System.out.println(myStudent);
         if (myTeacher != null)
@@ -85,6 +90,8 @@ public class GeneralMDI extends javax.swing.JFrame {
             System.out.println(myAdmin);
     }
     
+    
+    // <editor-fold defaultstate="collapsed" desc="Init UI Functions">  
     /**
      * =================
      * Init UI Functions
@@ -199,7 +206,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         DisciplineDAO disciplineDAO = new DisciplineDAO();
         List<Discipline> listDiscipline = disciplineDAO.selectAllByEducationIdAndEducationPromo((Education)this.combob_education.getSelectedItem());
     
-        DefaultMutableTreeNode racine = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode racine = new DefaultMutableTreeNode("Matières");
         
         // for each discipline
         // -------------------
@@ -249,7 +256,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         }
         TreeModel model = new DefaultTreeModel(racine);
 
-        this.jTree2.setModel(model);
+        this.myTree.setModel(model);
         
     }
     
@@ -269,6 +276,57 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
     
     
+    private void initComboBoxForAddDisciUI() {
+        Integer daysValue[] = new Integer[31];
+        Integer monthValue[] = new Integer[12];
+        Integer yearValue[] = new Integer[10];
+        
+        EducationDAO eduDAO = new EducationDAO();
+        List    listEdu = eduDAO.selectAllBySchoolId(this.myAdmin.getSchool().getId()); //getting all education from a school
+        DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
+        
+        // Education Value from School
+        // ---------------------------
+        for (Object o : listEdu) {
+            Education myEdu = (Education) o;
+            dcbmEdu.addElement(myEdu);
+        }
+        
+        // Day in Month Value
+        // ------------------
+        for (int i = 0; i < daysValue.length; i++) {
+            daysValue[i] = i+1;
+        }
+        
+        // Month in Year Value
+        // -------------------
+        for (int i = 0; i < monthValue.length; i++) {
+            monthValue[i] = i+1;
+        }
+        
+        // Year Value (10 max)
+        // -------------------
+        for (int i = 0; i < yearValue.length; i++) {
+            yearValue[i] = i+2014;
+        }
+        
+        DefaultComboBoxModel dcbmDay = new DefaultComboBoxModel(daysValue);
+        DefaultComboBoxModel dcbmMonth = new DefaultComboBoxModel(monthValue);
+        DefaultComboBoxModel dcbmYear = new DefaultComboBoxModel(yearValue);
+        DefaultComboBoxModel dcbmDay1 = new DefaultComboBoxModel(daysValue);
+        DefaultComboBoxModel dcbmMonth1 = new DefaultComboBoxModel(monthValue);
+        DefaultComboBoxModel dcbmYear1 = new DefaultComboBoxModel(yearValue);
+        this.combob_addDisci_bDay.setModel(dcbmDay);
+        this.combob_addDisci_bMonth.setModel(dcbmMonth);
+        this.combob_addDisci_Year.setModel(dcbmYear);
+        this.combob_addDisci_eDay.setModel(dcbmDay1);
+        this.combob_addDisci_eMonth.setModel(dcbmMonth1);
+        this.combob_addDisci_eYear.setModel(dcbmYear1);
+        this.combob_addDisci_edu.setModel(dcbmEdu);
+    }
+
+    // </editor-fold>
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -282,14 +340,35 @@ public class GeneralMDI extends javax.swing.JFrame {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         desktopPane = new javax.swing.JDesktopPane();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTree2 = new javax.swing.JTree();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jif_addEdu = new javax.swing.JInternalFrame();
+        panel_addEdu = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lbl_addEdu_winTitle = new javax.swing.JLabel();
+        bt_addEdu = new javax.swing.JButton();
+        tf_addEdu_name = new javax.swing.JTextField();
+        spin_addEdu_nbHour = new javax.swing.JSpinner();
+        spin_addEdu_promo = new javax.swing.JSpinner();
+        jif_home = new javax.swing.JInternalFrame();
         combob_education = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        myTree = new javax.swing.JTree();
+        jif_addDisci = new javax.swing.JInternalFrame();
+        lbl_addDisci_winTitle = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        combob_addDisci_edu = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        combob_addDisci_eYear = new javax.swing.JComboBox();
+        combob_addDisci_eMonth = new javax.swing.JComboBox();
+        bt_addDisci_add = new javax.swing.JButton();
+        combob_addDisci_eDay = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        combob_addDisci_bDay = new javax.swing.JComboBox();
+        combob_addDisci_bMonth = new javax.swing.JComboBox();
+        combob_addDisci_Year = new javax.swing.JComboBox();
+        tf_addDisci_name = new javax.swing.JTextField();
         menuBar = new javax.swing.JMenuBar();
         fileMenuBar = new javax.swing.JMenu();
         disconnectMenuItem = new javax.swing.JMenuItem();
@@ -305,72 +384,223 @@ public class GeneralMDI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jInternalFrame1.setVisible(true);
+        jif_addEdu.setVisible(true);
 
-        jScrollPane3.setViewportView(jTree2);
+        jLabel4.setText("Nombre d'heure:");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane4.setViewportView(jTable2);
+        jLabel3.setText("Nom:");
 
-        combob_education.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel5.setText("Année Promo:");
 
-        jButton1.setText("+");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        lbl_addEdu_winTitle.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        lbl_addEdu_winTitle.setForeground(new java.awt.Color(0, 102, 204));
+        lbl_addEdu_winTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_addEdu_winTitle.setText("Ajout d'une formation");
+
+        bt_addEdu.setText("Ajouter");
+        bt_addEdu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bt_addEduActionPerformed(evt);
             }
         });
 
-        jButton2.setText("-");
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panel_addEduLayout = new javax.swing.GroupLayout(panel_addEdu);
+        panel_addEdu.setLayout(panel_addEduLayout);
+        panel_addEduLayout.setHorizontalGroup(
+            panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_addEduLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(625, Short.MAX_VALUE))))
+                .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bt_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_addEdu_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panel_addEduLayout.createSequentialGroup()
+                        .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tf_addEdu_name)
+                            .addComponent(spin_addEdu_nbHour)
+                            .addComponent(spin_addEdu_promo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(42, 42, 42))
+        panel_addEduLayout.setVerticalGroup(
+            panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_addEduLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_addEdu_winTitle)
+                .addGap(18, 18, 18)
+                .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(tf_addEdu_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(spin_addEdu_nbHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(spin_addEdu_promo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(bt_addEdu)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        desktopPane.add(jInternalFrame1);
-        jInternalFrame1.setBounds(0, 0, 780, 580);
+        javax.swing.GroupLayout jif_addEduLayout = new javax.swing.GroupLayout(jif_addEdu.getContentPane());
+        jif_addEdu.getContentPane().setLayout(jif_addEduLayout);
+        jif_addEduLayout.setHorizontalGroup(
+            jif_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addEduLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jif_addEduLayout.setVerticalGroup(
+            jif_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addEduLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        desktopPane.add(jif_addEdu);
+        jif_addEdu.setBounds(490, 0, 280, 250);
+        desktopPane.setLayer(jif_addEdu, javax.swing.JLayeredPane.MODAL_LAYER);
+
+        jif_home.setVisible(true);
+
+        combob_education.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jScrollPane1.setViewportView(myTree);
+
+        javax.swing.GroupLayout jif_homeLayout = new javax.swing.GroupLayout(jif_home.getContentPane());
+        jif_home.getContentPane().setLayout(jif_homeLayout);
+        jif_homeLayout.setHorizontalGroup(
+            jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(combob_education, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))
+                .addContainerGap(463, Short.MAX_VALUE))
+        );
+        jif_homeLayout.setVerticalGroup(
+            jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_homeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        desktopPane.add(jif_home);
+        jif_home.setBounds(0, 0, 780, 580);
+
+        jif_addDisci.setVisible(true);
+
+        lbl_addDisci_winTitle.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        lbl_addDisci_winTitle.setForeground(new java.awt.Color(0, 102, 204));
+        lbl_addDisci_winTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_addDisci_winTitle.setText("Ajout d'une matière");
+
+        jLabel6.setText("Date de fin:");
+
+        combob_addDisci_edu.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel7.setText("Formation:");
+
+        combob_addDisci_eYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        combob_addDisci_eMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        bt_addDisci_add.setText("Ajouter");
+        bt_addDisci_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_addDisci_addActionPerformed(evt);
+            }
+        });
+
+        combob_addDisci_eDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Nom:");
+
+        jLabel8.setText("Date de début:");
+
+        combob_addDisci_bDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        combob_addDisci_bMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        combob_addDisci_Year.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jif_addDisciLayout = new javax.swing.GroupLayout(jif_addDisci.getContentPane());
+        jif_addDisci.getContentPane().setLayout(jif_addDisciLayout);
+        jif_addDisciLayout.setHorizontalGroup(
+            jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addDisciLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bt_addDisci_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lbl_addDisci_winTitle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jif_addDisciLayout.createSequentialGroup()
+                            .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel7))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jif_addDisciLayout.createSequentialGroup()
+                                    .addComponent(combob_addDisci_bDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(combob_addDisci_bMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(combob_addDisci_Year, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jif_addDisciLayout.createSequentialGroup()
+                                    .addComponent(combob_addDisci_eDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(combob_addDisci_eMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(combob_addDisci_eYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(combob_addDisci_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tf_addDisci_name)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jif_addDisciLayout.setVerticalGroup(
+            jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addDisciLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_addDisci_winTitle)
+                .addGap(18, 18, 18)
+                .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tf_addDisci_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(combob_addDisci_bDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combob_addDisci_bMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combob_addDisci_Year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(combob_addDisci_eDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(combob_addDisci_eMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(combob_addDisci_eYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(combob_addDisci_edu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addComponent(bt_addDisci_add)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        desktopPane.add(jif_addDisci);
+        jif_addDisci.setBounds(0, 0, 317, 278);
 
         fileMenuBar.setMnemonic('h');
         fileMenuBar.setText("Fichier");
@@ -424,9 +654,80 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bt_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEduActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+        // getting data from form
+        // ----------------------
+        String  aName   = this.tf_addEdu_name.getText();
+        int     aNbHour = ((Integer)spin_addEdu_nbHour.getValue()).intValue();
+        int     aPromo  = ((Integer)spin_addEdu_promo.getValue()).intValue();
+
+        System.out.println("name: " + aName);
+        System.out.println("nbHour: " + aNbHour);
+        System.out.println("promo: " + aPromo);
+        System.out.println("school:" + myAdmin.getSchool());
+
+        // setting & saving education
+        // --------------------------
+        Education myEdu = new Education(aName, aNbHour, aPromo, myAdmin.getSchool());
+        System.out.println(myEdu);
+        EducationDAO eduDAO = new EducationDAO();
+        eduDAO.insert(myEdu);
+        
+        this.initComboBox();
+        
+        this.combob_education.revalidate();
+        this.combob_education.repaint();
+
+        this.jif_addEdu.dispose();
+    }//GEN-LAST:event_bt_addEduActionPerformed
+
+    private void bt_addDisci_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addActionPerformed
+        // TODO add your handling code here:
+
+        // getting data from form
+        // ----------------------
+        String          aName = this.tf_addDisci_name.getText();
+
+        Calendar        myCal = Calendar.getInstance(); // set a calendar to init sql.Date
+        myCal.set(Calendar.YEAR, ((Integer)combob_addDisci_Year.getSelectedItem()).intValue());
+        myCal.set(Calendar.MONTH, ((Integer)combob_addDisci_bMonth.getSelectedItem()).intValue());
+        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_addDisci_bDay.getSelectedItem()).intValue());
+        Date            aBeginDate = new Date(myCal.getTime().getTime());
+
+        Calendar        myCal1 = Calendar.getInstance(); // set a calendar to init sql.Date
+        myCal.set(Calendar.YEAR, ((Integer)combob_addDisci_eYear.getSelectedItem()).intValue());
+        myCal.set(Calendar.MONTH, ((Integer)combob_addDisci_eMonth.getSelectedItem()).intValue());
+        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_addDisci_eDay.getSelectedItem()).intValue());
+        Date            anEndDate = new Date(myCal1.getTime().getTime());
+
+        Education anEdu = (Education)this.combob_addDisci_edu.getSelectedItem();
+
+        System.out.println("name: " + aName);
+        System.out.println("beginDate: " + aBeginDate);
+        System.out.println("endDate: " + anEndDate);
+        System.out.println("school:" + this.myAdmin.getSchool());
+
+        // setting discipline
+        // ------------------
+        Discipline myDisci = new Discipline(aName, aBeginDate, anEndDate, anEdu, "Disponible");
+        System.out.println(myDisci);
+
+        // saving discipline in DB
+        // -----------------------
+        DisciplineDAO disciDAO = new DisciplineDAO();
+        disciDAO.insert(myDisci);
+        
+        this.initTree();
+        
+        this.myTree.revalidate();
+        this.myTree.repaint();
+
+        this.jif_addDisci.dispose();
+
+        this.jif_addDisci.dispose();
+    }//GEN-LAST:event_bt_addDisci_addActionPerformed
 
     private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
@@ -436,14 +737,19 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        AddEducationUI addEduUI = new AddEducationUI(this.myAdmin.getSchool());
-        addEduUI.setVisible(true);
+        UIUtils.maxJIF(this.jif_addEdu, this.desktopPane);
+        UIUtils.centerPanel(this.panel_addEdu, this.desktopPane);
+//        AddEducationUI addEduUI = new AddEducationUI(this.myAdmin.getSchool());
+//        addEduUI.setVisible(true);
     }                                                
 
     private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        AddDisciplineUI addDisciUI = new AddDisciplineUI(this.myAdmin.getSchool());
-        addDisciUI.setVisible(true);
+        this.initComboBoxForAddDisciUI();
+        UIUtils.maxJIF(this.jif_addDisci, this.desktopPane);
+//        UIUtils.centerPanel(this.panel_addEdu, this.desktopPane);
+//        AddDisciplineUI addDisciUI = new AddDisciplineUI(this.myAdmin.getSchool());
+//        addDisciUI.setVisible(true);
     }                                          
 
     private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
@@ -487,21 +793,42 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bt_addDisci_add;
+    private javax.swing.JButton bt_addEdu;
+    private javax.swing.JComboBox combob_addDisci_Year;
+    private javax.swing.JComboBox combob_addDisci_bDay;
+    private javax.swing.JComboBox combob_addDisci_bMonth;
+    private javax.swing.JComboBox combob_addDisci_eDay;
+    private javax.swing.JComboBox combob_addDisci_eMonth;
+    private javax.swing.JComboBox combob_addDisci_eYear;
+    private javax.swing.JComboBox combob_addDisci_edu;
     private javax.swing.JComboBox combob_education;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem disconnectMenuItem;
     private javax.swing.JMenu fileMenuBar;
     private javax.swing.JMenu helpMenuBar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTree jTree2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JInternalFrame jif_addDisci;
+    private javax.swing.JInternalFrame jif_addEdu;
+    private javax.swing.JInternalFrame jif_home;
+    private javax.swing.JLabel lbl_addDisci_winTitle;
+    private javax.swing.JLabel lbl_addEdu_winTitle;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JTree myTree;
+    private javax.swing.JPanel panel_addEdu;
+    private javax.swing.JSpinner spin_addEdu_nbHour;
+    private javax.swing.JSpinner spin_addEdu_promo;
+    private javax.swing.JTextField tf_addDisci_name;
+    private javax.swing.JTextField tf_addEdu_name;
     private javax.swing.JMenu toolsMenuBar;
     // End of variables declaration//GEN-END:variables
 

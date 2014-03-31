@@ -33,7 +33,7 @@ public class AddDisciplineUI extends javax.swing.JFrame {
     public AddDisciplineUI(School pSchool) {
         initComponents();
         this.mySchool = pSchool;
-        this.initComboBox();
+        //this.initComboBox();
     }
     
     /**
@@ -41,55 +41,7 @@ public class AddDisciplineUI extends javax.swing.JFrame {
      * Init JComboBox
      * ==============
      */
-    private void initComboBox() {
-        Integer daysValue[] = new Integer[31];
-        Integer monthValue[] = new Integer[12];
-        Integer yearValue[] = new Integer[10];
-        
-        EducationDAO eduDAO = new EducationDAO();
-        List    listEdu = eduDAO.selectAllBySchoolId(this.mySchool.getId()); //getting all education from a school
-        DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
-        
-        // Education Value from School
-        // ---------------------------
-        for (Object o : listEdu) {
-            Education myEdu = (Education) o;
-            dcbmEdu.addElement(myEdu);
-        }
-        
-        // Day in Month Value
-        // ------------------
-        for (int i = 0; i < daysValue.length; i++) {
-            daysValue[i] = i+1;
-        }
-        
-        // Month in Year Value
-        // -------------------
-        for (int i = 0; i < monthValue.length; i++) {
-            monthValue[i] = i+1;
-        }
-        
-        // Year Value (10 max)
-        // -------------------
-        for (int i = 0; i < yearValue.length; i++) {
-            yearValue[i] = i+2014;
-        }
-        
-        DefaultComboBoxModel dcbmDay = new DefaultComboBoxModel(daysValue);
-        DefaultComboBoxModel dcbmMonth = new DefaultComboBoxModel(monthValue);
-        DefaultComboBoxModel dcbmYear = new DefaultComboBoxModel(yearValue);
-        DefaultComboBoxModel dcbmDay1 = new DefaultComboBoxModel(daysValue);
-        DefaultComboBoxModel dcbmMonth1 = new DefaultComboBoxModel(monthValue);
-        DefaultComboBoxModel dcbmYear1 = new DefaultComboBoxModel(yearValue);
-        this.combob_day.setModel(dcbmDay);
-        this.combob_month.setModel(dcbmMonth);
-        this.combob_year.setModel(dcbmYear);
-        this.combob_day1.setModel(dcbmDay1);
-        this.combob_month1.setModel(dcbmMonth1);
-        this.combob_year1.setModel(dcbmYear1);
-        this.combob_edu.setModel(dcbmEdu);
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,55 +52,55 @@ public class AddDisciplineUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        bt_addEdu = new javax.swing.JButton();
+        bt_addDisci_add = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        lbl_winTitle = new javax.swing.JLabel();
-        tf_name = new javax.swing.JTextField();
+        lbl_addDisci_winTitle = new javax.swing.JLabel();
+        tf_addDisci_name = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        combob_day = new javax.swing.JComboBox();
-        combob_month = new javax.swing.JComboBox();
-        combob_year = new javax.swing.JComboBox();
-        combob_day1 = new javax.swing.JComboBox();
-        combob_month1 = new javax.swing.JComboBox();
-        combob_year1 = new javax.swing.JComboBox();
+        combob_addDisci_bDay = new javax.swing.JComboBox();
+        combob_addDisci_bMonth = new javax.swing.JComboBox();
+        combob_addDisci_Year = new javax.swing.JComboBox();
+        combob_addDisci_eDay = new javax.swing.JComboBox();
+        combob_addDisci_eMonth = new javax.swing.JComboBox();
+        combob_addDisci_eYear = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        combob_edu = new javax.swing.JComboBox();
+        combob_addDisci_edu = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Nom:");
 
-        bt_addEdu.setText("Ajouter");
-        bt_addEdu.addActionListener(new java.awt.event.ActionListener() {
+        bt_addDisci_add.setText("Ajouter");
+        bt_addDisci_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_addEduActionPerformed(evt);
+                bt_addDisci_addActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Date de fin:");
 
-        lbl_winTitle.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
-        lbl_winTitle.setForeground(new java.awt.Color(0, 102, 204));
-        lbl_winTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_winTitle.setText("Ajout d'une matière");
+        lbl_addDisci_winTitle.setFont(new java.awt.Font("Trebuchet MS", 1, 14)); // NOI18N
+        lbl_addDisci_winTitle.setForeground(new java.awt.Color(0, 102, 204));
+        lbl_addDisci_winTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_addDisci_winTitle.setText("Ajout d'une matière");
 
         jLabel2.setText("Date de début:");
 
-        combob_day.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_bDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        combob_month.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_bMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        combob_year.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_Year.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        combob_day1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_eDay.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        combob_month1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_eMonth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        combob_year1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_eYear.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Formation:");
 
-        combob_edu.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combob_addDisci_edu.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,8 +109,8 @@ public class AddDisciplineUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bt_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbl_addDisci_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_addDisci_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -168,19 +120,19 @@ public class AddDisciplineUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(combob_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(combob_addDisci_bDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(combob_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(combob_addDisci_bMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(combob_year, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(combob_addDisci_Year, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(combob_day1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(combob_addDisci_eDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(combob_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(combob_addDisci_eMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(combob_year1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(combob_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tf_name))
+                                .addComponent(combob_addDisci_eYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(combob_addDisci_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tf_addDisci_name))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -188,56 +140,56 @@ public class AddDisciplineUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_winTitle)
+                .addComponent(lbl_addDisci_winTitle)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(tf_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_addDisci_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(combob_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combob_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combob_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(combob_addDisci_bDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combob_addDisci_bMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combob_addDisci_Year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(combob_day1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(combob_month1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(combob_year1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(combob_addDisci_eDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(combob_addDisci_eMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(combob_addDisci_eYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(combob_edu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(combob_addDisci_edu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(bt_addEdu)
+                .addComponent(bt_addDisci_add)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bt_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEduActionPerformed
+    private void bt_addDisci_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addActionPerformed
         // TODO add your handling code here:
 
         // getting data from form
         // ----------------------
-        String          aName = this.tf_name.getText();
+        String          aName = this.tf_addDisci_name.getText();
         
         Calendar        myCal = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal.set(Calendar.YEAR, ((Integer)combob_year.getSelectedItem()).intValue());
-        myCal.set(Calendar.MONTH, ((Integer)combob_month.getSelectedItem()).intValue());
-        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_day.getSelectedItem()).intValue());
+        myCal.set(Calendar.YEAR, ((Integer)combob_addDisci_Year.getSelectedItem()).intValue());
+        myCal.set(Calendar.MONTH, ((Integer)combob_addDisci_bMonth.getSelectedItem()).intValue());
+        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_addDisci_bDay.getSelectedItem()).intValue());
         Date            aBeginDate = new Date(myCal.getTime().getTime());
         
         Calendar        myCal1 = Calendar.getInstance(); // set a calendar to init sql.Date
-        myCal.set(Calendar.YEAR, ((Integer)combob_year1.getSelectedItem()).intValue());
-        myCal.set(Calendar.MONTH, ((Integer)combob_month1.getSelectedItem()).intValue());
-        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_day1.getSelectedItem()).intValue());
+        myCal.set(Calendar.YEAR, ((Integer)combob_addDisci_eYear.getSelectedItem()).intValue());
+        myCal.set(Calendar.MONTH, ((Integer)combob_addDisci_eMonth.getSelectedItem()).intValue());
+        myCal.set(Calendar.DAY_OF_MONTH, ((Integer)combob_addDisci_eDay.getSelectedItem()).intValue());
         Date            anEndDate = new Date(myCal1.getTime().getTime());
         
-        Education anEdu = (Education)this.combob_edu.getSelectedItem();
+        Education anEdu = (Education)this.combob_addDisci_edu.getSelectedItem();
 
         System.out.println("name: " + aName);
         System.out.println("beginDate: " + aBeginDate);
@@ -255,7 +207,7 @@ public class AddDisciplineUI extends javax.swing.JFrame {
         disciDAO.insert(myDisci);
 
         this.dispose();
-    }//GEN-LAST:event_bt_addEduActionPerformed
+    }//GEN-LAST:event_bt_addDisci_addActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,19 +245,19 @@ public class AddDisciplineUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bt_addEdu;
-    private javax.swing.JComboBox combob_day;
-    private javax.swing.JComboBox combob_day1;
-    private javax.swing.JComboBox combob_edu;
-    private javax.swing.JComboBox combob_month;
-    private javax.swing.JComboBox combob_month1;
-    private javax.swing.JComboBox combob_year;
-    private javax.swing.JComboBox combob_year1;
+    private javax.swing.JButton bt_addDisci_add;
+    private javax.swing.JComboBox combob_addDisci_Year;
+    private javax.swing.JComboBox combob_addDisci_bDay;
+    private javax.swing.JComboBox combob_addDisci_bMonth;
+    private javax.swing.JComboBox combob_addDisci_eDay;
+    private javax.swing.JComboBox combob_addDisci_eMonth;
+    private javax.swing.JComboBox combob_addDisci_eYear;
+    private javax.swing.JComboBox combob_addDisci_edu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel lbl_winTitle;
-    private javax.swing.JTextField tf_name;
+    private javax.swing.JLabel lbl_addDisci_winTitle;
+    private javax.swing.JTextField tf_addDisci_name;
     // End of variables declaration//GEN-END:variables
 }
