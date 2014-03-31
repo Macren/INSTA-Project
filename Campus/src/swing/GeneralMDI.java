@@ -473,6 +473,8 @@ public class GeneralMDI extends javax.swing.JFrame {
     
     // </editor-fold>
     
+    
+    // <editor-fold defaultstate="collapsed" desc="Refresh From UI">
     private void refreshAddUserUI() {
         
         this.tf_addUser_firstName.setText("");
@@ -481,6 +483,30 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.tf_addUser_mail.setText("");
         this.tf_addUser_passwd.setText("");
     }
+    
+    private void refreshAddLessonUI() {
+        
+        this.initComboBoxForAddLessonUI();
+        this.initComboBoxDisciForAddLessonUI();
+        this.tf_addLesson_name.setText("");
+        this.spin_addLesson_nbMax.setValue(new Integer(0));
+        this.checkb_addLesson_tp.setSelected(false);
+        this.checkb_addLesson_test.setSelected(false);
+    }
+    
+    private void refreshAddDisciUI() {
+        
+        this.initComboBoxForAddDisciUI();
+        this.tf_addDisci_name.setText("");
+    }
+    
+    private void refreshAddEducUI() {
+        
+        this.tf_addEdu_name.setText("");
+        this.spin_addEdu_nbHour.setValue(new Integer(0));
+        this.spin_addEdu_promo.setValue(new Integer(0));
+    }
+    // </editor-fold>
     
     /**
      * This method is called from within the constructor to initialize the form.
