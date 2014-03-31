@@ -477,6 +477,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Refresh From UI">
     private void refreshAddUserUI() {
         
+        this.initComboBoxForAddUserUI();
         this.tf_addUser_firstName.setText("");
         this.tf_addUser_lastName.setText("");
         this.tf_addUser_login.setText("");
@@ -643,7 +644,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         panel_addEduLayout.setHorizontalGroup(
             panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_addEduLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bt_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lbl_addEdu_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -657,12 +657,11 @@ public class GeneralMDI extends javax.swing.JFrame {
                             .addComponent(tf_addEdu_name)
                             .addComponent(spin_addEdu_nbHour)
                             .addComponent(spin_addEdu_promo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
         panel_addEduLayout.setVerticalGroup(
             panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_addEduLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lbl_addEdu_winTitle)
                 .addGap(18, 18, 18)
                 .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -678,7 +677,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(spin_addEdu_promo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(bt_addEdu)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jif_addEduLayout = new javax.swing.GroupLayout(jif_addEdu.getContentPane());
@@ -688,14 +687,14 @@ public class GeneralMDI extends javax.swing.JFrame {
             .addGroup(jif_addEduLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jif_addEduLayout.setVerticalGroup(
             jif_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jif_addEduLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addEdu);
@@ -840,7 +839,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                                 .addComponent(combob_addDisci_eYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(combob_addDisci_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tf_addDisci_name))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jif_addDisciLayout.setVerticalGroup(
             jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -870,11 +869,11 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(combob_addDisci_edu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(bt_addDisci_add)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addDisci);
-        jif_addDisci.setBounds(0, 0, 317, 278);
+        jif_addDisci.setBounds(0, 0, 343, 310);
 
         jif_addLesson.setClosable(true);
         jif_addLesson.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -1042,11 +1041,11 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(checkb_addLesson_test))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bt_addLesson)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addLesson);
-        jif_addLesson.setBounds(0, 0, 352, 402);
+        jif_addLesson.setBounds(0, 0, 352, 406);
 
         jif_addUser.setClosable(true);
         jif_addUser.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -1127,7 +1126,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                                 .addComponent(combob_addUser_education, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(tf_addUser_lastName)))
                         .addComponent(jLabel23)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jif_addUserLayout.setVerticalGroup(
             jif_addUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1166,13 +1165,13 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addGroup(jif_addUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(combob_addUser_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(bt_addUser_add)
-                .addContainerGap())
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addUser);
-        jif_addUser.setBounds(0, 0, 334, 407);
+        jif_addUser.setBounds(0, 0, 368, 482);
 
         fileMenuBar.setMnemonic('h');
         fileMenuBar.setText("Fichier");
@@ -1225,34 +1224,6 @@ public class GeneralMDI extends javax.swing.JFrame {
             myStudent = null;
         this.dispose();
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
-
-    private void bt_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEduActionPerformed
-        // TODO add your handling code here:
-
-        // getting data from form
-        // ----------------------
-        String  aName   = this.tf_addEdu_name.getText();
-        int     aNbHour = ((Integer)spin_addEdu_nbHour.getValue()).intValue();
-        int     aPromo  = ((Integer)spin_addEdu_promo.getValue()).intValue();
-
-        System.out.println("name: " + aName);
-        System.out.println("nbHour: " + aNbHour);
-        System.out.println("promo: " + aPromo);
-        System.out.println("school:" + myAdmin.getSchool());
-
-        // setting & saving education
-        // --------------------------
-        Education myEdu = new Education(aName, aNbHour, aPromo, myAdmin.getSchool());
-        System.out.println(myEdu);
-        this.eduService.insert(myEdu);
-        
-        this.initComboBox();
-        
-        this.combob_education.revalidate();
-        this.combob_education.repaint();
-
-        this.jif_addEdu.setVisible(false);
-    }//GEN-LAST:event_bt_addEduActionPerformed
 
     private void bt_addDisci_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addActionPerformed
         // TODO add your handling code here:
@@ -1358,7 +1329,6 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void bt_home_addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addUserActionPerformed
         // TODO add your handling code here:
-        this.initComboBoxForAddUserUI();
         this.refreshAddUserUI();
         UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
         this.jif_home.setVisible(false);
@@ -1447,9 +1417,36 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_home.setVisible(true);
     }//GEN-LAST:event_jif_addEduComponentHidden
 
+    private void bt_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEduActionPerformed
+        // TODO add your handling code here:
+
+        // getting data from form
+        // ----------------------
+        String  aName   = this.tf_addEdu_name.getText();
+        int     aNbHour = ((Integer)spin_addEdu_nbHour.getValue()).intValue();
+        int     aPromo  = ((Integer)spin_addEdu_promo.getValue()).intValue();
+
+        System.out.println("name: " + aName);
+        System.out.println("nbHour: " + aNbHour);
+        System.out.println("promo: " + aPromo);
+        System.out.println("school:" + myAdmin.getSchool());
+
+        // setting & saving education
+        // --------------------------
+        Education myEdu = new Education(aName, aNbHour, aPromo, myAdmin.getSchool());
+        System.out.println(myEdu);
+        this.eduService.insert(myEdu);
+
+        this.initComboBox();
+
+        this.combob_education.revalidate();
+        this.combob_education.repaint();
+
+        this.jif_addEdu.setVisible(false);
+    }//GEN-LAST:event_bt_addEduActionPerformed
+
     private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        this.initComboBoxForAddUserUI();
         this.refreshAddUserUI();
         UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
         this.jif_home.setVisible(false);
@@ -1457,20 +1454,21 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
+        this.refreshAddEducUI();
         UIUtils.centerJIF(this.jif_addEdu, this.desktopPane);
         this.jif_home.setVisible(false);
     }                                                
 
     private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        this.initComboBoxForAddDisciUI();
+        this.refreshAddDisciUI();
         UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
         this.jif_home.setVisible(false);
     }                                          
 
     private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
-        this.initComboBoxForAddLessonUI();
+        this.refreshAddLessonUI();
         UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
         this.jif_home.setVisible(false);
     }  
