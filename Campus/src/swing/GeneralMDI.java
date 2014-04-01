@@ -1403,19 +1403,19 @@ public class GeneralMDI extends javax.swing.JFrame {
         // -----------------
         if (strType.compareTo("Eleve") == 0) { // a student
             anUserType = UserType.STUDENT;
-            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.myAdmin.getSchool(), anEdu);
+            aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), anEdu);
             System.out.println(aUser);
             this.studentService.insert((Student)aUser);
         }
         else if (strType.compareTo("Professeur") == 0) { // a teacher
             anUserType = UserType.TEACHER;
-            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.myAdmin.getSchool(), null);
+            aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), null);
             System.out.println(aUser);
             this.teacherService.insert((Teacher)aUser);
         }
         else if (strType.compareTo("Administration") == 0) { // an admin user
             anUserType = UserType.ADMIN;
-            aUser = new Administrator(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, this.myAdmin.getSchool(), null);
+            aUser = new Administrator(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), null);
             System.out.println(aUser);
             this.adminService.insert((Administrator)aUser);
         }

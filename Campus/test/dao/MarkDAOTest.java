@@ -138,4 +138,108 @@ public class MarkDAOTest {
     assertTrue(result);
   }
   
+  /**
+   * Test of selectAllByStudentId method, of class MarkDAO.
+   */
+  @Test
+  public void testSelectAllByStudentId() {
+    List<Mark> listMarks = new ArrayList();
+    listMarks = this.markDao.selectAllByStudentId(3);
+    
+    boolean resultBis = true;
+    for (Mark m : listMarks) {
+      if(m.getStudent().getId() != 3)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listMarks.size() > 0;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of selectAllByTeacherId method, of class MarkDAO.
+   */
+  @Test
+  public void testSelectAllByTeacherId() {
+    List<Mark> listMarks = new ArrayList();
+    listMarks = this.markDao.selectAllByTeacherId(2);
+    
+    boolean resultBis = true;
+    for (Mark m : listMarks) {
+      if(m.getTeacher().getId() != 2)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listMarks.size() > 0;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of selectAllByDisciplineId method, of class MarkDAO.
+   */
+  @Test
+  public void testSelectAllByDisciplineId() {
+    List<Mark> listMarks = new ArrayList();
+    listMarks = this.markDao.selectAllByDisciplineId(1);
+    
+    boolean resultBis = true;
+    for (Mark m : listMarks) {
+      if(m.getDiscipline().getId() != 1)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listMarks.size() > 0;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of selectAllByDisciplineId method, of class MarkDAO.
+   */
+  @Test
+  public void testSelectAllByStudentIdAndDisciplineId() {
+    List<Mark> listMarks = new ArrayList();
+    listMarks = this.markDao.selectAllByStudentIdAndDisciplineId(3, 1);
+    
+    boolean resultBis = true;
+    for (Mark m : listMarks) {
+      if(m.getStudent().getId() != 3 || m.getDiscipline().getId() != 1)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listMarks.size() > 0;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of selectAllByTeacherIdAndDisciplineId method, of class MarkDAO.
+   */
+  @Test
+  public void testSelectAllByTeacherIdAndDisciplineId() {
+    List<Mark> listMarks = new ArrayList();
+    listMarks = this.markDao.selectAllByTeacherIdAndDisciplineId(2, 1);
+    
+    boolean resultBis = true;
+    for (Mark m : listMarks) {
+      if(m.getTeacher().getId() != 2 || m.getDiscipline().getId() != 1)
+      {
+        resultBis = false;
+      }
+    }
+    
+    boolean result = resultBis && listMarks.size() > 0;
+    assertTrue(result);
+  }
+  
+  
+  
+  
+  
 }

@@ -24,6 +24,13 @@ public class AdministratorService {
   public AdministratorService(){
     this.administratorDao = new AdministratorDAO();
   }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public AdministratorService(String pUrl){
+    this.administratorDao = new AdministratorDAO(pUrl);
+  }
   
   
   public int insert(Administrator pAdministrator) {

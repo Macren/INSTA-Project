@@ -29,6 +29,7 @@ public abstract class AbstractUser implements Serializable {
     protected   String      firstName;
     protected   String      lastName;
     protected   int         phone;
+    protected   String      pathImgTrombi;
     protected   School      school;
     protected   Education   education;
     
@@ -45,20 +46,22 @@ public abstract class AbstractUser implements Serializable {
      * @param firstName
      * @param lastName
      * @param phone
+     * @param pathImgTrombi
      * @param school 
      * @param education 
      */
-    public AbstractUser(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        this.id         = id;
-        this.login      = login;
-        this.passwd     = passwd;
-        this.mail       = mail;
-        this.birthDate  = birthDate;
-        this.firstName  = firstName;
-        this.lastName   = lastName;
-        this.phone      = phone;
-        this.school     = school;
-        this.education  = education;
+    public AbstractUser(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        this.id             = id;
+        this.login          = login;
+        this.passwd         = passwd;
+        this.mail           = mail;
+        this.birthDate      = birthDate;
+        this.firstName      = firstName;
+        this.lastName       = lastName;
+        this.phone          = phone;
+        this.pathImgTrombi  = pathImgTrombi;
+        this.school         = school;
+        this.education      = education;
     }
 
     /**
@@ -72,19 +75,21 @@ public abstract class AbstractUser implements Serializable {
      * @param firstName
      * @param lastName
      * @param phone
+     * @param pathImgTrombi
      * @param school 
      * @param education 
      */
-    public AbstractUser(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        this.login      = login;
-        this.passwd     = passwd;
-        this.mail       = mail;
-        this.birthDate  = birthDate;
-        this.firstName  = firstName;
-        this.lastName   = lastName;
-        this.phone      = phone;
-        this.school     = school;
-        this.education  = education;
+    public AbstractUser(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        this.login          = login;
+        this.passwd         = passwd;
+        this.mail           = mail;
+        this.birthDate      = birthDate;
+        this.firstName      = firstName;
+        this.lastName       = lastName;
+        this.phone          = phone;
+        this.pathImgTrombi  = pathImgTrombi;
+        this.school         = school;
+        this.education      = education;
     }
     
     /**
@@ -95,16 +100,17 @@ public abstract class AbstractUser implements Serializable {
      */
     public AbstractUser(AbstractUser other) {
         if (other != null) {
-            this.id         = other.id;
-            this.login      = other.login;
-            this.passwd     = other.passwd;
-            this.mail       = other.mail;
-            this.birthDate  = other.birthDate;
-            this.firstName  = other.firstName;
-            this.lastName   = other.lastName;
-            this.phone      = other.phone;
-            this.school     = other.school;
-            this.education  = other.education;
+            this.id             = other.id;
+            this.login          = other.login;
+            this.passwd         = other.passwd;
+            this.mail           = other.mail;
+            this.birthDate      = other.birthDate;
+            this.firstName      = other.firstName;
+            this.lastName       = other.lastName;
+            this.phone          = other.phone;
+            this.pathImgTrombi  = other.pathImgTrombi;
+            this.school         = other.school;
+            this.education      = other.education;
         }
     }
 
@@ -164,6 +170,10 @@ public abstract class AbstractUser implements Serializable {
     public int getPhone() {
         return phone;
     }
+    
+    public String getPathImgTrombi() {
+        return pathImgTrombi;
+    }
 
     public School getSchool() {
         return school;
@@ -210,6 +220,10 @@ public abstract class AbstractUser implements Serializable {
 
     public void setPhone(int phone) {
         this.phone = phone;
+    }
+    
+    public void setPathImgTrombi(String pathImgTrombi) {
+      this.pathImgTrombi = pathImgTrombi;
     }
 
     public void setSchool(School school) {

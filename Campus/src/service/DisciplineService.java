@@ -19,8 +19,18 @@ public class DisciplineService {
   
   private final DisciplineDAO disciplineDao;
   
+  /**
+   * Ctor
+   */
   public DisciplineService(){
     this.disciplineDao = new DisciplineDAO();
+  }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public DisciplineService(String pUrl){
+    this.disciplineDao = new DisciplineDAO(pUrl);
   }
   
   public int insert(Discipline pDiscipline) {
@@ -37,6 +47,10 @@ public class DisciplineService {
   
   public Discipline selectById(int id) {
     return this.disciplineDao.selectById(id);
+  }
+  
+  public Discipline selectByLessonId(int pLessonId) {
+    return this.disciplineDao.selectByLessonId(pLessonId);
   }
   
   public List<Discipline> selectAll() {

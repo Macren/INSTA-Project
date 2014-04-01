@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package dao;
+package service;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,15 +22,15 @@ import static org.junit.Assert.*;
  *
  * @author biron
  */
-public class TeacherDAOTest {
+public class TeacherServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Teacher     teacher;
-  private TeacherDAO  teacherDao;
+  private School          school;
+  private Teacher         teacher;
+  private TeacherService  teacherService;
   
-  public TeacherDAOTest() {
+  public TeacherServiceTest() {
   }
   
   @BeforeClass
@@ -43,8 +43,8 @@ public class TeacherDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    this.school = schoolService.selectById(1);
     
     this.teacher = new Teacher("campus_teacher", "campus_teacher",
                                 "campus_teacher@campus.com", new Date(555),
@@ -53,7 +53,8 @@ public class TeacherDAOTest {
                                 null); // dernier arg : Education
                                 // null car un teacher n'a pas d'education( de formation)
     
-    this.teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
+    this.teacherService = new TeacherService(); // cette ligne juste pour les tests
+    this.teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -61,20 +62,20 @@ public class TeacherDAOTest {
   }
 
   /**
-   * Test of insert method, of class TeacherDAO.
+   * Test of insert method, of class TeacherService.
    */
   @Test
   public void testInsert() {
-    boolean result = this.teacherDao.insert(this.teacher) > 0;
+    boolean result = this.teacherService.insert(this.teacher) > 0;
     assertTrue(result);
   }
 
   /**
-   * Test of update method, of class TeacherDAO.
+   * Test of update method, of class TeacherService.
    */
   @Test
   public void testUpdate() {
-    this.teacher = this.teacherDao.selectById(2);
+    this.teacher = this.teacherService.selectById(2);
     
     this.teacher.setLogin("campus_teacher2");
     this.teacher.setPasswd("campus_teacher2");
@@ -83,13 +84,12 @@ public class TeacherDAOTest {
     this.teacher.setFirstName("campus_teacher2");
     this.teacher.setLastName("campus_teacher2");
     this.teacher.setPhone(444);
-    this.teacher.setPathImgTrombi("path/to/img/t");
-    boolean result = this.teacherDao.update(this.teacher);
+    boolean result = this.teacherService.update(this.teacher);
     assertTrue(result);
   }
 
   /**
-   * Test of delete method, of class TeacherDAO.
+   * Test of delete method, of class TeacherService.
    */
   @Test
   public void testDelete() {
@@ -100,56 +100,55 @@ public class TeacherDAOTest {
     this.teacher.setFirstName("a_suppr");
     this.teacher.setLastName("a_suppr");
     this.teacher.setPhone(000);
-    this.teacher.setPathImgTrombi("a/suppr");
     
     int id; // On récupère le dernier id généré
-    id = this.teacherDao.insert(this.teacher);
+    id = this.teacherService.insert(this.teacher);
     
     // On re-récupère l'objet, pour le suppr
-    this.teacher = this.teacherDao.selectById(id);
+    this.teacher = this.teacherService.selectById(id);
     
-    boolean result = this.teacherDao.delete(this.teacher);
+    boolean result = this.teacherService.delete(this.teacher);
     assertTrue(result);
   }
 
   /**
-   * Test of selectById method, of class TeacherDAO.
+   * Test of selectById method, of class TeacherService.
    */
   @Test
   public void testSelectById() {
-    this.teacher = this.teacherDao.selectById(2);
+    this.teacher = this.teacherService.selectById(2);
     assertTrue(this.teacher.getId() == 2);
   }
 
   /**
-   * Test of selectByLoginPwd method, of class TeacherDAO.
+   * Test of selectByLoginPwd method, of class TeacherService.
    */
   @Test
   public void testSelectByLoginPwd() {
-    this.teacher = this.teacherDao.selectByLoginPwd("campus_teacher2", "campus_teacher2");
+    this.teacher = this.teacherService.selectByLoginPwd("campus_teacher2", "campus_teacher2");
     boolean result = this.teacher.getLogin().equals("campus_teacher2")
                       && this.teacher.getPasswd().equals("campus_teacher2");
     assertTrue(result);
   }
 
   /**
-   * Test of selectAll method, of class TeacherDAO.
+   * Test of selectAll method, of class TeacherService.
    */
   @Test
   public void testSelectAll() {
     List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherDao.selectAll();
+    listTeachers = this.teacherService.selectAll();
     boolean result = listTeachers.size() > 0;
     assertTrue(result);
   }
 
   /**
-   * Test of selectAllBySchoolId method, of class TeacherDAO.
+   * Test of selectAllBySchoolId method, of class TeacherService.
    */
   @Test
   public void testSelectAllBySchoolId() {
     List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherDao.selectAllBySchoolId(1);
+    listTeachers = this.teacherService.selectAllBySchoolId(1);
     
     boolean resultBis = true;
     for (Teacher t : listTeachers) {

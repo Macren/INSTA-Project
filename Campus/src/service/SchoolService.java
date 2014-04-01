@@ -18,9 +18,20 @@ public class SchoolService {
   
   private final SchoolDAO schoolDao;
   
+  /**
+   * Ctor
+   */
   public SchoolService(){
     this.schoolDao = new SchoolDAO();
   }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public SchoolService(String pUrl){
+    this.schoolDao = new SchoolDAO(pUrl);
+  }
+  
   
   public int insert(School pSchool) {
     return this.schoolDao.insert(pSchool);

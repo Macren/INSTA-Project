@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package dao;
+package service;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -22,15 +22,15 @@ import static org.junit.Assert.*;
  *
  * @author biron
  */
-public class AdministratorDAOTest {
+public class AdministratorServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School            school;
-  private Administrator     administrator;
-  private AdministratorDAO  administratorDao;
+  private School                school;
+  private Administrator         administrator;
+  private AdministratorService  administratorService;
   
-  public AdministratorDAOTest() {
+  public AdministratorServiceTest() {
   }
   
   @BeforeClass
@@ -43,8 +43,8 @@ public class AdministratorDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    this.school = schoolService.selectById(1);
     
     this.administrator = new Administrator("campus_admin", "campus_admin",
                                             "campus_admin@campus.com", new Date(666),
@@ -53,7 +53,8 @@ public class AdministratorDAOTest {
                                             null); // dernier arg : Education
                                             // null car un administrator n'a pas d'education( de formation)
     
-    this.administratorDao = new AdministratorDAO(CONNECTION_STRING_BDD_TESTS);
+    this.administratorService = new AdministratorService(); // cette ligne juste pour les tests
+    this.administratorService = new AdministratorService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -61,20 +62,20 @@ public class AdministratorDAOTest {
   }
 
   /**
-   * Test of insert method, of class AdministratorDAO.
+   * Test of insert method, of class AdministratorService.
    */
   @Test
   public void testInsert() {
-    boolean result = this.administratorDao.insert(this.administrator) > 0;
+    boolean result = this.administratorService.insert(this.administrator) > 0;
     assertTrue(result);
   }
 
   /**
-   * Test of update method, of class AdministratorDAO.
+   * Test of update method, of class AdministratorService.
    */
   @Test
   public void testUpdate() {
-    this.administrator = this.administratorDao.selectById(1);
+    this.administrator = this.administratorService.selectById(1);
     
     this.administrator.setLogin("campus_admin2");
     this.administrator.setPasswd("campus_admin2");
@@ -83,13 +84,12 @@ public class AdministratorDAOTest {
     this.administrator.setFirstName("campus_admin2");
     this.administrator.setLastName("campus_admin2");
     this.administrator.setPhone(555);
-    this.administrator.setPathImgTrombi("path/to/img/t");
-    boolean result = this.administratorDao.update(this.administrator);
+    boolean result = this.administratorService.update(this.administrator);
     assertTrue(result);
   }
 
   /**
-   * Test of delete method, of class AdministratorDAO.
+   * Test of delete method, of class AdministratorService.
    */
   @Test
   public void testDelete() {
@@ -100,45 +100,44 @@ public class AdministratorDAOTest {
     this.administrator.setFirstName("a_suppr");
     this.administrator.setLastName("a_suppr");
     this.administrator.setPhone(000);
-    this.administrator.setPathImgTrombi("a/suppr");
     
     int id; // On récupère le dernier id généré
-    id = this.administratorDao.insert(this.administrator);
+    id = this.administratorService.insert(this.administrator);
     
     // On re-récupère l'objet, pour le suppr
-    this.administrator = this.administratorDao.selectById(id);
+    this.administrator = this.administratorService.selectById(id);
     
-    boolean result = this.administratorDao.delete(this.administrator);
+    boolean result = this.administratorService.delete(this.administrator);
     assertTrue(result);
   }
 
   /**
-   * Test of selectById method, of class AdministratorDAO.
+   * Test of selectById method, of class AdministratorService.
    */
   @Test
   public void testSelectById() {
-    this.administrator = this.administratorDao.selectById(1);
+    this.administrator = this.administratorService.selectById(1);
     assertTrue(this.administrator.getId() == 1);
   }
 
   /**
-   * Test of selectByLoginPwd method, of class AdministratorDAO.
+   * Test of selectByLoginPwd method, of class AdministratorService.
    */
   @Test
   public void testSelectByLoginPwd() {
-    this.administrator = this.administratorDao.selectByLoginPwd("campus_admin2", "campus_admin2");
+    this.administrator = this.administratorService.selectByLoginPwd("campus_admin2", "campus_admin2");
     boolean result = this.administrator.getLogin().equals("campus_admin2")
                       && this.administrator.getPasswd().equals("campus_admin2");
     assertTrue(result);
   }
 
   /**
-   * Test of selectAll method, of class AdministratorDAO.
+   * Test of selectAll method, of class AdministratorService.
    */
   @Test
   public void testSelectAll() {
     List<Administrator> listAdministrators = new ArrayList();
-    listAdministrators = this.administratorDao.selectAll();
+    listAdministrators = this.administratorService.selectAll();
     boolean result = listAdministrators.size() > 0;
     assertTrue(result);
   }

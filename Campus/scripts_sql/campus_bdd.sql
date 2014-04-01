@@ -89,6 +89,7 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd`.`user` (
   `first_name` VARCHAR(45) NOT NULL ,
   `last_name` VARCHAR(45) NOT NULL ,
   `phone` INT NOT NULL ,
+  `path_img_trombi` VARCHAR(255) NULL ,
   `id_role` INT NOT NULL ,
   `id_school` INT NOT NULL ,
   `id_education` INT NULL ,
@@ -322,33 +323,33 @@ INSERT INTO `campus_bdd`.`school` (`name`) VALUES ('Ecole2');
 -- -----------------------------------------------------
 -- Données Table `campus_bdd`.`user`
 -- -----------------------------------------------------
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', 'campus_admin', '0000000000', '1', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_teacher', '61e99028e915e6caa4f1ddafacf9b3d7 ', 'campus_teacher', '2014-03-24 00:00:00.000000', 'campus_teacher', 'campus_teacher', '0000000000', '2', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('campus_student', 'a0016406b5f15f7f3f1e1300154c6d10 ', 'campus_student', '2014-03-24 00:00:00.000000', 'campus_student', 'campus_student', '0000000000', '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('campus_admin', '53466ef439339fdeaf15372b85288d6c ', 'campus_admin', '2014-03-24 00:00:00.000000', 'campus_admin', 'campus_admin', '0000000000', 'path/to/admin_img', '1', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('campus_teacher', '61e99028e915e6caa4f1ddafacf9b3d7 ', 'campus_teacher', '2014-03-24 00:00:00.000000', 'campus_teacher', 'campus_teacher', '0000000000', 'path/to/teacher_img', '2', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('campus_student', 'a0016406b5f15f7f3f1e1300154c6d10 ', 'campus_student', '2014-03-24 00:00:00.000000', 'campus_student', 'campus_student', '0000000000', 'path/to/student_img', '3', '1');
 
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('AMAR.Philippe', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-03-24 00:00:00.000000', 'AMAR', 'Philippe', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BAEV.Rosen', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-06-12 00:00:00.000000', 'BAEV', 'Rosen', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BASTIEN.Jacqueline', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-11-27 00:00:00.000000', 'BASTIEN', 'Jacqueline', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BERGQUIST.Asa', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-02-12 00:00:00.000000', 'BERGQUIST', 'Asa', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BERTHOLLET.Nicolas', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-07-05 00:00:00.000000', 'BERTHOLLET', 'Nicolas', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BEZERRA.MariaRita', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-10-08 00:00:00.000000', 'BEZERRA', 'Maria Rita', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BONNAUD.Laure', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-10-12 00:00:00.000000', 'BONNAUD', 'Laure', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BORISOVA.Inés', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-06-09 00:00:00.000000', 'BORISOVA', 'Inés', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BRECK.Karine', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-04-02 00:00:00.000000', 'BRECK', 'Karine', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('BRICE.Anne', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-01-04 00:00:00.000000', 'BRICE', 'Anne', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('CARICATO.Paolo', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-01-19 00:00:00.000000', 'CARICATO', 'Paolo', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('DEMONT.Pierre', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-04-18 00:00:00.000000', 'DEMONT', 'Pierre', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('FAMOSE.Catherine', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1986-04-15 00:00:00.000000', 'FAMOSE', 'Catherine', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('FRUGERE.Stephanie', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-06-21 00:00:00.000000', 'FRUGERE', 'Stephanie', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('FULLICK.Joanna', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-08-16 00:00:00.000000', 'FULLICK', 'Joanna', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('HERAU.Vincent', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-08-16 00:00:00.000000', 'HERAU', 'Vincent', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('KNOWLES.Sarah', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-01-26 00:00:00.000000', 'KNOWLES', 'Sarah', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('LAMBERT.Michel', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-02-10 00:00:00.000000', 'LAMBERT', 'Michel', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('SAIDOU.Cheick', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-03-02 00:00:00.000000', 'SAIDOU', 'Cheick', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('PUJOL.Jacques', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-03-03 00:00:00.000000', 'PUJOL', 'Jacques', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('TOUZET.Denis', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-04-17 00:00:00.000000', 'TOUZET', 'Denis', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('VANA.Jan', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-05-21 00:00:00.000000', 'VANA', 'Jan', '0606060606', '3', '1');
-INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`) VALUES ('ZALCMANE.Luis', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-05-21 00:00:00.000000', 'ZALCMANE', 'Luis', '0606060606', '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('AMAR.Philippe', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-03-24 00:00:00.000000', 'AMAR', 'Philippe', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BAEV.Rosen', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-06-12 00:00:00.000000', 'BAEV', 'Rosen', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BASTIEN.Jacqueline', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-11-27 00:00:00.000000', 'BASTIEN', 'Jacqueline', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BERGQUIST.Asa', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-02-12 00:00:00.000000', 'BERGQUIST', 'Asa', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BERTHOLLET.Nicolas', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-07-05 00:00:00.000000', 'BERTHOLLET', 'Nicolas', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BEZERRA.MariaRita', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-10-08 00:00:00.000000', 'BEZERRA', 'Maria Rita', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BONNAUD.Laure', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-10-12 00:00:00.000000', 'BONNAUD', 'Laure', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BORISOVA.Inés', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-06-09 00:00:00.000000', 'BORISOVA', 'Inés', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BRECK.Karine', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-04-02 00:00:00.000000', 'BRECK', 'Karine', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('BRICE.Anne', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-01-04 00:00:00.000000', 'BRICE', 'Anne', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('CARICATO.Paolo', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-01-19 00:00:00.000000', 'CARICATO', 'Paolo', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('DEMONT.Pierre', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-04-18 00:00:00.000000', 'DEMONT', 'Pierre', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('FAMOSE.Catherine', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1986-04-15 00:00:00.000000', 'FAMOSE', 'Catherine', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('FRUGERE.Stephanie', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-06-21 00:00:00.000000', 'FRUGERE', 'Stephanie', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('FULLICK.Joanna', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-08-16 00:00:00.000000', 'FULLICK', 'Joanna', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('HERAU.Vincent', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-08-16 00:00:00.000000', 'HERAU', 'Vincent', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('KNOWLES.Sarah', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-01-26 00:00:00.000000', 'KNOWLES', 'Sarah', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('LAMBERT.Michel', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-02-10 00:00:00.000000', 'LAMBERT', 'Michel', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('SAIDOU.Cheick', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1987-03-02 00:00:00.000000', 'SAIDOU', 'Cheick', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('PUJOL.Jacques', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-03-03 00:00:00.000000', 'PUJOL', 'Jacques', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('TOUZET.Denis', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1988-04-17 00:00:00.000000', 'TOUZET', 'Denis', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('VANA.Jan', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-05-21 00:00:00.000000', 'VANA', 'Jan', '0606060606', NULL, '3', '1');
+INSERT INTO `campus_bdd`.`user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `path_img_trombi`, `id_role`, `id_school`) VALUES ('ZALCMANE.Luis', '9003d1df22eb4d3820015070385194c8', 'student@campus.com', '1989-05-21 00:00:00.000000', 'ZALCMANE', 'Luis', '0606060606', NULL, '3', '1');
 
 
 -- -----------------------------------------------------
@@ -399,5 +400,25 @@ INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `en
 INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Cours Hibernate 4', '1', '0', '2014-04-10 09:00:00.000000', '2013-11-10 17:30:00.000000', '1', '2', '1');
 INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Cours Hibernate 5', '0', '0', '2013-11-11 09:00:00.000000', '2013-11-11 17:30:00.000000', '1', '2', '1');
 INSERT INTO `campus_bdd`.`lesson` (`name`, `is_tp`, `is_test`, `begin_date`, `end_date`, `id_discipline`, `id_user_teacher`, `id_lesson_status`) VALUES ('Cours Hibernate 6', '0', '1', '2013-11-12 09:00:00.000000', '2013-11-12 17:30:00.000000', '1', '2', '1');
+
+-- -----------------------------------------------------
+-- Données Table `campus_bdd`.`mark`
+-- -----------------------------------------------------
+INSERT INTO `campus_bdd`.`mark` (`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES ('11', '20', '3', '2', '1', 'Moyen');
+INSERT INTO `campus_bdd`.`mark` (`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES ('13', '20', '3', '2', '1', 'Assez bien ');
+INSERT INTO `campus_bdd`.`mark` (`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES ('16', '20', '3', '2', '1', 'TB ; La dernière question apparement oubliée vous a fait perdre 4pts.');
+INSERT INTO `campus_bdd`.`mark` (`value`, `value_max`, `id_user_student`, `id_user_teacher`, `id_discipline`, `comment`) VALUES ('8', '10', '3', '2', '1', 'Tres bien');
+
+
+
+
+
+
+
+
+
+
+
+
 
 

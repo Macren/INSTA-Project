@@ -42,7 +42,7 @@ public class StudentDAO implements IDAO<Student> {
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `user` (`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`path_img_trombi`,`id_role`,`id_school`,`id_education`) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
@@ -56,9 +56,10 @@ public class StudentDAO implements IDAO<Student> {
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
-      stat.setInt(8, ID_ROLE_STUDENT);
-      stat.setInt(9, pStudent.getSchool().getId());
-      stat.setInt(10, pStudent.getEducation().getId());
+      stat.setString(8, pStudent.getPathImgTrombi());
+      stat.setInt(9, ID_ROLE_STUDENT);
+      stat.setInt(10, pStudent.getSchool().getId());
+      stat.setInt(11, pStudent.getEducation().getId());
       
       stat.executeUpdate();
       // On récupère le dernier id généré
@@ -85,7 +86,7 @@ public class StudentDAO implements IDAO<Student> {
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?,`id_education`=? WHERE `id`=?;";
+      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?,`path_img_trombi`=?,`id_education`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -99,9 +100,10 @@ public class StudentDAO implements IDAO<Student> {
       stat.setString(5, pStudent.getFirstName());
       stat.setString(6, pStudent.getLastName());
       stat.setInt(7, pStudent.getPhone());
-      stat.setInt(8, pStudent.getEducation().getId());
+      stat.setString(8, pStudent.getPathImgTrombi());
+      stat.setInt(9, pStudent.getEducation().getId());
       
-      stat.setInt(9, pStudent.getId());
+      stat.setInt(10, pStudent.getId());
       
       stat.executeUpdate();
       return true;
@@ -170,7 +172,7 @@ public class StudentDAO implements IDAO<Student> {
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              school, education);
+                              res.getString("path_img_trombi"), school, education);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -213,7 +215,7 @@ public class StudentDAO implements IDAO<Student> {
                               res.getString("pwd"), res.getString("mail"),
                               res.getDate("birth_date"), res.getString("first_name"),
                               res.getString("last_name"), res.getInt("phone"),
-                              school, education);
+                              res.getString("path_img_trombi"), school, education);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -254,7 +256,7 @@ public class StudentDAO implements IDAO<Student> {
                                       res.getString("pwd"), res.getString("mail"),
                                       res.getDate("birth_date"), res.getString("first_name"),
                                       res.getString("last_name"), res.getInt("phone"),
-                                      school, education);
+                                      res.getString("path_img_trombi"), school, education);
         listStudents.add(student);
       }
 

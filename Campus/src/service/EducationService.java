@@ -18,8 +18,18 @@ public class EducationService {
   
   private final EducationDAO educationDao;
   
+  /**
+   * Ctor
+   */
   public EducationService(){
     this.educationDao = new EducationDAO();
+  }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public EducationService(String pUrl){
+    this.educationDao = new EducationDAO(pUrl);
   }
   
   public int insert(Education pEducation) {

@@ -18,8 +18,18 @@ public class MarkService {
   
   private final MarkDAO markDao;
   
+  /**
+   * Ctor
+   */
   public MarkService(){
     this.markDao = new MarkDAO();
+  }
+  /**
+   * Ctor for tests
+   * @param pUrl 
+   */
+  public MarkService(String pUrl){
+    this.markDao = new MarkDAO(pUrl);
   }
   
   public int insert(Mark pMark) {

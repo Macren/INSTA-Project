@@ -41,7 +41,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `user`(`login`, `pwd`, `mail`, `birth_date`, `first_name`, `last_name`, `phone`, `id_role`, `id_school`, `id_education`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `user`(`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`path_img_trombi`,`id_role`,`id_school`,`id_education`) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
@@ -56,9 +56,10 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
-      stat.setInt(8, ID_ROLE_TEACHER);
-      stat.setInt(9, pTeacher.getSchool().getId());
-      stat.setString(10, null);  // null, car un teacher n'a aucune Education (formation)
+      stat.setString(8, pTeacher.getPathImgTrombi());
+      stat.setInt(9, ID_ROLE_TEACHER);
+      stat.setInt(10, pTeacher.getSchool().getId());
+      stat.setString(11, null);  // null, car un teacher n'a aucune Education (formation)
       
       stat.executeUpdate();
       // On récupère le dernier id généré
@@ -85,7 +86,7 @@ public class TeacherDAO implements IDAO<Teacher>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
+      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?,`path_img_trombi`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -100,8 +101,9 @@ public class TeacherDAO implements IDAO<Teacher>{
       stat.setString(5, pTeacher.getFirstName());
       stat.setString(6, pTeacher.getLastName());
       stat.setInt(7, pTeacher.getPhone());
+      stat.setString(8, pTeacher.getPathImgTrombi());
       
-      stat.setInt(8, pTeacher.getId());
+      stat.setInt(9, pTeacher.getId());
       
       stat.executeUpdate();
       return true;
@@ -166,7 +168,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                             res.getString("pwd"), res.getString("mail"),
                             res.getDate("birth_date"), res.getString("first_name"),
                             res.getString("last_name"), res.getInt("phone"),
-                            school, null); // dernier arg : Education
+                            res.getString("path_img_trombi"), school, null); // dernier arg : Education
                                           // Un admin n'a pas de formation (Education)
       }
       
@@ -208,7 +210,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                             res.getString("pwd"), res.getString("mail"),
                             res.getDate("birth_date"), res.getString("first_name"),
                             res.getString("last_name"), res.getInt("phone"),
-                            school, null);
+                            res.getString("path_img_trombi"), school, null);
       }
       
     } catch (ClassNotFoundException ex) {
@@ -245,7 +247,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, null);
+                                    res.getString("path_img_trombi"), school, null);
         listTeachers.add(teacher);
       }
 
@@ -285,7 +287,7 @@ public class TeacherDAO implements IDAO<Teacher>{
                                     res.getString("pwd"), res.getString("mail"),
                                     res.getDate("birth_date"), res.getString("first_name"),
                                     res.getString("last_name"), res.getInt("phone"),
-                                    school, null);
+                                    res.getString("path_img_trombi"), school, null);
         listTeachers.add(teacher);
       }
 

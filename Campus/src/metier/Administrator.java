@@ -26,11 +26,12 @@ public class Administrator extends AbstractUser {
      * @param firstName
      * @param lastName
      * @param phone
+     * @param pathImgTrombi
      * @param school
      * @param education 
      */
-    public Administrator(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
+    public Administrator(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, pathImgTrombi, school, education);
     }
 
     /**
@@ -47,8 +48,8 @@ public class Administrator extends AbstractUser {
      * @param school
      * @param education 
      */
-    public Administrator(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
+    public Administrator(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        super(login, passwd, mail, birthDate, firstName, lastName, phone, pathImgTrombi, school, education);
     }
 
     

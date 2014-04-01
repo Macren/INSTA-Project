@@ -42,7 +42,7 @@ public class LessonTest {
     this.school     = new School(1, "INSTA");
     this.education  = new Education(1, "Analyste Informaticien", 200, 11, this.school);
     this.discipline = new Discipline(1, "Java", new Date(101), new Date(102), this.education, "Disponible");
-    this.teacher    = new Teacher(1, "tea", "tea", "tea", new Date(555), "tea", "tea", 888, this.school, this.education);
+    this.teacher    = new Teacher(1, "tea", "tea", "tea", new Date(555), "tea", "tea", 888, "path/to/img/trombi", this.school, this.education);
     this.lesson     = new Lesson(1, "Cours Java 1", false, false, 25, new Date(111), new Date(112), "Disponible", this.teacher, this.discipline);
   }
   
@@ -216,7 +216,7 @@ public class LessonTest {
    */
   @Test
   public void testSetTeacher() {
-    Teacher teacher2 = new Teacher(2, "2", "2", "2", new Date(555), "2", "2", 777, this.school, this.education);
+    Teacher teacher2 = new Teacher(2, "2", "2", "2", new Date(555), "2", "2", 777, "path/to/img/trombi", this.school, this.education);
     
     this.lesson.setTeacher(teacher2);
     boolean result = this.lesson.getTeacher().equals(teacher2);

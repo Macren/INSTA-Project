@@ -28,11 +28,12 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param firstName
      * @param lastName
      * @param phone
+     * @param pathImgTrombi
      * @param school
      * @param education
      */
-    public Teacher(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
+    public Teacher(int id, String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        super(id, login, passwd, mail, birthDate, firstName, lastName, phone, pathImgTrombi, school, education);
     }
 
     /**
@@ -46,11 +47,12 @@ public class Teacher extends AbstractUser implements IDocUse {
      * @param firstName
      * @param lastName
      * @param phone
+     * @param pathImgTrombi
      * @param school
      * @param education
      */
-    public Teacher(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, School school, Education education) {
-        super(login, passwd, mail, birthDate, firstName, lastName, phone, school, education);
+    public Teacher(String login, String passwd, String mail, Date birthDate, String firstName, String lastName, int phone, String pathImgTrombi, School school, Education education) {
+        super(login, passwd, mail, birthDate, firstName, lastName, phone, pathImgTrombi, school, education);
     }
 
     
