@@ -67,53 +67,49 @@ public class GeneralMDI extends javax.swing.JFrame {
      * ============
      * Constructors
      * ============
-     */
-    
-    /**
+     *
      * Creates new form GeneralMDI
      */
+    
+    // default constructor auto-generated (unused)
     public GeneralMDI() {
         initComponents();
         //setLocationRelativeTo(null);
-        initTree();
     }
     
+    /**
+     * constructor with current user & his type
+     * @param userType
+     * @param user 
+     */
     public GeneralMDI(UserType userType, AbstractUser user) {
         initComponents();
-        
-        this.bt_home_addUser.setOpaque(false);
-        this.bt_home_addUser.setContentAreaFilled(false);
-        this.bt_home_addUser.setBorderPainted(false);
-        
-        this.bt_home_addDisci.setOpaque(false);
-        this.bt_home_addDisci.setContentAreaFilled(false);
-        this.bt_home_addDisci.setBorderPainted(false);
-        
-        this.bt_home_addEdu.setOpaque(false);
-        this.bt_home_addEdu.setContentAreaFilled(false);
-        this.bt_home_addEdu.setBorderPainted(false);
-        
-        this.bt_home_addLesson.setOpaque(false);
-        this.bt_home_addLesson.setContentAreaFilled(false);
-        this.bt_home_addLesson.setBorderPainted(false);
+    
+        // init jif_home with userType
         switch (userType) {
             case STUDENT:
                 myStudent = new Student(user);
+                this.initButtons();
                 this.initMenuForStudent();
                 break;
                 
             case TEACHER:
                 myTeacher = new Teacher(user);
+                this.initButtons();
                 break;
                 
             case ADMIN:
                 myAdmin = new Administrator(user);
                 this.initMenuForAdmin();
+                this.initButtons();
                 this.initComboBox();
                 this.initTree();
                 break;
         }
+        // display jif_home in full screen (app-screen)
         UIUtils.maxJIF(jif_home, desktopPane);
+        
+        // TO DELETE
         if (myStudent != null)
             System.out.println(myStudent);
         if (myTeacher != null)
@@ -132,9 +128,33 @@ public class GeneralMDI extends javax.swing.JFrame {
      */
     
     /**
-     * ====================
+     * setting buttons
+     * ---------------
+     * 
+     * get them transparent cause using iconImage
+     */
+    private void        initButtons() {
+    
+        this.bt_home_addUser.setOpaque(false);
+        this.bt_home_addUser.setContentAreaFilled(false);
+        this.bt_home_addUser.setBorderPainted(false);
+        
+        this.bt_home_addDisci.setOpaque(false);
+        this.bt_home_addDisci.setContentAreaFilled(false);
+        this.bt_home_addDisci.setBorderPainted(false);
+        
+        this.bt_home_addEdu.setOpaque(false);
+        this.bt_home_addEdu.setContentAreaFilled(false);
+        this.bt_home_addEdu.setBorderPainted(false);
+        
+        this.bt_home_addLesson.setOpaque(false);
+        this.bt_home_addLesson.setContentAreaFilled(false);
+        this.bt_home_addLesson.setBorderPainted(false);
+    }
+    
+    /**
      * initMenuForStudent()
-     * ====================
+     * --------------------
      * 
      * init menuBar when user is an Admin
      */
