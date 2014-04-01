@@ -49,10 +49,11 @@ public class AdministratorServiceTest {
     this.administrator = new Administrator("campus_admin", "campus_admin",
                                             "campus_admin@campus.com", new Date(666),
                                             "campus_admin", "campus_admin",
-                                            666, this.school,
+                                            666, "path/to/img/trombi", this.school,
                                             null); // dernier arg : Education
                                             // null car un administrator n'a pas d'education( de formation)
     
+    this.administratorService = new AdministratorService(); // cette ligne juste pour les tests
     this.administratorService = new AdministratorService(CONNECTION_STRING_BDD_TESTS);
   }
   

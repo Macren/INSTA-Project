@@ -42,6 +42,7 @@ public class SchoolServiceTest {
   public void setUp() {
     this.school = new School("Ecole Insta");
     
+    this.schoolService = new SchoolService(); // cette ligne juste pour les tests
     this.schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
   }
   

@@ -49,10 +49,11 @@ public class TeacherServiceTest {
     this.teacher = new Teacher("campus_teacher", "campus_teacher",
                                 "campus_teacher@campus.com", new Date(555),
                                 "campus_teacher", "campus_teacher",
-                                555, this.school, 
+                                555, "path/to/img/trombi", this.school, 
                                 null); // dernier arg : Education
                                 // null car un teacher n'a pas d'education( de formation)
     
+    this.teacherService = new TeacherService(); // cette ligne juste pour les tests
     this.teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
   }
   

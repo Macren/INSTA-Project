@@ -47,6 +47,7 @@ public class EducationServiceTest {
     
     this.education = new Education("Architecte Logiciel", 400, 13, this.school);
     
+    this.educationService = new EducationService(); // cette ligne juste pour les tests
     this.educationService = new EducationService(CONNECTION_STRING_BDD_TESTS);
   }
   

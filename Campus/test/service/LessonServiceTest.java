@@ -58,6 +58,7 @@ public class LessonServiceTest {
     
     this.lesson = new Lesson("Premier cours JEE", false, false, 25, new Date(111), new Date(222), "Disponible", this.teacher, this.discipline);
     
+    this.lessonService = new LessonService(); // cette ligne juste pour les tests
     this.lessonService = new LessonService(CONNECTION_STRING_BDD_TESTS);
   }
   

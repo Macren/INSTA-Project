@@ -49,7 +49,7 @@ public class TeacherDAOTest {
     this.teacher = new Teacher("campus_teacher", "campus_teacher",
                                 "campus_teacher@campus.com", new Date(555),
                                 "campus_teacher", "campus_teacher",
-                                555, this.school, 
+                                555, "path/to/img/trombi", this.school, 
                                 null); // dernier arg : Education
                                 // null car un teacher n'a pas d'education( de formation)
     
@@ -83,6 +83,7 @@ public class TeacherDAOTest {
     this.teacher.setFirstName("campus_teacher2");
     this.teacher.setLastName("campus_teacher2");
     this.teacher.setPhone(444);
+    this.teacher.setPathImgTrombi("path/to/img/t");
     boolean result = this.teacherDao.update(this.teacher);
     assertTrue(result);
   }
@@ -99,6 +100,7 @@ public class TeacherDAOTest {
     this.teacher.setFirstName("a_suppr");
     this.teacher.setLastName("a_suppr");
     this.teacher.setPhone(000);
+    this.teacher.setPathImgTrombi("a/suppr");
     
     int id; // On récupère le dernier id généré
     id = this.teacherDao.insert(this.teacher);

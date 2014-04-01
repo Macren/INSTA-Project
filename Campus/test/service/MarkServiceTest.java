@@ -62,6 +62,7 @@ public class MarkServiceTest {
     
     this.mark = new Mark((float) 15.5, (float) 20, this.student, this.teacher, this.discipline, "Très bon travail!");
     
+    this.markService = new MarkService(); // cette ligne juste pour les tests
     this.markService = new MarkService(CONNECTION_STRING_BDD_TESTS);
   }
   

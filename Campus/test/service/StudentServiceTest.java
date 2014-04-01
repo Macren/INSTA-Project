@@ -54,9 +54,10 @@ public class StudentServiceTest {
     this.student = new Student("campus_student", "campus_student",
                               "campus_student@campus.com", new Date(888),
                               "campus_student", "campus_student",
-                              888, this.school,
+                              888, "path/to/img/trombi", this.school,
                               this.education);
     
+    this.studentService = new StudentService(); // cette ligne juste pour les tests
     this.studentService = new StudentService(CONNECTION_STRING_BDD_TESTS);
   }
   

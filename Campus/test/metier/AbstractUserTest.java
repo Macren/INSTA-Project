@@ -24,10 +24,11 @@ public class AbstractUserTest {
   
   private School            school;
   private Education         education;
-  private List<Discipline>  listDisciplines;
   private Administrator     administrator;
   private Teacher           teacher;
   private Student           student;
+  
+  private Student           student2;
   
   public AbstractUserTest() {
   }
@@ -48,20 +49,23 @@ public class AbstractUserTest {
     this.administrator = new Administrator(1, "campus_admin",
                                                     "campus_admin", "campus_admin@campus.com",
                                                     new Date(666), "campus_admin",
-                                                    "campus_admin", 666,
+                                                    "campus_admin", 666, "path/to/img/trombi",
                                                     this.school, null); // dernier arg : Education
                                                     // Null car un admin n'a pas de formation
     this.teacher = new Teacher(2, "campus_teacher",
                                   "campus_teacher", "campus_teacher@campus.com",
                                   new Date(555), "campus_teacher",
-                                  "campus_teacher", 555,
+                                  "campus_teacher", 555, "path/to/img/trombi",
                                   this.school, null); // dernier arg : Education
                                   // Null car un teacher n'a pas de formation
     this.student = new Student(3, "campus_student",
                                   "campus_student", "campus_student@campus.com",
                                   new Date(444), "campus_student",
-                                  "campus_student", 444,
+                                  "campus_student", 444, "path/to/img/trombi",
                                   this.school, this.education);
+    // Ne sert que pour les tests
+    this.student2 = new Student("campus_teacher", "campus_teacher");
+    this.student2 = new Student(this.student);
   }
   
   @After
@@ -164,6 +168,17 @@ public class AbstractUserTest {
     boolean result = this.administrator.getPhone() == 666
                       && this.teacher.getPhone() == 555
                       && this.student.getPhone() == 444;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of getPathImgTrombi method, of class AbstractUser.
+   */
+  @Test
+  public void testGetPathImgTrombi() {
+    boolean result = this.administrator.getPathImgTrombi().equals("path/to/img/trombi")
+                      && this.teacher.getPathImgTrombi().equals("path/to/img/trombi")
+                      && this.student.getPathImgTrombi().equals("path/to/img/trombi");
     assertTrue(result);
   }
 
@@ -298,6 +313,20 @@ public class AbstractUserTest {
     boolean result = this.administrator.getPhone() == 1111
                       && this.teacher.getPhone() == 1112
                       && this.student.getPhone() == 1113;
+    assertTrue(result);
+  }
+  
+  /**
+   * Test of setPathImgTrombi method, of class AbstractUser.
+   */
+  @Test
+  public void testSetPathImgTrombi() {
+    this.administrator.setPathImgTrombi("path/to/img/t");
+    this.teacher.setPathImgTrombi("path/to/img/t");
+    this.student.setPathImgTrombi("path/to/img/t");
+    boolean result = this.administrator.getPathImgTrombi().equals("path/to/img/t")
+                      && this.teacher.getPathImgTrombi().equals("path/to/img/t")
+                      && this.student.getPathImgTrombi().equals("path/to/img/t");
     assertTrue(result);
   }
 

@@ -49,7 +49,7 @@ public class AdministratorDAOTest {
     this.administrator = new Administrator("campus_admin", "campus_admin",
                                             "campus_admin@campus.com", new Date(666),
                                             "campus_admin", "campus_admin",
-                                            666, this.school,
+                                            666, "path/to/img/trombi", this.school,
                                             null); // dernier arg : Education
                                             // null car un administrator n'a pas d'education( de formation)
     
@@ -83,6 +83,7 @@ public class AdministratorDAOTest {
     this.administrator.setFirstName("campus_admin2");
     this.administrator.setLastName("campus_admin2");
     this.administrator.setPhone(555);
+    this.administrator.setPathImgTrombi("path/to/img/t");
     boolean result = this.administratorDao.update(this.administrator);
     assertTrue(result);
   }
@@ -99,6 +100,7 @@ public class AdministratorDAOTest {
     this.administrator.setFirstName("a_suppr");
     this.administrator.setLastName("a_suppr");
     this.administrator.setPhone(000);
+    this.administrator.setPathImgTrombi("a/suppr");
     
     int id; // On récupère le dernier id généré
     id = this.administratorDao.insert(this.administrator);

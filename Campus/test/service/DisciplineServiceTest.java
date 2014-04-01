@@ -53,6 +53,7 @@ public class DisciplineServiceTest {
     
     this.discipline = new Discipline("Java EE", new Date(111), new Date(222), this.education, "Disponible");
     
+    this.disciplineService = new DisciplineService(); // cette ligne juste pour les tests
     this.disciplineService = new DisciplineService(CONNECTION_STRING_BDD_TESTS);
   }
   

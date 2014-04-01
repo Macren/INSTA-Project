@@ -47,12 +47,12 @@ public class MarkTest {
     this.student = new Student(3, "campus_student",
                                   "campus_student", "campus_student@campus.com",
                                   new Date(444), "campus_student",
-                                  "campus_student", 444,
+                                  "campus_student", 444, "path/to/img/trombi",
                                   this.school, this.education);
     this.teacher = new Teacher(2, "campus_teacher",
                                   "campus_teacher", "campus_teacher@campus.com",
                                   new Date(555), "campus_teacher",
-                                  "campus_teacher", 555,
+                                  "campus_teacher", 555, "path/to/img/trombi",
                                   this.school, this.education);
     this.mark = new Mark(1, 15, 20, this.student, this.teacher, this.discipline, "15/20 : Très bon travail !");
   }
@@ -135,7 +135,7 @@ public class MarkTest {
     Student student2 = new Student(3, "campus_student2",
                                   "campus_student2", "campus_student2@campus.com",
                                   new Date(333), "campus_student2",
-                                  "campus_student2", 333,
+                                  "campus_student2", 333, "path/to/img/trombi",
                                   this.school, this.education);
     this.mark.setStudent(student2);
     boolean result = this.mark.getStudent().equals(student2);
@@ -159,7 +159,7 @@ public class MarkTest {
     Teacher teacher2 = new Teacher(2, "campus_teacher2",
                                   "campus_teacher2", "campus_teacher2@campus.com",
                                   new Date(666), "campus_teacher2",
-                                  "campus_teacher2", 666,
+                                  "campus_teacher2", 666, "path/to/img/trombi",
                                   this.school, this.education);
     this.mark.setTeacher(teacher2);
     boolean result = this.mark.getTeacher().equals(teacher2);

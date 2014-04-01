@@ -41,7 +41,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx = db.connect();
       
-      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`id_role`,`id_school`) VALUES (?,?,?,?,?,?,?,?,?);";
+      String sql = "INSERT INTO `user` (`login`,`pwd`,`mail`,`birth_date`,`first_name`,`last_name`,`phone`,`path_img_trombi`,`id_role`,`id_school`) VALUES (?,?,?,?,?,?,?,?,?,?);";
       
       PreparedStatement stat = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       
@@ -56,8 +56,9 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
-      stat.setInt(8, ID_ROLE_ADMINISTRATOR);
-      stat.setInt(9, pAdministrator.getSchool().getId());
+      stat.setString(8, pAdministrator.getPathImgTrombi());
+      stat.setInt(9, ID_ROLE_ADMINISTRATOR);
+      stat.setInt(10, pAdministrator.getSchool().getId());
       
       stat.executeUpdate();
       // On récupère le dernier id généré
@@ -84,7 +85,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     try {
       cnx = db.connect();
       
-      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=? WHERE `id`=?;";
+      String sql = "UPDATE `user` SET `login`=?,`pwd`=?,`mail`=?,`birth_date`=?,`first_name`=?,`last_name`=?,`phone`=?, `path_img_trombi`=? WHERE `id`=?;";
       
       PreparedStatement stat = cnx.prepareStatement(sql);
       
@@ -98,8 +99,9 @@ public class AdministratorDAO implements IDAO<Administrator>{
       stat.setString(5, pAdministrator.getFirstName());
       stat.setString(6, pAdministrator.getLastName());
       stat.setInt(7, pAdministrator.getPhone());
+      stat.setString(8, pAdministrator.getPathImgTrombi());
       
-      stat.setInt(8, pAdministrator.getId());
+      stat.setInt(9, pAdministrator.getId());
       
       stat.executeUpdate();
       return true;
@@ -164,7 +166,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
                                           res.getString("pwd"), res.getString("mail"),
                                           res.getDate("birth_date"), res.getString("first_name"),
                                           res.getString("last_name"), res.getInt("phone"),
-                                          school, null); // dernier arg : Education
+                                          res.getString("path_img_trombi"), school, null); // dernier arg : Education
                                           // Un admin n'a pas de formation (Education)
       }
       
@@ -206,7 +208,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
                                           res.getString("pwd"), res.getString("mail"),
                                           res.getDate("birth_date"), res.getString("first_name"),
                                           res.getString("last_name"), res.getInt("phone"),
-                                          school, null); // dernier arg : Education
+                                          res.getString("path_img_trombi"), school, null); // dernier arg : Education
                                           // Un admin n'a pas de formation (Education)
       }
       
@@ -244,7 +246,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
                                                       res.getString("pwd"), res.getString("mail"),
                                                       res.getDate("birth_date"), res.getString("first_name"),
                                                       res.getString("last_name"), res.getInt("phone"),
-                                                      school, null); // dernier arg : Education
+                                                      res.getString("path_img_trombi"), school, null); // dernier arg : Education
                                                     // Un admin n'a pas de formation (Education)
         listAdministrators.add(administrator);
       }

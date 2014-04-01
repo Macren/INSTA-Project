@@ -54,7 +54,7 @@ public class StudentDAOTest {
     this.student = new Student("campus_student", "campus_student",
                               "campus_student@campus.com", new Date(888),
                               "campus_student", "campus_student",
-                              888, this.school,
+                              888, "path/to/img/trombi", this.school,
                               this.education);
     
     this.studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
@@ -90,6 +90,7 @@ public class StudentDAOTest {
     this.student.setFirstName("campus_student2");
     this.student.setLastName("campus_student2");
     this.student.setPhone(999);
+    this.student.setPathImgTrombi("path/to/img/t");
     boolean result = this.studentDao.update(this.student);
     assertTrue(result);
   }
@@ -106,6 +107,7 @@ public class StudentDAOTest {
     this.student.setFirstName("a_suppr");
     this.student.setLastName("a_suppr");
     this.student.setPhone(000);
+    this.student.setPathImgTrombi("a/suppr");
     
     int id; // On récupère le dernier id généré
     id = this.studentDao.insert(this.student);
