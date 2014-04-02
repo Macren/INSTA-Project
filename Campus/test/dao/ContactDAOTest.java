@@ -6,6 +6,7 @@
 
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import metier.Administrator;
 import metier.Contact;
@@ -52,6 +53,12 @@ public class ContactDAOTest {
   
   @Before
   public void setUp() {
+    this.administratorDao = new AdministratorDAO(CONNECTION_STRING_BDD_TESTS);
+    this.teacherdao       = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
+    this.studentDao       = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
+    
+    this.contactDao       = new ContactDAO(CONNECTION_STRING_BDD_TESTS);
+    
     this.administrator  = this.administratorDao.selectById(1);
     this.teacher        = this.teacherdao.selectById(2);
     this.student        = this.studentDao.selectById(3);
@@ -71,58 +78,16 @@ public class ContactDAOTest {
     boolean result = this.contactDao.insert(this.contact) == 1;
     assertTrue(result);
   }
-
-  /**
-   * Test of update method, of class ContactDAO.
-   */
-  @Test
-  public void testUpdate() {
-    
-  }
-
+  
   /**
    * Test of delete method, of class ContactDAO.
    */
   @Test
   public void testDelete() {
-    System.out.println("delete");
-    Contact pContact = null;
-    ContactDAO instance = new ContactDAO();
-    boolean expResult = false;
-    boolean result = instance.delete(pContact);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    boolean result = this.contactDao.delete(this.contact);
+    assertTrue(result);
   }
-
-  /**
-   * Test of selectById method, of class ContactDAO.
-   */
-  @Test
-  public void testSelectById() {
-    System.out.println("selectById");
-    int id = 0;
-    ContactDAO instance = new ContactDAO();
-    Contact expResult = null;
-    Contact result = instance.selectById(id);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
-
-  /**
-   * Test of selectAll method, of class ContactDAO.
-   */
-  @Test
-  public void testSelectAll() {
-    System.out.println("selectAll");
-    ContactDAO instance = new ContactDAO();
-    List<Contact> expResult = null;
-    List<Contact> result = instance.selectAll();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
+  
   
   
   /**
@@ -130,13 +95,10 @@ public class ContactDAOTest {
    */
   @Test
   public void testSelectAllByOneUserId() {
-    System.out.println("selectAll");
-    ContactDAO instance = new ContactDAO();
-    List<Contact> expResult = null;
-    List<Contact> result = instance.selectAll();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    List<Contact> listContacts = new ArrayList();
+    listContacts = this.contactDao.selectAllByOneUserId(1);
+    boolean result = listContacts.size() > 0;
+    assertTrue(result);
   }
   
 }

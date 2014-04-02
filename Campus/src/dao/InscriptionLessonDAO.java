@@ -10,14 +10,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import metier.InscriptionLesson;
-import metier.Lesson;
 import metier.Student;
 
 /**
@@ -70,6 +67,39 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
   @Override
   public List<InscriptionLesson> selectAll() {
        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+  
+  public List<Student> selectAllStudentsbyLessonId(int pIdLesson) {
+    List<Student> listStudents = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `inscription_lesson` WHERE `id_lesson` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pIdLesson);
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        
+        // On récupère le student
+        StudentDAO studentDAO = new StudentDAO();
+        Student student = studentDAO.selectById(res.getInt("id_user_student"));
+        
+        listStudents.add(student);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listStudents;
   }
   
 }
