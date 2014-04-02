@@ -72,36 +72,6 @@ public class Student extends AbstractUser implements IDocUse {
     
     
     
-    
-    /**
-     * Methods
-     */
-    
-    /**
-     * boolean signUpLesson()
-     * ----------------------
-     * The student sign up a lesson
-     * 
-     * @param lesson to sign up
-     * @return true if succeed
-     */
-    public  boolean     signUpLesson(Lesson lesson) {
-        return true;
-    }
-    
-    /**
-     * boolean signOutLesson()
-     * -----------------------
-     * The student sign out a lesson
-     * 
-     * @param lesson
-     * @return true if succeed
-     */
-    public  boolean     signOutLesson(Lesson lesson) {
-        return true;
-    }
-
-    
     /**
      * ==========================
      * Override Interface Methods

@@ -81,24 +81,6 @@ public class Teacher extends AbstractUser implements IDocUse {
     
     
     
-    
-    /**
-     * Methods
-     */
-    
-    /**
-     * boolean updateLesson()
-     * ----------------------
-     * The teacher update a lesson
-     * 
-     * @param lesson to update
-     * @return true if succeed
-     */
-    public  boolean     updateLesson(Lesson lesson) {
-        return true;
-    }
-
-    
     /**
      * ==========================
      * Override Interface Methods
