@@ -308,6 +308,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `campus_bdd_tests`.`contact`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`contact` (
+  `id_user_1` INT NOT NULL ,
+  `id_user_2` INT NOT NULL ,
+  PRIMARY KEY (`id_user_1`, `id_user_2`) ,
+  INDEX `fk_contact_1_idx` (`id_user_1` ASC) ,
+  INDEX `fk_contact_2_idx` (`id_user_2` ASC) ,
+  CONSTRAINT `fk_contact_1`
+    FOREIGN KEY (`id_user_1` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_contact_2`
+    FOREIGN KEY (`id_user_2` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Données Table `campus_bdd_tests`.`role`
 -- -----------------------------------------------------
 INSERT INTO `campus_bdd_tests`.`role` (`label`) VALUES ('Administrator');
