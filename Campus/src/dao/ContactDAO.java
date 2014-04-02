@@ -47,8 +47,8 @@ public class ContactDAO implements IDAO<Contact> {
       
       String sqlBis = "INSERT INTO `contact`(`id_user_1`,`id_user_2`) VALUES (?,?);";
       PreparedStatement statBis = cnx.prepareStatement(sqlBis);
-      stat.setInt(1, pContact.getUtilisateur2().getId());
-      stat.setInt(2, pContact.getUtilisateur1().getId());
+      statBis.setInt(1, pContact.getUtilisateur2().getId());
+      statBis.setInt(2, pContact.getUtilisateur1().getId());
       statBis.executeUpdate();
       
       return 1;
@@ -86,9 +86,9 @@ public class ContactDAO implements IDAO<Contact> {
       
       String sqlBis = "DELETE FROM `contact` WHERE `id_user_1`=? AND `id_user_2`=?;";
       PreparedStatement statBis = cnx.prepareStatement(sqlBis);
-      stat.setInt(1, pContact.getUtilisateur2().getId());
-      stat.setInt(2, pContact.getUtilisateur1().getId());
-      stat.executeUpdate();
+      statBis.setInt(1, pContact.getUtilisateur2().getId());
+      statBis.setInt(2, pContact.getUtilisateur1().getId());
+      statBis.executeUpdate();
       
       return true;
       
