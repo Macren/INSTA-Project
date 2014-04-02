@@ -7,8 +7,11 @@
 package swing;
 
 // <editor-fold defaultstate="collapsed" desc="Import">  
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -84,6 +87,8 @@ public class GeneralMDI extends javax.swing.JFrame {
      */
     public GeneralMDI(UserType userType, AbstractUser user) {
         initComponents();
+        
+        this.setTitle("Campus - " + user.getFirstName() + " " + user.getLastName().toUpperCase());
     
         // init jif_home with userType
         switch (userType) {
@@ -91,21 +96,28 @@ public class GeneralMDI extends javax.swing.JFrame {
                 myStudent = new Student(user);
                 this.initButtons();
                 this.initMenuForStudent();
+                this.initComboBoxHomeForStudent();
+                this.initTree();
+                this.combob_education.setEnabled(false);
                 break;
                 
             case TEACHER:
                 myTeacher = new Teacher(user);
                 this.initButtons();
+                this.initComboBoxHomeForAdmin();
+                this.initTreeForTeacher();
                 break;
                 
             case ADMIN:
                 myAdmin = new Administrator(user);
                 this.initMenuForAdmin();
                 this.initButtons();
-                this.initComboBox();
+                this.initComboBoxHomeForAdmin();
                 this.initTree();
                 break;
         }
+        this.setButtonEnable();
+        
         // display jif_home in full screen (app-screen)
         UIUtils.maxJIF(jif_home, desktopPane);
         
@@ -119,6 +131,22 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
     // </editor-fold>
     
+    private void setButtonEnable() {
+        
+        if (this.myStudent != null) {
+            this.bt_home_addDisci.setEnabled(false);
+            this.bt_home_addEdu.setEnabled(false);
+            this.bt_home_addLesson.setEnabled(false);
+            this.bt_home_addUser.setEnabled(false);
+        }
+        
+        if (this.myTeacher != null) {
+            this.bt_home_addEdu.setEnabled(false);
+            this.bt_home_addUser.setEnabled(false);
+            this.bt_home_addDisci.setEnabled(false);
+            this.bt_home_addLesson.setEnabled(false);
+        }
+    }
     
     // <editor-fold defaultstate="collapsed" desc="Init UI Functions">  
     /**
@@ -256,8 +284,13 @@ public class GeneralMDI extends javax.swing.JFrame {
        
         // getting list of all discipline in a promo education
         // ---------------------------------------------------
-        List<Discipline> listDiscipline = this.disciService.selectAllByEducationIdAndEducationPromo((Education)this.combob_education.getSelectedItem());
-    
+        List<Discipline> listDiscipline = null;
+        if (myStudent != null)
+            listDiscipline = this.disciService.selectAllByEducationIdAndEducationPromo(this.myStudent.getEducation());
+        else
+            listDiscipline = this.disciService.selectAllByEducationIdAndEducationPromo((Education)this.combob_education.getSelectedItem());
+            
+        
         DefaultMutableTreeNode racine = new DefaultMutableTreeNode("Matières");
         
         // for each discipline
@@ -271,49 +304,157 @@ public class GeneralMDI extends javax.swing.JFrame {
             List<Lesson>    listTP =        this.lessonService.selectAllTpsByDisciplineId(discipline.getId());
             List<Lesson>    listTest =      this.lessonService.selectAllTestsByDisciplineId(discipline.getId());
             
-            // insert in a lesson node each lesson
-            // -----------------------------------
-            DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
-            disciplineNode.add(lessonTitleNode);
-            for (Lesson lesson : listLesson){
-                DefaultMutableTreeNode  lessonNode =   new DefaultMutableTreeNode(lesson);
-                lessonTitleNode.add(lessonNode);
+            if (!listLesson.isEmpty()) {
+                // insert in a lesson node each lesson
+                // -----------------------------------
+                DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
+                disciplineNode.add(lessonTitleNode);
+                for (Lesson lesson : listLesson){
+                    DefaultMutableTreeNode  lessonNode =   new DefaultMutableTreeNode(lesson);
+                    lessonTitleNode.add(lessonNode);
+                }
+                disciplineNode.add(lessonTitleNode);
+            }
+            if (!listTP.isEmpty()) {
+                // insert in a tp node each tp
+                // ---------------------------
+                DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
+                disciplineNode.add(tpTitleNode);
+                for (Lesson tp : listTP){
+                    DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(tp);
+                    tpTitleNode.add(tpNode);
+                }
+                disciplineNode.add(tpTitleNode);
             }
             
-            // insert in a tp node each tp
-            // ---------------------------
-            DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
-            disciplineNode.add(tpTitleNode);
-            for (Lesson tp : listTP){
-                DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(tp);
-                tpTitleNode.add(tpNode);
-            }
-            
-            // insert in a test node each test
-            // -------------------------------
-            DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
-            disciplineNode.add(testTitleNode);
-            for (Lesson test : listTest){
-                DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
-                testTitleNode.add(testNode);
+            if (!listTest.isEmpty()) {
+                // insert in a test node each test
+                // -------------------------------
+                DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
+                disciplineNode.add(testTitleNode);
+                for (Lesson test : listTest){
+                    DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
+                    testTitleNode.add(testNode);
+                }
+                disciplineNode.add(testTitleNode);
             }
             
             // insert nodes in discipline node then root
             // -----------------------------------------
-            disciplineNode.add(lessonTitleNode);
-            disciplineNode.add(tpTitleNode);
-            disciplineNode.add(testTitleNode);
             racine.add(disciplineNode);
         }
         TreeModel model = new DefaultTreeModel(racine);
 
         this.myTree.setModel(model);
-        
     }
     
-    private void initComboBox() {
+    public boolean disciAlreadyExist(List<Discipline> myList, Discipline myDisci) {
         
-        List    listEdu = this.eduService.selectAllBySchoolId(this.myAdmin.getSchool().getId()); //getting all education from a school
+        if (myList == null || myDisci == null || myList.isEmpty())
+            return false;
+        
+        for (Discipline disci : myList) {
+            if (myDisci.getName().compareTo(disci.getName()) == 0)
+                return true;
+        }
+        return false;
+    }
+    
+    public void     initTreeForTeacher() {
+       
+        // getting list of all discipline in a promo education
+        // ---------------------------------------------------
+        Education myEdu = (Education)this.combob_education.getSelectedItem();
+        List<Lesson> listLesson = this.lessonService.selectAllByTeacherId(this.myTeacher.getId());
+        List<Discipline> listDiscipline = new ArrayList();
+        
+        for (Lesson lesson : listLesson){
+            Discipline  disci =   this.disciService.selectByLessonId(lesson.getId());
+            if (!this.disciAlreadyExist(listDiscipline, disci)) {
+                listDiscipline.add(disci);
+            }
+        }
+        
+        DefaultMutableTreeNode racine = new DefaultMutableTreeNode("Matières");
+        
+        // for each discipline
+        // -------------------
+        for (Discipline discipline : listDiscipline) {
+            if (discipline.getEducation().getId() == myEdu.getId()) {
+                DefaultMutableTreeNode disciplineNode = new DefaultMutableTreeNode(discipline); // save the current discipline
+
+                // getting all lessons/TPs/Tests for this discipline
+                // -------------------------------------------------
+
+                // insert in a lesson node each lesson
+                // -----------------------------------
+                DefaultMutableTreeNode lessonTitleNode = new DefaultMutableTreeNode("Cours");
+                DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
+                DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
+                
+                disciplineNode.add(lessonTitleNode);
+                for (Lesson lesson : listLesson){
+                    if (lesson.getDiscipline().getId() == discipline.getId() && !lesson.isTest() && !lesson.isTp()) {
+                        DefaultMutableTreeNode  lessonNode =   new DefaultMutableTreeNode(lesson);
+                        lessonTitleNode.add(lessonNode);
+                    }
+                    if (lesson.getDiscipline().getId() == discipline.getId() && lesson.isTp()) {
+                        DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(lesson);
+                        tpTitleNode.add(tpNode);
+                    }
+                    if (lesson.getDiscipline().getId() == discipline.getId() && lesson.isTest()) {
+                        DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(lesson);
+                        testTitleNode.add(testNode);
+                    }
+                }
+                
+                disciplineNode.add(lessonTitleNode);
+                disciplineNode.add(tpTitleNode);
+                disciplineNode.add(testTitleNode);
+
+                // insert in a tp node each tp
+                // ---------------------------
+    //            DefaultMutableTreeNode tpTitleNode = new DefaultMutableTreeNode("TP");
+    //            disciplineNode.add(tpTitleNode);
+    //            for (Lesson tp : listTP){
+    //                DefaultMutableTreeNode  tpNode =   new DefaultMutableTreeNode(tp);
+    //                tpTitleNode.add(tpNode);
+    //            }
+
+                // insert in a test node each test
+                // -------------------------------
+    //            DefaultMutableTreeNode testTitleNode = new DefaultMutableTreeNode("Test");
+    //            disciplineNode.add(testTitleNode);
+    //            for (Lesson test : listTest){
+    //                DefaultMutableTreeNode  testNode =   new DefaultMutableTreeNode(test);
+    //                testTitleNode.add(testNode);
+    //            }
+
+                // insert nodes in discipline node then root
+                // -----------------------------------------
+                racine.add(disciplineNode);
+            }
+        }
+        TreeModel model = new DefaultTreeModel(racine);
+
+        this.myTree.setModel(model);
+    }
+    
+    private void initComboBoxHomeForStudent() {
+        DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
+        dcbmEdu.addElement(this.myStudent.getEducation());
+        this.combob_education.setModel(dcbmEdu);
+    }
+    
+    private void initComboBoxHomeForAdmin() {
+        
+        int schoolID;
+        if (this.myAdmin != null)
+            schoolID = this.myAdmin.getSchool().getId();
+        else
+            schoolID = this.myTeacher.getSchool().getId();
+            
+        List    listEdu = this.eduService.selectAllBySchoolId(schoolID); //getting all education from a school
         DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
         
         // Education Value from School
@@ -378,11 +519,16 @@ public class GeneralMDI extends javax.swing.JFrame {
     private void initComboBoxForAddLessonUI() {
         Integer hourValue[] = new Integer[24];
         Integer minValue[] = new Integer[12];
+        int     schoolID;
+        if (this.myAdmin != null)
+            schoolID = this.myAdmin.getSchool().getId();
+        else
+            schoolID = this.myTeacher.getSchool().getId();
         
-        List    listEdu = this.eduService.selectAllBySchoolId(this.myAdmin.getSchool().getId()); //getting all education from a school
+        List    listEdu = this.eduService.selectAllBySchoolId(schoolID); //getting all education from a school
         DefaultComboBoxModel dcbmEdu = new DefaultComboBoxModel();
         
-        List        listTeacher = this.teacherService.selectAllBySchoolId(this.myAdmin.getSchool().getId()); //getting all education from a school
+        List        listTeacher = this.teacherService.selectAllBySchoolId(schoolID); //getting all education from a school
         DefaultComboBoxModel dcbmTeach = new DefaultComboBoxModel();
         
         // Education Value from School
@@ -573,6 +719,8 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_home_addEdu = new javax.swing.JButton();
         bt_home_addDisci = new javax.swing.JButton();
         bt_home_addLesson = new javax.swing.JButton();
+        bt_home_signUp = new javax.swing.JButton();
+        bt_home_signOut = new javax.swing.JButton();
         jif_addDisci = new javax.swing.JInternalFrame();
         lbl_addDisci_winTitle = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -722,14 +870,14 @@ public class GeneralMDI extends javax.swing.JFrame {
             .addGroup(jif_addEduLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jif_addEduLayout.setVerticalGroup(
             jif_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jif_addEduLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panel_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addEdu);
@@ -745,12 +893,17 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
         });
 
+        myTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                myTreeValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(myTree);
 
         jScrollPane2.setViewportView(txt_detail);
 
         bt_home_addUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addUser_unclick.png"))); // NOI18N
-        bt_home_addUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addUser.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bt_home_addUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 bt_home_addUserMousePressed(evt);
@@ -759,14 +912,9 @@ public class GeneralMDI extends javax.swing.JFrame {
                 bt_home_addUserMouseReleased(evt);
             }
         });
-        bt_home_addUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_home_addUserActionPerformed(evt);
-            }
-        });
 
         bt_home_addEdu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addEdu_unclick.png"))); // NOI18N
-        bt_home_addEdu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addEdu.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bt_home_addEdu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 bt_home_addEduMousePressed(evt);
@@ -782,7 +930,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         });
 
         bt_home_addDisci.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addDisci_unclick.png"))); // NOI18N
-        bt_home_addDisci.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addDisci.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bt_home_addDisci.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 bt_home_addDisciMousePressed(evt);
@@ -798,7 +946,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         });
 
         bt_home_addLesson.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addLesson_unclick.png"))); // NOI18N
-        bt_home_addLesson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bt_home_addLesson.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         bt_home_addLesson.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 bt_home_addLessonMousePressed(evt);
@@ -813,6 +961,10 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
         });
 
+        bt_home_signUp.setText("S'inscrire");
+
+        bt_home_signOut.setText("Se désinscrire");
+
         javax.swing.GroupLayout jif_homeLayout = new javax.swing.GroupLayout(jif_home.getContentPane());
         jif_home.getContentPane().setLayout(jif_homeLayout);
         jif_homeLayout.setHorizontalGroup(
@@ -824,7 +976,9 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addGroup(jif_homeLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())
                     .addGroup(jif_homeLayout.createSequentialGroup()
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bt_home_addUser, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -833,8 +987,13 @@ public class GeneralMDI extends javax.swing.JFrame {
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 210, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bt_home_signOut)
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(bt_home_signUp)))
+                        .addGap(68, 68, 68))))
         );
         jif_homeLayout.setVerticalGroup(
             jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -843,17 +1002,24 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
                     .addGroup(jif_homeLayout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bt_home_addUser)
-                            .addComponent(bt_home_addDisci))
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addComponent(jScrollPane2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(bt_home_addUser)
+                                    .addComponent(bt_home_addDisci)))
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(bt_home_signUp)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bt_home_addEdu)
-                            .addComponent(bt_home_addLesson))
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(bt_home_addEdu)
+                                .addComponent(bt_home_addLesson))
+                            .addComponent(bt_home_signOut))
                         .addGap(7, 7, 7)))
                 .addContainerGap())
         );
@@ -889,6 +1055,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_addDisci_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_addDisci_addActionPerformed(evt);
+                bt_addDisci_addClicked(evt);
             }
         });
 
@@ -935,7 +1102,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                                 .addComponent(combob_addDisci_eYear, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(combob_addDisci_edu, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tf_addDisci_name))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jif_addDisciLayout.setVerticalGroup(
             jif_addDisciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -969,7 +1136,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         );
 
         desktopPane.add(jif_addDisci);
-        jif_addDisci.setBounds(0, 0, 343, 310);
+        jif_addDisci.setBounds(0, 0, 358, 310);
 
         jif_addLesson.setClosable(true);
         jif_addLesson.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -1308,6 +1475,15 @@ public class GeneralMDI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    // <editor-fold defaultstate="collapsed" desc="Menu Bar ActionPerformed">  
+
+    /**
+     * ===================
+     * disconnect from MDI
+     * ===================
+     * @param evt 
+     */
     private void disconnectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectMenuItemActionPerformed
         // TODO add your handling code here:
         AuthentificationUI authentUI = new AuthentificationUI();
@@ -1320,7 +1496,38 @@ public class GeneralMDI extends javax.swing.JFrame {
             myStudent = null;
         this.dispose();
     }//GEN-LAST:event_disconnectMenuItemActionPerformed
+    
+    private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        this.refreshAddUserUI();
+        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }                                                   
 
+    private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        this.refreshAddEducUI();
+        UIUtils.centerJIF(this.jif_addEdu, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }                                                
+
+    private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        this.refreshAddDisciUI();
+        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }                                          
+
+    private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        this.refreshAddLessonUI();
+        UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
+        this.jif_home.setVisible(false);
+    }  
+    // </editor-fold>
+    
+     
+    
     private void bt_addDisci_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addActionPerformed
         // TODO add your handling code here:
 
@@ -1361,10 +1568,16 @@ public class GeneralMDI extends javax.swing.JFrame {
 
         this.jif_addDisci.setVisible(false);
     }//GEN-LAST:event_bt_addDisci_addActionPerformed
-
+  
+    
     private void combob_educationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combob_educationActionPerformed
         // TODO add your handling code here:
-        this.initTree();
+        if (this.bt_home_addLesson.isEnabled())
+            this.bt_home_addLesson.setEnabled(false);
+        if (this.myAdmin != null)
+            this.initTree();
+        if (this.myTeacher != null)
+            this.initTreeForTeacher();
     }//GEN-LAST:event_combob_educationActionPerformed
 
     private void bt_addUser_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addUser_addActionPerformed
@@ -1423,13 +1636,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_addUser.setVisible(false);
     }//GEN-LAST:event_bt_addUser_addActionPerformed
 
-    private void bt_home_addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addUserActionPerformed
-        // TODO add your handling code here:
-        this.refreshAddUserUI();
-        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
-        this.jif_home.setVisible(false);
-    }//GEN-LAST:event_bt_home_addUserActionPerformed
-
+    
     private void bt_home_addUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addUserMousePressed
         // TODO add your handling code here:
         ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addUser.png" ));
@@ -1533,7 +1740,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         System.out.println(myEdu);
         this.eduService.insert(myEdu);
 
-        this.initComboBox();
+        this.initComboBoxHomeForAdmin();
 
         this.combob_education.revalidate();
         this.combob_education.repaint();
@@ -1593,38 +1800,78 @@ public class GeneralMDI extends javax.swing.JFrame {
 
     private void bt_home_addLessonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addLessonActionPerformed
         // TODO add your handling code here:
+        boolean isTP = false;
+        boolean isTest = false;
         this.refreshAddLessonUI();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+        Education tmpEdu = (Education)this.combob_education.getSelectedItem();
+        if ((node != null)  && (!node.isRoot())) {
+            if (node.getUserObject().getClass() == Lesson.class || node.getUserObject().getClass() == Discipline.class) {
+                while (node.getUserObject().getClass() != Discipline.class)
+                    node = node.getPreviousNode();
+                System.out.println("the node is a: " + node.getUserObject().getClass());
+                Discipline tmp = (Discipline)node.getUserObject();
+                System.out.println("the discipline is : " + tmp.getName());
+                
+                DefaultComboBoxModel tmpEduModel = new DefaultComboBoxModel();
+                tmpEduModel.addElement(tmpEdu);
+                this.combob_addLesson_edu.setModel(tmpEduModel);
+                this.combob_addLesson_edu.setEnabled(false);
+                
+                DefaultComboBoxModel tmpModel = new DefaultComboBoxModel();
+                tmpModel.addElement(tmp);
+                this.combob_addLesson_disci.setModel(tmpModel);
+                this.combob_addLesson_disci.setEnabled(false);
+            }
+            if (node.getUserObject().getClass() == String.class) {
+                String str = (String)node.getUserObject();
+                if (str.compareTo("TP") == 0) {
+                    this.checkb_addLesson_tp.setSelected(true);
+                }
+                if (str.compareTo("Test") == 0) {
+                    this.checkb_addLesson_test.setSelected(true);
+                }
+            }
+        }
+        
         UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
         this.jif_home.setVisible(false);
     }//GEN-LAST:event_bt_home_addLessonActionPerformed
 
-    private void addUserMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void bt_addDisci_addClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addClicked
         // TODO add your handling code here:
-        this.refreshAddUserUI();
-        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
-        this.jif_home.setVisible(false);
-    }                                                   
+    }//GEN-LAST:event_bt_addDisci_addClicked
 
-    private void addEduMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void myTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_myTreeValueChanged
         // TODO add your handling code here:
-        this.refreshAddEducUI();
-        UIUtils.centerJIF(this.jif_addEdu, this.desktopPane);
-        this.jif_home.setVisible(false);
-    }                                                
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+//        if (node.isRoot() && this.myAdmin != null) {
+//            this.bt_home_addLesson.setEnabled(false);
+//            this.bt_home_addDisci.setEnabled(true);
+//        }
+//        if (node.isRoot() && this.myTeacher != null) {
+//            this.bt_home_addLesson.setEnabled(false);
+//            this.bt_home_addDisci.setEnabled(false);
+//        }
+        this.bt_home_addLesson.setEnabled(false);
+        if ((node != null)  && (!node.isRoot())) {
+            if (node.getUserObject().getClass() == Lesson.class && this.myStudent == null) {
+                this.bt_home_addLesson.setEnabled(true);
+                this.bt_home_addDisci.setEnabled(false);
+            }
+            if (node.getUserObject().getClass() == Discipline.class && this.myAdmin != null) {
+                this.bt_home_addLesson.setEnabled(true);
+                this.bt_home_addDisci.setEnabled(true);
+            }
+            if (node.getUserObject().getClass() == Discipline.class && this.myTeacher != null) {
+                this.bt_home_addLesson.setEnabled(true);
+            }
+            if (node.getUserObject().getClass() == String.class && this.myStudent == null)
+                this.bt_home_addLesson.setEnabled(true);
+            System.out.println("Object class is : " + node.getUserObject().getClass());
+        }
+    }//GEN-LAST:event_myTreeValueChanged
 
-    private void addDisciMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
-        this.refreshAddDisciUI();
-        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
-        this.jif_home.setVisible(false);
-    }                                          
-
-    private void addLessonMenuItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
-        this.refreshAddLessonUI();
-        UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
-        this.jif_home.setVisible(false);
-    }  
     /**
      * @param args the command line arguments
      */
@@ -1669,6 +1916,8 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JButton bt_home_addEdu;
     private javax.swing.JButton bt_home_addLesson;
     private javax.swing.JButton bt_home_addUser;
+    private javax.swing.JButton bt_home_signOut;
+    private javax.swing.JButton bt_home_signUp;
     private javax.swing.JCheckBox checkb_addLesson_test;
     private javax.swing.JCheckBox checkb_addLesson_tp;
     private javax.swing.JComboBox combob_addDisci_Year;
