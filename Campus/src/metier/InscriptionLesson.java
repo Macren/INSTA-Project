@@ -7,7 +7,6 @@
 package metier;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  *
@@ -17,25 +16,16 @@ public class InscriptionLesson implements Serializable {
   
   private Student student;
   private Lesson lesson;
-  private Date dateInscription;
-  private Date dateDesinscription;
-  private boolean adminValidation;
 
   /**
    * Seul constructeur
    * 
    * @param student
    * @param lesson
-   * @param dateInscription
-   * @param dateDesinscription
-   * @param adminValidation 
    */
-  public InscriptionLesson(Student student, Lesson lesson, Date dateInscription, Date dateDesinscription, boolean adminValidation) {
+  public InscriptionLesson(Student student, Lesson lesson) {
     this.student = student;
     this.lesson = lesson;
-    this.dateInscription = dateInscription;
-    this.dateDesinscription = dateDesinscription;
-    this.adminValidation = adminValidation;
   }
 
   public Student getStudent() {
@@ -54,28 +44,4 @@ public class InscriptionLesson implements Serializable {
     this.lesson = lesson;
   }
 
-  public Date getDateInscription() {
-    return dateInscription;
-  }
-
-  public void setDateInscription(Date dateInscription) {
-    this.dateInscription = dateInscription;
-  }
-
-  public Date getDateDesinscription() {
-    return dateDesinscription;
-  }
-
-  public void setDateDesinscription(Date dateDesinscription) {
-    this.dateDesinscription = dateDesinscription;
-  }
-
-  public boolean isAdminValidation() {
-    return adminValidation;
-  }
-
-  public void setAdminValidation(boolean adminValidation) {
-    this.adminValidation = adminValidation;
-  }
-  
 }

@@ -10,6 +10,7 @@ import metier.AbstractUser;
 import service.AdministratorService;
 import service.StudentService;
 import service.TeacherService;
+import utils.LogUtils;
 import utils.PasswordUtils;
 import utils.UserType;
 
@@ -192,11 +193,11 @@ public class AuthentificationUI extends javax.swing.JFrame {
             mdi = new GeneralMDI(userType, aUser);
             mdi.setLocationRelativeTo(null);
             mdi.setVisible(true);
-            System.out.println(aUser);
+            LogUtils.addLog(aUser.getLogin(), "Connection Ecole[id='" + aUser.getSchool().getId() + "'; name='" + aUser.getSchool().getName() + "']");
             this.dispose();
         }
         else {
-            System.out.println("noooooooo");
+            LogUtils.addLog(aLogin, "Connection échouée");
             this.lbl_error.setText("noooooooooo");
         }
     }//GEN-LAST:event_bt_connectActionPerformed

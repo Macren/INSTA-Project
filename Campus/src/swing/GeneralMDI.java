@@ -34,6 +34,7 @@ import service.EducationService;
 import service.LessonService;
 import service.StudentService;
 import service.TeacherService;
+import utils.LogUtils;
 import utils.PasswordUtils;
 import utils.UIUtils;
 import utils.UserType;
@@ -90,6 +91,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         
         this.setTitle("Campus - " + user.getFirstName() + " " + user.getLastName().toUpperCase());
     
+        LogUtils.addLog(user.getLogin(), "Utilisateur[id='" + user.getId() + "'; login='" + user.getLogin() + "'; type='" + userType.name() + "']");
         // init jif_home with userType
         switch (userType) {
             case STUDENT:
@@ -131,21 +133,15 @@ public class GeneralMDI extends javax.swing.JFrame {
     }
     // </editor-fold>
     
-    private void setButtonEnable() {
-        
-        if (this.myStudent != null) {
-            this.bt_home_addDisci.setEnabled(false);
-            this.bt_home_addEdu.setEnabled(false);
-            this.bt_home_addLesson.setEnabled(false);
-            this.bt_home_addUser.setEnabled(false);
-        }
-        
-        if (this.myTeacher != null) {
+    private void setButtonEnable() {        
+        if (this.myAdmin == null) {
             this.bt_home_addEdu.setEnabled(false);
             this.bt_home_addUser.setEnabled(false);
-            this.bt_home_addDisci.setEnabled(false);
-            this.bt_home_addLesson.setEnabled(false);
         }
+        this.bt_home_addDisci.setEnabled(false);
+        this.bt_home_addLesson.setEnabled(false);
+        this.bt_home_signIn.setEnabled(false);
+        this.bt_home_signOut.setEnabled(false);
     }
     
     // <editor-fold defaultstate="collapsed" desc="Init UI Functions">  
@@ -705,7 +701,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         lbl_addEdu_winTitle = new javax.swing.JLabel();
-        bt_addEdu = new javax.swing.JButton();
+        bt_addEdu_add = new javax.swing.JButton();
         tf_addEdu_name = new javax.swing.JTextField();
         spin_addEdu_nbHour = new javax.swing.JSpinner();
         spin_addEdu_promo = new javax.swing.JSpinner();
@@ -719,7 +715,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_home_addEdu = new javax.swing.JButton();
         bt_home_addDisci = new javax.swing.JButton();
         bt_home_addLesson = new javax.swing.JButton();
-        bt_home_signUp = new javax.swing.JButton();
+        bt_home_signIn = new javax.swing.JButton();
         bt_home_signOut = new javax.swing.JButton();
         jif_addDisci = new javax.swing.JInternalFrame();
         lbl_addDisci_winTitle = new javax.swing.JLabel();
@@ -815,10 +811,10 @@ public class GeneralMDI extends javax.swing.JFrame {
         lbl_addEdu_winTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_addEdu_winTitle.setText("Ajout d'une formation");
 
-        bt_addEdu.setText("Ajouter");
-        bt_addEdu.addActionListener(new java.awt.event.ActionListener() {
+        bt_addEdu_add.setText("Ajouter");
+        bt_addEdu_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_addEduActionPerformed(evt);
+                bt_addEdu_addActionPerformed(evt);
             }
         });
 
@@ -828,7 +824,7 @@ public class GeneralMDI extends javax.swing.JFrame {
             panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_addEduLayout.createSequentialGroup()
                 .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(bt_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bt_addEdu_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lbl_addEdu_winTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panel_addEduLayout.createSequentialGroup()
                         .addGroup(panel_addEduLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -859,7 +855,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(spin_addEdu_promo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(bt_addEdu)
+                .addComponent(bt_addEdu_add)
                 .addGap(0, 46, Short.MAX_VALUE))
         );
 
@@ -961,9 +957,25 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
         });
 
-        bt_home_signUp.setText("S'inscrire");
+        bt_home_signIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_signUp_unclick.png"))); // NOI18N
+        bt_home_signIn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_signInMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_signInMouseReleased(evt);
+            }
+        });
 
-        bt_home_signOut.setText("Se désinscrire");
+        bt_home_signOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_signOut_unclick.png"))); // NOI18N
+        bt_home_signOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_signOutMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_signOutMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jif_homeLayout = new javax.swing.GroupLayout(jif_home.getContentPane());
         jif_home.getContentPane().setLayout(jif_homeLayout);
@@ -987,13 +999,14 @@ public class GeneralMDI extends javax.swing.JFrame {
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bt_home_signOut)
-                            .addGroup(jif_homeLayout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(bt_home_signUp)))
-                        .addGap(68, 68, 68))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jif_homeLayout.createSequentialGroup()
+                                .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jif_homeLayout.createSequentialGroup()
+                                .addComponent(bt_home_signIn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26))))))
         );
         jif_homeLayout.setVerticalGroup(
             jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1002,25 +1015,20 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                     .addGroup(jif_homeLayout.createSequentialGroup()
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jif_homeLayout.createSequentialGroup()
-                                .addComponent(jScrollPane2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(bt_home_addUser)
-                                    .addComponent(bt_home_addDisci)))
-                            .addGroup(jif_homeLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(bt_home_signUp)))
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bt_home_addUser)
+                            .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_home_signIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(bt_home_addEdu)
-                                .addComponent(bt_home_addLesson))
-                            .addComponent(bt_home_signOut))
-                        .addGap(7, 7, 7)))
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(bt_home_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(11, 11, 11)))
                 .addContainerGap())
         );
 
@@ -1055,7 +1063,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_addDisci_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_addDisci_addActionPerformed(evt);
-                bt_addDisci_addClicked(evt);
             }
         });
 
@@ -1189,8 +1196,18 @@ public class GeneralMDI extends javax.swing.JFrame {
         combob_eHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         checkb_addLesson_tp.setText("TP");
+        checkb_addLesson_tp.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkb_addLesson_tpItemStateChanged(evt);
+            }
+        });
 
         checkb_addLesson_test.setText("Interrogation");
+        checkb_addLesson_test.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkb_addLesson_testItemStateChanged(evt);
+            }
+        });
 
         jLabel15.setText("Heure de fin:");
 
@@ -1565,6 +1582,8 @@ public class GeneralMDI extends javax.swing.JFrame {
         
         this.initTree();
         ((DefaultTreeModel)this.myTree.getModel()).reload();
+        
+        LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute une Matière[id='" + myDisci.getId() + "'; name='" + myDisci.getName() + "'; status='" + myDisci.getStatus() + "']");
 
         this.jif_addDisci.setVisible(false);
     }//GEN-LAST:event_bt_addDisci_addActionPerformed
@@ -1617,19 +1636,21 @@ public class GeneralMDI extends javax.swing.JFrame {
         if (strType.compareTo("Eleve") == 0) { // a student
             anUserType = UserType.STUDENT;
             aUser = new Student(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), anEdu);
-            System.out.println(aUser);
+                 
+            LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute un Utilisateur[id='" + aUser.getId() + "'; type='" + anUserType.name() + "']");
+
             this.studentService.insert((Student)aUser);
         }
         else if (strType.compareTo("Professeur") == 0) { // a teacher
             anUserType = UserType.TEACHER;
             aUser = new Teacher(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), null);
-            System.out.println(aUser);
+            LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute un Utilisateur[id='" + aUser.getId() + "'; type='" + anUserType.name() + "']");
             this.teacherService.insert((Teacher)aUser);
         }
         else if (strType.compareTo("Administration") == 0) { // an admin user
             anUserType = UserType.ADMIN;
             aUser = new Administrator(aLogin, cryptPwd, aMail, aBirthDate, aFirstName, aLastName, 0, "path/to/img/trombi", this.myAdmin.getSchool(), null);
-            System.out.println(aUser);
+            LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute un Utilisateur[id='" + aUser.getId() + "'; type='" + anUserType.name() + "']");
             this.adminService.insert((Administrator)aUser);
         }
 
@@ -1697,9 +1718,15 @@ public class GeneralMDI extends javax.swing.JFrame {
 
         this.initTree();
         ((DefaultTreeModel)this.myTree.getModel()).reload();
+                
+        LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute un Cours[id='" + myLesson.getId() + "'; name='" + myLesson.getName() + "'; status='" + myLesson.getStatus() + "']");
+
+        
         this.jif_addLesson.setVisible(false);
     }//GEN-LAST:event_bt_addLessonActionPerformed
 
+     // <editor-fold defaultstate="collapsed" desc="Add*UI HiddingListener"> 
+    
     private void combob_addLesson_eduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combob_addLesson_eduActionPerformed
         // TODO add your handling code here:
         this.initComboBoxDisciForAddLessonUI();
@@ -1720,8 +1747,9 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_home.setVisible(true);
     }//GEN-LAST:event_jif_addEduComponentHidden
 
-    private void bt_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEduActionPerformed
-        // TODO add your handling code here:
+    // </editor-fold>
+    
+    private void bt_addEdu_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addEdu_addActionPerformed
 
         // getting data from form
         // ----------------------
@@ -1729,25 +1757,32 @@ public class GeneralMDI extends javax.swing.JFrame {
         int     aNbHour = ((Integer)spin_addEdu_nbHour.getValue()).intValue();
         int     aPromo  = ((Integer)spin_addEdu_promo.getValue()).intValue();
 
-        System.out.println("name: " + aName);
-        System.out.println("nbHour: " + aNbHour);
-        System.out.println("promo: " + aPromo);
-        System.out.println("school:" + myAdmin.getSchool());
-
         // setting & saving education
         // --------------------------
         Education myEdu = new Education(aName, aNbHour, aPromo, myAdmin.getSchool());
-        System.out.println(myEdu);
         this.eduService.insert(myEdu);
 
-        this.initComboBoxHomeForAdmin();
+        // log action
+        LogUtils.addLog(this.myAdmin.getLogin(), "Utilisateur[id='" + this.myAdmin.getId() + "'] ajoute une Formation[id='" + myEdu.getId() + "'; name='" + myEdu.getName() + "']");
 
+        // update JComboBox Education in jif_home
+        // --------------------------------------
+        this.initComboBoxHomeForAdmin();
         this.combob_education.revalidate();
         this.combob_education.repaint();
 
         this.jif_addEdu.setVisible(false);
-    }//GEN-LAST:event_bt_addEduActionPerformed
+    }//GEN-LAST:event_bt_addEdu_addActionPerformed
 
+    // <editor-fold defaultstate="collapsed" desc="Buttons Add*UI MouseEventListener"> 
+    
+    /**
+     * Setting icon button while mouse pressed/released
+     * ------------------------------------------------
+     */
+    
+    // Button AddEducationUI
+    //----------------------
     private void bt_home_addEduMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addEduMousePressed
         // TODO add your handling code here:
         ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addEdu.png" ));
@@ -1760,6 +1795,8 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addEdu.setIcon(icon);
     }//GEN-LAST:event_bt_home_addEduMouseReleased
 
+    // Button AddDisciplineUI
+    // ----------------------
     private void bt_home_addDisciMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addDisciMousePressed
         // TODO add your handling code here:
         ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addDisci.png" ));
@@ -1772,6 +1809,8 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addDisci.setIcon(icon);
     }//GEN-LAST:event_bt_home_addDisciMouseReleased
 
+    // Button AddLessonUI
+    // ------------------
     private void bt_home_addLessonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_addLessonMousePressed
         // TODO add your handling code here:
         ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_addLesson.png" ));
@@ -1784,6 +1823,15 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addLesson.setIcon(icon);
     }//GEN-LAST:event_bt_home_addLessonMouseReleased
 
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Buttons open AddUI ActionPerformedListener"> 
+    
+    /**
+     * Open AddEducationUI (no pre-configured form)
+     * --------------------------------------------
+     * @param evt 
+     */
     private void bt_home_addEduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addEduActionPerformed
         // TODO add your handling code here:
         this.refreshAddEducUI();
@@ -1791,87 +1839,185 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_home.setVisible(false);
     }//GEN-LAST:event_bt_home_addEduActionPerformed
 
+    
+    /**
+     * Open AddDisciplineUI (education configured by JCombobox)
+     * --------------------------------------------------------
+     * @param evt 
+     */
     private void bt_home_addDisciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addDisciActionPerformed
-        // TODO add your handling code here:
+        
+        // clear form
         this.refreshAddDisciUI();
+        
+        // configure JComboBox
+        // -------------------
+        // getting education from comboBox
+        Education tmpEdu = (Education)this.combob_education.getSelectedItem();
+        // setting new JComboBox Model
+        DefaultComboBoxModel tmpEduModel = new DefaultComboBoxModel();
+        tmpEduModel.addElement(tmpEdu);
+        this.combob_addLesson_edu.setModel(tmpEduModel);
+        this.combob_addLesson_edu.setEnabled(false);
+            
+        // setting display
         UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
         this.jif_home.setVisible(false);
     }//GEN-LAST:event_bt_home_addDisciActionPerformed
 
+    
+    
+    /**
+     * Open AddLessonUI (configured by JTree selection)
+     * ------------------------------------------------
+     * @param evt 
+     */
     private void bt_home_addLessonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addLessonActionPerformed
-        // TODO add your handling code here:
+ 
         boolean isTP = false;
         boolean isTest = false;
+        // clear form
         this.refreshAddLessonUI();
+        
+        // setting JComboBox with JTree selection
+        // --------------------------------------
+        // getting node from jtree
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
-        Education tmpEdu = (Education)this.combob_education.getSelectedItem();
+        
+        // if jtree selection exist
         if ((node != null)  && (!node.isRoot())) {
-            if (node.getUserObject().getClass() == Lesson.class || node.getUserObject().getClass() == Discipline.class) {
-                while (node.getUserObject().getClass() != Discipline.class)
-                    node = node.getPreviousNode();
-                System.out.println("the node is a: " + node.getUserObject().getClass());
-                Discipline tmp = (Discipline)node.getUserObject();
-                System.out.println("the discipline is : " + tmp.getName());
+            // search current Discipline parent
+            boolean checkbox = false;
+            while (node.getUserObject().getClass() != Discipline.class) {
                 
-                DefaultComboBoxModel tmpEduModel = new DefaultComboBoxModel();
-                tmpEduModel.addElement(tmpEdu);
-                this.combob_addLesson_edu.setModel(tmpEduModel);
-                this.combob_addLesson_edu.setEnabled(false);
-                
-                DefaultComboBoxModel tmpModel = new DefaultComboBoxModel();
-                tmpModel.addElement(tmp);
-                this.combob_addLesson_disci.setModel(tmpModel);
-                this.combob_addLesson_disci.setEnabled(false);
-            }
-            if (node.getUserObject().getClass() == String.class) {
-                String str = (String)node.getUserObject();
-                if (str.compareTo("TP") == 0) {
-                    this.checkb_addLesson_tp.setSelected(true);
+                // setting JCheckBox when getting type of Lesson
+                if (node.getUserObject().getClass() == String.class && !checkbox) {
+                    String str = (String)node.getUserObject();
+                    if (str.compareTo("TP") == 0) {
+                        this.checkb_addLesson_tp.setSelected(true);
+                        checkbox = true;
+                    }
+                    if (str.compareTo("Test") == 0) {
+                        this.checkb_addLesson_test.setSelected(true);
+                        checkbox = true;
+                    }
                 }
-                if (str.compareTo("Test") == 0) {
-                    this.checkb_addLesson_test.setSelected(true);
-                }
+                node = node.getPreviousNode();
             }
+            
+            // init current Discipline
+            Discipline tmpDisci = (Discipline)node.getUserObject();
+
+            // getting Education from JComboBox
+            Education tmpEdu = (Education)this.combob_education.getSelectedItem();
+            
+            // setting JComboBox Education
+            DefaultComboBoxModel tmpEduModel = new DefaultComboBoxModel();
+            tmpEduModel.addElement(tmpEdu);
+            this.combob_addLesson_edu.setModel(tmpEduModel);
+            this.combob_addLesson_edu.setEnabled(false); // disable it
+
+            // setting JComboBox Discipline
+            DefaultComboBoxModel tmpModel = new DefaultComboBoxModel();
+            tmpModel.addElement(tmpDisci);
+            this.combob_addLesson_disci.setModel(tmpModel);
+            this.combob_addLesson_disci.setEnabled(false); // disable it
         }
         
+        // setting display
         UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
         this.jif_home.setVisible(false);
     }//GEN-LAST:event_bt_home_addLessonActionPerformed
 
-    private void bt_addDisci_addClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addDisci_addClicked
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="CheckBox Listener"> 
+    
+    /**
+     * check checkbox TP status in AddLessonUI
+     * ---------------------------------------
+     * 
+     * if checkbox is selected, unselect checkbox Test
+     * 
+     * @param evt 
+     */
+    private void checkb_addLesson_tpItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkb_addLesson_tpItemStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_bt_addDisci_addClicked
+        if (this.checkb_addLesson_tp.isSelected())
+            this.checkb_addLesson_test.setSelected(false);
+    }//GEN-LAST:event_checkb_addLesson_tpItemStateChanged
+
+    /**
+     * check checkbox Test status in AddLessonUI
+     * -----------------------------------------
+     * 
+     * if checkbox is selected, unselect checkbox TP
+     * 
+     * @param evt 
+     */
+    private void checkb_addLesson_testItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkb_addLesson_testItemStateChanged
+        // TODO add your handling code here:
+        if (this.checkb_addLesson_test.isSelected())
+            this.checkb_addLesson_tp.setSelected(false);
+    }//GEN-LAST:event_checkb_addLesson_testItemStateChanged
+
+    // </editor-fold>
+    
+    private void bt_home_signInMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_signInMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_signUp.png" ));
+        this.bt_home_signIn.setIcon(icon);
+    }//GEN-LAST:event_bt_home_signInMousePressed
+
+    private void bt_home_signInMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_signInMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_signUp_unclick.png" ));
+        this.bt_home_signIn.setIcon(icon);
+    }//GEN-LAST:event_bt_home_signInMouseReleased
+
+    private void bt_home_signOutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_signOutMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_signOut.png" ));
+        this.bt_home_signOut.setIcon(icon);
+    }//GEN-LAST:event_bt_home_signOutMousePressed
+
+    private void bt_home_signOutMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_signOutMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_signOut_unclick.png" ));
+        this.bt_home_signOut.setIcon(icon);
+    }//GEN-LAST:event_bt_home_signOutMouseReleased
 
     private void myTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_myTreeValueChanged
         // TODO add your handling code here:
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
-//        if (node.isRoot() && this.myAdmin != null) {
-//            this.bt_home_addLesson.setEnabled(false);
-//            this.bt_home_addDisci.setEnabled(true);
-//        }
-//        if (node.isRoot() && this.myTeacher != null) {
-//            this.bt_home_addLesson.setEnabled(false);
-//            this.bt_home_addDisci.setEnabled(false);
-//        }
-        this.bt_home_addLesson.setEnabled(false);
-        if ((node != null)  && (!node.isRoot())) {
-            if (node.getUserObject().getClass() == Lesson.class && this.myStudent == null) {
-                this.bt_home_addLesson.setEnabled(true);
-                this.bt_home_addDisci.setEnabled(false);
-            }
-            if (node.getUserObject().getClass() == Discipline.class && this.myAdmin != null) {
-                this.bt_home_addLesson.setEnabled(true);
-                this.bt_home_addDisci.setEnabled(true);
-            }
-            if (node.getUserObject().getClass() == Discipline.class && this.myTeacher != null) {
+             
+        if (this.myAdmin != null) {
+            // getting node from jtree
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+
+            this.bt_home_addDisci.setEnabled(true);
+            this.bt_home_addLesson.setEnabled(false);
+            // if jtree selection exist
+            if ((node != null)  && (!node.isRoot())) {
                 this.bt_home_addLesson.setEnabled(true);
             }
-            if (node.getUserObject().getClass() == String.class && this.myStudent == null)
-                this.bt_home_addLesson.setEnabled(true);
-            System.out.println("Object class is : " + node.getUserObject().getClass());
+        }
+        if (this.myStudent != null) {
+            // getting node from jtree
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+
+            // if jtree selection exist
+            if ((node != null)  && (!node.isRoot())) {
+                if (node.getUserObject().getClass() == Lesson.class) {
+                    this.bt_home_signIn.setEnabled(true);
+                    this.bt_home_signOut.setEnabled(false);
+                }
+            }
         }
     }//GEN-LAST:event_myTreeValueChanged
 
+    
+    // <editor-fold defaultstate="collapsed" desc="Main + Attribute auto-generated MDI"> 
+    
     /**
      * @param args the command line arguments
      */
@@ -1907,17 +2053,18 @@ public class GeneralMDI extends javax.swing.JFrame {
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_addDisci_add;
-    private javax.swing.JButton bt_addEdu;
+    private javax.swing.JButton bt_addEdu_add;
     private javax.swing.JButton bt_addLesson;
     private javax.swing.JButton bt_addUser_add;
     private javax.swing.JButton bt_home_addDisci;
     private javax.swing.JButton bt_home_addEdu;
     private javax.swing.JButton bt_home_addLesson;
     private javax.swing.JButton bt_home_addUser;
+    private javax.swing.JButton bt_home_signIn;
     private javax.swing.JButton bt_home_signOut;
-    private javax.swing.JButton bt_home_signUp;
     private javax.swing.JCheckBox checkb_addLesson_test;
     private javax.swing.JCheckBox checkb_addLesson_tp;
     private javax.swing.JComboBox combob_addDisci_Year;
@@ -1998,4 +2145,5 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JTextPane txt_detail;
     // End of variables declaration//GEN-END:variables
 
+    // </editor-fold>
 }

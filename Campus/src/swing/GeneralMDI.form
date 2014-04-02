@@ -142,7 +142,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="bt_addEdu" max="32767" attributes="0"/>
+                              <Component id="bt_addEdu_add" max="32767" attributes="0"/>
                               <Component id="lbl_addEdu_winTitle" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
@@ -182,7 +182,7 @@
                               <Component id="spin_addEdu_promo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="bt_addEdu" min="-2" max="-2" attributes="0"/>
+                          <Component id="bt_addEdu_add" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="46" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -216,12 +216,12 @@
                     <Property name="text" type="java.lang.String" value="Ajout d&apos;une formation"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="bt_addEdu">
+                <Component class="javax.swing.JButton" name="bt_addEdu_add">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ajouter"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_addEduActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_addEdu_addActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="tf_addEdu_name">
@@ -269,15 +269,17 @@
                                   <Component id="bt_home_addDisci" max="32767" attributes="0"/>
                                   <Component id="bt_home_addLesson" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="53" max="32767" attributes="0"/>
+                              <EmptySpace pref="95" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="bt_home_signOut" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                                      <Component id="bt_home_signUp" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="bt_home_signOut" min="-2" pref="115" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="bt_home_signIn" min="-2" pref="87" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -290,31 +292,22 @@
                       <Component id="combob_education" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" pref="514" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="518" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jScrollPane2" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="bt_home_addUser" min="-2" max="-2" attributes="0"/>
-                                          <Component id="bt_home_addDisci" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="bt_home_signUp" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <Component id="jScrollPane2" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="bt_home_addUser" min="-2" max="-2" attributes="0"/>
+                                  <Component id="bt_home_addDisci" max="32767" attributes="0"/>
+                                  <Component id="bt_home_signIn" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="bt_home_addEdu" min="-2" max="-2" attributes="0"/>
-                                      <Component id="bt_home_addLesson" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="bt_home_signOut" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="bt_home_addEdu" max="32767" attributes="0"/>
+                                  <Component id="bt_home_addLesson" max="32767" attributes="0"/>
+                                  <Component id="bt_home_signOut" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -422,15 +415,27 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_home_addLessonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="bt_home_signUp">
+            <Component class="javax.swing.JButton" name="bt_home_signIn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="S&apos;inscrire"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/res/img/bt_signUp_unclick.png"/>
+                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signInMousePressed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signInMouseReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="bt_home_signOut">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Se d&#xe9;sinscrire"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/res/img/bt_signOut_unclick.png"/>
+                </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signOutMousePressed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signOutMouseReleased"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -591,7 +596,7 @@
                 <Property name="text" type="java.lang.String" value="Ajouter"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_addDisci_addActionPerformed,bt_addDisci_addClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_addDisci_addActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="combob_addDisci_eDay">
@@ -945,11 +950,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="TP"/>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="checkb_addLesson_tpItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="checkb_addLesson_test">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Interrogation"/>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="checkb_addLesson_testItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel15">
               <Properties>
