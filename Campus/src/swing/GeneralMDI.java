@@ -31,6 +31,7 @@ import metier.Teacher;
 import service.AdministratorService;
 import service.DisciplineService;
 import service.EducationService;
+import service.InscriptionLessonService;
 import service.LessonService;
 import service.StudentService;
 import service.TeacherService;
@@ -53,15 +54,16 @@ public class GeneralMDI extends javax.swing.JFrame {
      * User Attributes
      * ===============
      */
-    private Student                 myStudent = null;
-    private Teacher                 myTeacher = null;
-    private Administrator           myAdmin = null;
-    private StudentService          studentService = new StudentService();
-    private TeacherService          teacherService = new TeacherService();
-    private AdministratorService    adminService = new AdministratorService();
-    private LessonService           lessonService = new LessonService();
-    private DisciplineService       disciService = new DisciplineService();
-    private EducationService        eduService = new EducationService();
+    private Student                     myStudent = null;
+    private Teacher                     myTeacher = null;
+    private Administrator               myAdmin = null;
+    private StudentService              studentService = new StudentService();
+    private TeacherService              teacherService = new TeacherService();
+    private AdministratorService        adminService = new AdministratorService();
+    private LessonService               lessonService = new LessonService();
+    private DisciplineService           disciService = new DisciplineService();
+    private EducationService            eduService = new EducationService();
+    private InscriptionLessonService    signUpServie = new InscriptionLessonService();
     
     // </editor-fold>
     
@@ -2008,6 +2010,9 @@ public class GeneralMDI extends javax.swing.JFrame {
             // if jtree selection exist
             if ((node != null)  && (!node.isRoot())) {
                 if (node.getUserObject().getClass() == Lesson.class) {
+                    
+                    Lesson myLesson = (Lesson)node.getUserObject();
+                    List<Student> myStudentList = InscriptionLessonService.selectAllStudentByLessonId(myLesson.getId());
                     this.bt_home_signIn.setEnabled(true);
                     this.bt_home_signOut.setEnabled(false);
                 }
