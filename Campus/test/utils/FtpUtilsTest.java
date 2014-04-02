@@ -7,7 +7,6 @@
 package utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +19,9 @@ import static org.junit.Assert.*;
  * @author biron
  */
 public class FtpUtilsTest {
+  
+  private static final String PATH_TO_A_FILE_IMG = "/home/biron/Desktop/icone_boss2.png";
+  private static final String PATH_DOSSIER_LOCAL = "./remoteFiles/";
   
   public FtpUtilsTest() {
   }
@@ -54,7 +56,7 @@ public class FtpUtilsTest {
    */
   @Test
   public void testUploadFileOnFtp() {
-    boolean result = FtpUtils.uploadFileOnFtp("toto.png", new File("/home/biron/Desktop/icone_boss2.png"));
+    boolean result = FtpUtils.uploadFileOnFtp("toto.png", new File(PATH_TO_A_FILE_IMG));
     assertTrue(result);
   }
 
@@ -73,6 +75,11 @@ public class FtpUtilsTest {
   @Test
   public void testDownloadFromFtp() {
     boolean result = FtpUtils.downloadFromFtp("icone_boss.png");
+    // On supprime le fichier s'il existe
+    File file = new File(PATH_DOSSIER_LOCAL+"icone_boss.png");
+    if(file.exists()) {
+      file.delete();
+    }
     assertTrue(result);
   }
   

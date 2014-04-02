@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Logs>
+  <log date="02/04/2014 13:44:23" userlogin="ROOT">
+    <description>Initialisation de l'application Campus.</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Antonin">
+    <description>Connection.</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Antonin">
+    <description>Creation Teacher[id='2', login='vincent.poirier']</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Antonin">
+    <description>Deconnection</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Thierry">
+    <description>Connection</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Thierry">
+    <description>Creation Education[id='5', name='Analyste Informaticien']</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Thierry">
+    <description>Creation Education[id='6', name='BTS SIO']</description>
+  </log>
+  <log date="02/04/2014 13:44:24" userlogin="Thierry">
+    <description>Deconnection</description>
+  </log>
+</Logs>

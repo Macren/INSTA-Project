@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.net.ftp.FTP;
@@ -25,47 +23,41 @@ import org.apache.commons.net.ftp.FTPHTTPClient;
  */
 public class FtpUtils {
   
-  private static final String PROXY_HOST = "172.16.13.3";
-  private static final int PROXY_PORT = 8080;
-  private static final String PROXY_USER = "d.gauthier";
-  private static final String PROXY_PWD = "Bbfbxh16";
+  private static final boolean ENABLE_PROXY  = true;
   
-  private static final String URL_FTP = "www.ok-team.com";
-  private static final String USER_FTP = "okteamco";
-  private static final String PWD_FTP = "6Hklq718eD";
-  private static final String PATH_DOSSIER = "/campus_project/";
+  private static final String PROXY_HOST  = "172.16.13.3";
+  private static final int PROXY_PORT     = 8080;
+  private static final String PROXY_USER  = "d.gauthier";
+  private static final String PROXY_PWD   = "Bbfbxh16";
   
-  private static final String PATH_DOSSIER_LOCAL = "./";
+  private static final String URL_FTP           = "www.ok-team.com";
+  private static final String USER_FTP          = "okteamco";
+  private static final String PWD_FTP           = "6Hklq718eD";
+  private static final String PATH_DOSSIER_FTP  = "/campus_project/";
   
-  private static FTPClient ftpClient = new FTPHTTPClient(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PWD);
+  private static final String PATH_DOSSIER_LOCAL = "./remoteFiles/";
+  
+  private static FTPClient ftpClient;
+  
+  
   
   public static String[] browseFileNamesOnFtp(){
     
     String[] fileNames = null;
+    connectFtp();
     
     try {
-      ftpClient.connect(URL_FTP);
-      ftpClient.login(USER_FTP, PWD_FTP);
-      ftpClient.enterLocalPassiveMode();
-      ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-      
       // Obtain a list of filenames in the current working directory.
       // When no file found an empty array will be returned.
-      fileNames = ftpClient.listNames(PATH_DOSSIER);
+      fileNames = ftpClient.listNames(PATH_DOSSIER_FTP);
       //fileNames = ftpClient.listNames();
       
-      ftpClient.logout();
       return fileNames;
       
     } catch (IOException ex) {
       Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
-      try
-      {
-        ftpClient.disconnect();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      disconnectFtp();
     }
     return fileNames;
   }
@@ -77,30 +69,20 @@ public class FtpUtils {
     boolean retour = false;
     
     try {
-      ftpClient.connect(URL_FTP);
-      ftpClient.login(USER_FTP, PWD_FTP);
-      ftpClient.enterLocalPassiveMode();
-      ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+      connectFtp();
       
       // Create an InputStream of the file to be uploaded
-      String filename = PATH_DOSSIER + pFileName;
       FileInputStream fis = new FileInputStream(pFile);
       
       // Store file to server
-      retour = ftpClient.storeFile(filename, fis);
+      retour = ftpClient.storeFile(PATH_DOSSIER_FTP + pFileName, fis);
       
-      ftpClient.logout();
       return retour;
       
     } catch (IOException ex) {
       Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
-      try
-      {
-        ftpClient.disconnect();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      disconnectFtp();
     }
     
     return retour;
@@ -115,28 +97,50 @@ public class FtpUtils {
     boolean retour = false;
     
     try {
-      ftpClient.connect(URL_FTP);
-      ftpClient.login(USER_FTP, PWD_FTP);
-      ftpClient.enterLocalPassiveMode();
-      ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+      connectFtp();
       
-      // Delete file on the FTP server. When the FTP delete complete 
-      // it returns true.
-      String filename = PATH_DOSSIER + pFileName;
-      retour = ftpClient.deleteFile(filename);
+      // Delete file on the FTP server. When the FTP delete complete it returns true.
+      retour = ftpClient.deleteFile(PATH_DOSSIER_FTP + pFileName);
       
-      ftpClient.logout();
       return retour;
       
     } catch (IOException ex) {
       Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
     } finally {
-      try
-      {
-        ftpClient.disconnect();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      disconnectFtp();
+    }
+    
+    return retour;
+  }
+  
+  
+  
+  
+  /**
+   * Télécharge 
+   * 
+   * @param pFileName
+   * @return 
+   */
+  public static boolean downloadFromFtp(String pFileName){
+    
+    boolean retour = false;
+    FileOutputStream fos;
+    connectFtp();
+    
+    try {
+      // The remote filename to be downloaded.
+      fos = new FileOutputStream(PATH_DOSSIER_LOCAL + pFileName);
+      
+      // Download file from FTP server
+      retour = ftpClient.retrieveFile(PATH_DOSSIER_FTP + pFileName, fos);
+      
+      return retour;
+      
+    } catch (IOException ex) {
+      Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      disconnectFtp();
     }
     
     return retour;
@@ -146,10 +150,20 @@ public class FtpUtils {
   
   
   
-  public static boolean downloadFromFtp(String pFileName){
-    
-    boolean retour = false;
-    FileOutputStream fos = null;
+  
+  
+  
+  /**
+   * Se connecte au FTP
+   */
+  private static void connectFtp()
+  {
+    if(ENABLE_PROXY){
+      ftpClient = new FTPHTTPClient(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PWD);
+    }
+    else{
+      ftpClient = new FTPClient();
+    }
     
     try {
       ftpClient.connect(URL_FTP);
@@ -157,32 +171,25 @@ public class FtpUtils {
       ftpClient.enterLocalPassiveMode();
       ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
       
-      // The remote filename to be downloaded.
-      String filename = PATH_DOSSIER + pFileName;
-      fos = new FileOutputStream(PATH_DOSSIER_LOCAL + "remoteFiles/" + pFileName);
-      
-      // Download file from FTP server
-      retour = ftpClient.retrieveFile(filename, fos);
-//      this.ftpClient.logout();
-      return retour;
-      
     } catch (IOException ex) {
       Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-      try {
-        if (fos != null) {
-          fos.close();
-        }
-        ftpClient.disconnect();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     }
-    
-    return retour;
   }
   
   
+  
+  /**
+   * Se deconnecte du FTP
+   */
+  private static void disconnectFtp()
+  {
+    try {
+      ftpClient.logout();
+      ftpClient.disconnect();
+    } catch (IOException ex) {
+      Logger.getLogger(FtpUtils.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
   
   
   
