@@ -26,8 +26,8 @@ import metier.Education;
  */
 public class DisciplineDAO implements IDAO<Discipline> {
 
-  private static final int DISCIPLINE_STATUS_AVAILABLE = 1;
-  private static final int DISCIPLINE_STATUS_FULL = 2;
+  private static final int DISCIPLINE_STATUS_AVAILABLE  = 1;
+  private static final int DISCIPLINE_STATUS_FULL       = 2;
   
   public DisciplineDAO() {
   }
@@ -63,9 +63,6 @@ public class DisciplineDAO implements IDAO<Discipline> {
           break;
         case "Complet":
           stat.setInt(5, DISCIPLINE_STATUS_FULL);
-          break;
-        default:
-          stat.setInt(5, 0); // pDiscipline.getStatus.getId();
           break;
       }
       
@@ -114,9 +111,6 @@ public class DisciplineDAO implements IDAO<Discipline> {
           break;
         case "Complet":
           stat.setInt(5, DISCIPLINE_STATUS_FULL);
-          break;
-        default:
-          stat.setInt(5, 0); // pDiscipline.getStatus.getId();
           break;
       }
       

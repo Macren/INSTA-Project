@@ -23,7 +23,7 @@ import org.apache.commons.net.ftp.FTPHTTPClient;
  */
 public class FtpUtils {
   
-  private static final boolean ENABLE_PROXY  = true;
+  private static final boolean ENABLE_PROXY  = false;
   
   private static final String PROXY_HOST  = "172.16.13.3";
   private static final int PROXY_PORT     = 8080;

@@ -26,15 +26,20 @@ public class TeacherDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Teacher     teacher;
-  private TeacherDAO  teacherDao;
+  private static School      schoolBdd;
+  
+  private static Teacher     teacherTest;
+  private static TeacherDAO  teacherDao;
   
   public TeacherDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolDao.selectById(1);
+    
+    teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -43,72 +48,80 @@ public class TeacherDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
     
-    this.teacher = new Teacher("campus_teacher", "campus_teacher",
-                                "campus_teacher@campus.com", new Date(555),
-                                "campus_teacher", "campus_teacher",
-                                555, "path/to/img/trombi", this.school, 
-                                null); // dernier arg : Education
-                                // null car un teacher n'a pas d'education( de formation)
+    teacherTest = new Teacher("campus_teacher_test", "campus_teacher_test",
+                              "campus_teacher_test@campus.com", new Date(0),
+                              "campus_teacher_test", "campus_teacher_test",
+                              0, "path/to/img/trombi_test",
+                              schoolBdd, null); // dernier arg : Education
+                              // null car un teacher n'a pas d'education( de formation)
     
-    this.teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
   public void tearDown() {
   }
-
+  
+  
   /**
    * Test of insert method, of class TeacherDAO.
    */
   @Test
   public void testInsert() {
-    boolean result = this.teacherDao.insert(this.teacher) > 0;
-    assertTrue(result);
+    int resultInt = teacherDao.insert(teacherTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      teacherTest.setId(resultInt);
+      teacherDao.delete(teacherTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
   /**
    * Test of update method, of class TeacherDAO.
    */
   @Test
   public void testUpdate() {
-    this.teacher = this.teacherDao.selectById(2);
+    int resultInt = teacherDao.insert(teacherTest);
     
-    this.teacher.setLogin("campus_teacher2");
-    this.teacher.setPasswd("campus_teacher2");
-    this.teacher.setMail("campus_teacher2@campus.com");
-    this.teacher.setBirthDate(new Date(444));
-    this.teacher.setFirstName("campus_teacher2");
-    this.teacher.setLastName("campus_teacher2");
-    this.teacher.setPhone(444);
-    this.teacher.setPathImgTrombi("path/to/img/t");
-    boolean result = this.teacherDao.update(this.teacher);
+    boolean result = false;
+    
+    if(resultInt > 0){
+      teacherTest.setId(resultInt);
+      
+      teacherTest.setLogin("campus_teacher_test2");
+      teacherTest.setPasswd("campus_teacher_test2");
+      teacherTest.setMail("campus_teacher_test2@campus.com");
+      teacherTest.setFirstName("campus_teacher_test2");
+      teacherTest.setLastName("campus_teacher_test2");
+      teacherTest.setPathImgTrombi("path/to/img/trombi_test2");
+      
+      result = teacherDao.update(teacherTest);
+      
+      teacherDao.delete(teacherTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of delete method, of class TeacherDAO.
    */
   @Test
   public void testDelete() {
-    this.teacher.setLogin("a_suppr");
-    this.teacher.setPasswd("a_suppr");
-    this.teacher.setMail("a_suppr@campus.com");
-    this.teacher.setBirthDate(new Date(000));
-    this.teacher.setFirstName("a_suppr");
-    this.teacher.setLastName("a_suppr");
-    this.teacher.setPhone(000);
-    this.teacher.setPathImgTrombi("a/suppr");
+    int resultInt = teacherDao.insert(teacherTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.teacherDao.insert(this.teacher);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.teacher = this.teacherDao.selectById(id);
+    if(resultInt > 0){
+      teacherTest = teacherDao.selectById(resultInt);
+      
+      result = teacherDao.delete(teacherTest);
+    }
     
-    boolean result = this.teacherDao.delete(this.teacher);
     assertTrue(result);
   }
 
@@ -117,8 +130,9 @@ public class TeacherDAOTest {
    */
   @Test
   public void testSelectById() {
-    this.teacher = this.teacherDao.selectById(2);
-    assertTrue(this.teacher.getId() == 2);
+    teacherTest     = teacherDao.selectById(2);
+    boolean result  = teacherTest.getId() == 2;
+    assertTrue(result);
   }
 
   /**
@@ -126,40 +140,44 @@ public class TeacherDAOTest {
    */
   @Test
   public void testSelectByLoginPwd() {
-    this.teacher = this.teacherDao.selectByLoginPwd("campus_teacher2", "campus_teacher2");
-    boolean result = this.teacher.getLogin().equals("campus_teacher2")
-                      && this.teacher.getPasswd().equals("campus_teacher2");
+    int resultInt = teacherDao.insert(teacherTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      teacherTest = teacherDao.selectByLoginPwd("campus_teacher_test", "campus_teacher_test");
+      
+      result = teacherTest.getLogin().equals("campus_teacher_test")
+                && teacherTest.getPasswd().equals("campus_teacher_test");
+      
+      teacherDao.delete(teacherTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectAll method, of class TeacherDAO.
    */
   @Test
   public void testSelectAll() {
-    List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherDao.selectAll();
-    boolean result = listTeachers.size() > 0;
+    List<Teacher> listTeachers  = new ArrayList();
+    listTeachers                = teacherDao.selectAll();
+    boolean result              = listTeachers.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllBySchoolId method, of class TeacherDAO.
    */
   @Test
   public void testSelectAllBySchoolId() {
-    List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherDao.selectAllBySchoolId(1);
-    
-    boolean resultBis = true;
-    for (Teacher t : listTeachers) {
-      if(t.getSchool().getId() != 1)
-      {
-        resultBis = false;
-      }
-    }
-    
-    boolean result = resultBis && listTeachers.size() > 0;
+    List<Teacher> listTeachers  = new ArrayList();
+    listTeachers                = this.teacherDao.selectAllBySchoolId(1);
+    boolean result              = listTeachers.size() > 0;
     assertTrue(result);
   }
   

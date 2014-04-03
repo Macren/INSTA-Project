@@ -28,17 +28,28 @@ public class LessonDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Teacher     teacher;
-  private Discipline  discipline;
-  private Lesson      lesson;
-  private LessonDAO   lessonDao;
+  private static School      schoolBdd;
+  private static Teacher     teacherBdd;
+  private static Discipline  disciplineBdd;
+  
+  private static Lesson      lessonTest;
+  private static LessonDAO   lessonDao;
   
   public LessonDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolDao.selectById(1);
+    
+    TeacherDAO teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
+    teacherBdd = teacherDao.selectById(2);
+    
+    DisciplineDAO disciplineDao = new DisciplineDAO(CONNECTION_STRING_BDD_TESTS);
+    disciplineBdd = disciplineDao.selectById(1);
+    
+    lessonDao = new LessonDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -47,18 +58,13 @@ public class LessonDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
     
-    TeacherDAO teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
-    this.teacher = teacherDao.selectById(2);
+    lessonTest = new Lesson("cours_test", false,
+                            false, 25,
+                            new Date(000), new Date(000),
+                            "Disponible", teacherBdd,
+                            disciplineBdd);
     
-    DisciplineDAO disciplineDao = new DisciplineDAO(CONNECTION_STRING_BDD_TESTS);
-    this.discipline = disciplineDao.selectById(1);
-    
-    this.lesson = new Lesson("Premier cours JEE", false, false, 25, new Date(111), new Date(222), "Disponible", this.teacher, this.discipline);
-    
-    this.lessonDao = new LessonDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -70,27 +76,36 @@ public class LessonDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.lessonDao.insert(this.lesson) > 0;
-    assertTrue(result);
+    int resultInt = lessonDao.insert(lessonTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      lessonTest.setId(resultInt);
+      lessonDao.delete(lessonTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class LessonDAO.
    */
   @Test
   public void testUpdate() {
-    this.lesson = this.lessonDao.selectById(1);
+    int resultInt = lessonDao.insert(lessonTest);
     
-    // Ne pas oublier de lui renseigner sa Discipline (sa metiere)
-    this.lesson.setDiscipline(this.discipline);
-    // et son Teacher
-    this.lesson.setTeacher(this.teacher);
+    boolean result = false;
     
-    this.lesson.setName("Premier cours JEE 2");
-    this.lesson.setBeginDate(new Date(112));
-    this.lesson.setEndDate(new Date(223));
-    this.lesson.setStatus("Annulé");
-    boolean result = this.lessonDao.update(this.lesson);
+    if(resultInt > 0){
+      lessonTest.setId(resultInt);
+      
+      lessonTest.setName("cours_test2");
+      
+      result = lessonDao.update(lessonTest);
+      
+      lessonDao.delete(lessonTest);
+    }
+    
     assertTrue(result);
   }
 
@@ -99,28 +114,29 @@ public class LessonDAOTest {
    */
   @Test
   public void testDelete() {
-    this.lesson.setName("a_suppr");
-    this.lesson.setBeginDate(new Date(999));
-    this.lesson.setEndDate(new Date(800));
-    this.lesson.setStatus("Annulé");
+    int resultInt = lessonDao.insert(lessonTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.lessonDao.insert(this.lesson);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.lesson = this.lessonDao.selectById(id);
+    if(resultInt > 0){
+      lessonTest = lessonDao.selectById(resultInt);
+      
+      result = lessonDao.delete(lessonTest);
+    }
     
-    boolean result = this.lessonDao.delete(this.lesson);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class LessonDAO.
    */
   @Test
   public void testSelectById() {
-    this.lesson = this.lessonDao.selectById(1);
-    assertTrue(this.lesson.getId() == 1);
+    lessonTest = lessonDao.selectById(1);
+    boolean result = lessonTest.getId() == 1;
+    assertTrue(result);
   }
 
   /**
@@ -128,53 +144,61 @@ public class LessonDAOTest {
    */
   @Test
   public void testSelectAll() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAll();
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAll();
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllByTeacherId method, of class LessonDAO.
    */
   @Test
   public void testSelectAllByTeacherId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAllByTeacherId(2);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAllByTeacherId(2);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllByDisciplineId method, of class LessonDAO.
    */
   @Test
   public void testSelectAllByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAllByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAllByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllLessonsByDisciplineId method, of class LessonDAO.
    */
   @Test
   public void testSelectAllLessonsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAllLessonsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAllLessonsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllTpsByDisciplineId method, of class LessonDAO.
    */
   @Test
   public void testSelectAllTpsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAllTpsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAllTpsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
 
@@ -183,9 +207,9 @@ public class LessonDAOTest {
    */
   @Test
   public void testSelectAllTestsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonDao.selectAllTestsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonDao.selectAllTestsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
   

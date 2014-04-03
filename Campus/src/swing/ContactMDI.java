@@ -8,8 +8,16 @@ package swing;
 
 import java.util.List;
 import javax.swing.DefaultListModel;
+import metier.AbstractUser;
+import metier.Administrator;
+import metier.Contact;
 import metier.Student;
+import metier.Teacher;
+import service.AdministratorService;
+import service.ContactService;
 import service.StudentService;
+import service.TeacherService;
+import utils.UIUtils;
 
 /**
  *
@@ -17,27 +25,72 @@ import service.StudentService;
  */
 public class ContactMDI extends javax.swing.JFrame {
     
-    private DefaultListModel        dcmStudent = new DefaultListModel();
+    private DefaultListModel        dcmContact = new DefaultListModel();
+    private ContactService          contactService = new ContactService();
+    private Student                 myStudent = null;
+    private Teacher                 myTeacher = null;
+    private Administrator           myAdmin = null;
     private StudentService          studentService = new StudentService();
+    private TeacherService          teacherService = new TeacherService();
+    private AdministratorService    adminService = new AdministratorService();
 
+    /**
+     * Ctor
+     */
+    public ContactMDI() {
+      
+      initComponents();
+      initList();
+    }
     /**
      * Creates new form ContactMDI
      */
-    public ContactMDI() {
-        initComponents();
-        initList();
+    public ContactMDI(AbstractUser user) {
+      
+      if(user.getClass().isInstance(Administrator.class)){
+        this.myAdmin = (Administrator) user;
+      }
+      if(user.getClass().isInstance(Teacher.class)){
+        this.myTeacher = (Teacher) user;
+      }
+      if(user.getClass().isInstance(Student.class)){
+        this.myStudent = (Student) user;
+      }
+      
+      initComponents();
+      this.initList();
     }
     
-    public void initList(){
-    
-        this.dcmStudent.clear();
-        List <Student> listStudent = this.studentService.selectAll();
+    private void initList(){
+        this.dcmContact.clear();
         
-        for (Object o : listStudent ){
-            Student student = (Student) o;
-            this.dcmStudent.addElement(student);
+        List<Contact> listContacts = null;
+        
+        if (this.myAdmin != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myAdmin.getId());
         }
-         this.studentList.setModel(dcmStudent);
+        if (this.myTeacher != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myTeacher.getId());
+        }
+        if (this.myStudent != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myStudent.getId());
+        }
+        
+        if(listContacts != null){
+          for (Contact c : listContacts ){
+              Contact contact = c;
+              this.dcmContact.addElement(contact.getUtilisateur2().getLogin());
+          }
+        }
+        
+        this.contactList.setModel(dcmContact);
+    }
+    
+     private void refreshAddUserUI() {
+
+        this.tf_addContact_login.setText("");
+        
+        
     }
 
     /**
@@ -50,24 +103,16 @@ public class ContactMDI extends javax.swing.JFrame {
     private void initComponents() {
 
         desktopPane = new javax.swing.JDesktopPane();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
+        jif_home = new javax.swing.JInternalFrame();
         jScrollPane1 = new javax.swing.JScrollPane();
-        studentList = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        contactList = new javax.swing.JList();
+        bt_addContact = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jiff_addContact = new javax.swing.JInternalFrame();
+        jif_addContact = new javax.swing.JInternalFrame();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        lb_addContact_login = new javax.swing.JLabel();
+        tf_addContact_login = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -86,122 +131,100 @@ public class ContactMDI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jInternalFrame1.setVisible(true);
+        jif_home.setVisible(true);
 
-        studentList.setModel(new javax.swing.AbstractListModel() {
+        contactList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(studentList);
+        jScrollPane1.setViewportView(contactList);
 
-        jButton1.setText("+");
+        bt_addContact.setText("+");
+        bt_addContact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_addContactActionPerformed(evt);
+            }
+        });
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jif_homeLayout = new javax.swing.GroupLayout(jif_home.getContentPane());
+        jif_home.getContentPane().setLayout(jif_homeLayout);
+        jif_homeLayout.setHorizontalGroup(
+            jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_homeLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bt_addContact)
+                    .addGroup(jif_homeLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(90, 90, 90)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+        jif_homeLayout.setVerticalGroup(
+            jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_homeLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bt_addContact)
                 .addContainerGap())
         );
 
-        desktopPane.add(jInternalFrame1);
-        jInternalFrame1.setBounds(0, 0, 830, 490);
+        desktopPane.add(jif_home);
+        jif_home.setBounds(0, 0, 830, 490);
 
-        jiff_addContact.setVisible(true);
+        jif_addContact.setVisible(true);
 
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Contact");
 
-        jLabel2.setText("Nom:");
-
-        jLabel3.setText("Prénom:");
-
-        jLabel4.setText("Email:");
-
-        jLabel5.setText("Login:");
-
-        jLabel6.setText("Formation:");
+        lb_addContact_login.setText("Login:");
 
         jButton2.setText("Ajouter");
 
-        javax.swing.GroupLayout jiff_addContactLayout = new javax.swing.GroupLayout(jiff_addContact.getContentPane());
-        jiff_addContact.getContentPane().setLayout(jiff_addContactLayout);
-        jiff_addContactLayout.setHorizontalGroup(
-            jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jiff_addContactLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addGap(69, 69, 69)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton2)
-                    .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField1)
-                        .addComponent(jTextField2)
-                        .addComponent(jTextField3)
-                        .addComponent(jTextField4)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)))
-                .addContainerGap(25, Short.MAX_VALUE))
+        javax.swing.GroupLayout jif_addContactLayout = new javax.swing.GroupLayout(jif_addContact.getContentPane());
+        jif_addContact.getContentPane().setLayout(jif_addContactLayout);
+        jif_addContactLayout.setHorizontalGroup(
+            jif_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addContactLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jif_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jif_addContactLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel1))
+                    .addGroup(jif_addContactLayout.createSequentialGroup()
+                        .addComponent(lb_addContact_login)
+                        .addGap(18, 18, 18)
+                        .addComponent(tf_addContact_login, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(69, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jif_addContactLayout.createSequentialGroup()
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41))
         );
-        jiff_addContactLayout.setVerticalGroup(
-            jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jiff_addContactLayout.createSequentialGroup()
+        jif_addContactLayout.setVerticalGroup(
+            jif_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jif_addContactLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jiff_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                .addGap(31, 31, 31)
+                .addGroup(jif_addContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lb_addContact_login)
+                    .addComponent(tf_addContact_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
                 .addComponent(jButton2)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        desktopPane.add(jiff_addContact);
-        jiff_addContact.setBounds(660, 30, 310, 410);
+        desktopPane.add(jif_addContact);
+        jif_addContact.setBounds(660, 30, 310, 410);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -284,6 +307,38 @@ public class ContactMDI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    private void bt_addContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addContactActionPerformed
+        // TODO add your handling code here:
+      
+      // Ici appeler la fenetre contenant la liste de tous les Students et Teachers
+      // setting display
+//        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
+//        this.jif_home.setVisible(false);
+      
+      
+      
+        int idUser = 0;
+       // aLogin = this.tf_addContact_login.getText();
+        
+        
+        
+        if (this.myAdmin != null) {
+            idUser = this.myAdmin.getId();
+            Administrator a = this.adminService.selectById(idUser);
+        }
+        if (this.myStudent != null) {
+            idUser = this.myStudent.getId();
+            Student s = this.studentService.selectById(idUser);
+        }
+        if (this.myTeacher != null) {
+            idUser = this.myTeacher.getId();
+            Teacher t = this.teacherService.selectById(idUser);
+        }
+        
+       // Contact aContact = new Contact(a, );
+         
+    }//GEN-LAST:event_bt_addContactActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,6 +376,8 @@ public class ContactMDI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton bt_addContact;
+    private javax.swing.JList contactList;
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -330,30 +387,20 @@ public class ContactMDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JInternalFrame jiff_addContact;
+    private javax.swing.JInternalFrame jif_addContact;
+    private javax.swing.JInternalFrame jif_home;
+    private javax.swing.JLabel lb_addContact_login;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JList studentList;
+    private javax.swing.JTextField tf_addContact_login;
     // End of variables declaration//GEN-END:variables
 
 }

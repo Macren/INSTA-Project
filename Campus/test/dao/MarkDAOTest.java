@@ -28,18 +28,32 @@ public class MarkDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Teacher     teacher;
-  private Student     student;
-  private Discipline  discipline;
-  private Mark        mark;
-  private MarkDAO     markDao;
+  private static School      schoolBdd;
+  private static Teacher     teacherBdd;
+  private static Student     studentBdd;
+  private static Discipline  disciplineBdd;
+  
+  private static Mark        markTest;
+  private static MarkDAO     markDao;
   
   public MarkDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolDao.selectById(1);
+    
+    TeacherDAO teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
+    teacherBdd = teacherDao.selectById(2);
+    
+    StudentDAO studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
+    studentBdd = studentDao.selectById(3);
+    
+    DisciplineDAO disciplineDao = new DisciplineDAO(CONNECTION_STRING_BDD_TESTS);
+    disciplineBdd = disciplineDao.selectById(1);
+    
+    markDao = new MarkDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -48,21 +62,11 @@ public class MarkDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
     
-    TeacherDAO teacherDao = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
-    this.teacher = teacherDao.selectById(2);
+    markTest = new Mark((float) 10, (float) 20,
+                        studentBdd, teacherBdd,
+                        disciplineBdd, "note_test");
     
-    StudentDAO studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
-    this.student = studentDao.selectById(3);
-    
-    DisciplineDAO disciplineDao = new DisciplineDAO(CONNECTION_STRING_BDD_TESTS);
-    this.discipline = disciplineDao.selectById(1);
-    
-    this.mark = new Mark((float) 15.5, (float) 20, this.student, this.teacher, this.discipline, "Très bon travail!");
-    
-    this.markDao = new MarkDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -74,147 +78,201 @@ public class MarkDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.markDao.insert(this.mark) > 0;
-    assertTrue(result);
+    int resultInt = markDao.insert(markTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      markDao.delete(markTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
+  
   /**
    * Test of update method, of class MarkDAO.
    */
   @Test
   public void testUpdate() {
-    this.mark = this.markDao.selectById(1);
+    int resultInt = markDao.insert(markTest);
     
-    // Ne pas oublier de lui renseigner sa Discipline (sa metiere)
-    this.mark.setDiscipline(this.discipline);
-    // et son Teacher
-    this.mark.setTeacher(this.teacher);
-    // et son Student (surtout)
-    this.mark.setStudent(this.student);
+    boolean result = false;
     
-    this.mark.setValue((float) 5.5);
-    this.mark.setValueMax((float) 20);
-    this.mark.setComment("Que s'est il passé ?!");
-    boolean result = this.markDao.update(this.mark);
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      markTest.setValue((float) 20);
+      markTest.setComment("note_test2");
+      
+      result = markDao.update(markTest);
+      
+      markDao.delete(markTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of delete method, of class MarkDAO.
    */
   @Test
   public void testDelete() {
-    this.mark.setValue(0);
-    this.mark.setValueMax(0);
-    this.mark.setComment("a_suppr");
+    int resultInt = markDao.insert(markTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.markDao.insert(this.mark);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.mark = this.markDao.selectById(id);
+    if(resultInt > 0){
+      markTest = markDao.selectById(resultInt);
+      
+      result = markDao.delete(markTest);
+    }
     
-    boolean result = this.markDao.delete(this.mark);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class MarkDAO.
    */
   @Test
   public void testSelectById() {
-    this.mark = this.markDao.selectById(1);
-    assertTrue(this.mark.getId() == 1);
+    int resultInt = markDao.insert(markTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      markTest  = markDao.selectById(resultInt);
+      result    = markTest.getId() == resultInt;
+      
+      markDao.delete(markTest);
+    }
+    
+    assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAll method, of class MarkDAO.
    */
   @Test
   public void testSelectAll() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAll();
-    boolean result = listMarks.size() > 0;
+    int resultInt = markDao.insert(markTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = this.markDao.selectAll();
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
+    }
+    
     assertTrue(result);
   }
+  
+  
   
   /**
    * Test of selectAllByStudentId method, of class MarkDAO.
    */
   @Test
   public void testSelectAllByStudentId() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAllByStudentId(3);
+    int resultInt = markDao.insert(markTest);
     
-    boolean resultBis = true;
-    for (Mark m : listMarks) {
-      if(m.getStudent().getId() != 3)
-      {
-        resultBis = false;
-      }
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = markDao.selectAllByStudentId(studentBdd.getId());
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
     }
     
-    boolean result = resultBis && listMarks.size() > 0;
     assertTrue(result);
   }
+  
+  
   
   /**
    * Test of selectAllByTeacherId method, of class MarkDAO.
    */
   @Test
   public void testSelectAllByTeacherId() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAllByTeacherId(2);
+    int resultInt = markDao.insert(markTest);
     
-    boolean resultBis = true;
-    for (Mark m : listMarks) {
-      if(m.getTeacher().getId() != 2)
-      {
-        resultBis = false;
-      }
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = markDao.selectAllByTeacherId(teacherBdd.getId());
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
     }
     
-    boolean result = resultBis && listMarks.size() > 0;
     assertTrue(result);
   }
+  
+  
   
   /**
    * Test of selectAllByDisciplineId method, of class MarkDAO.
    */
   @Test
   public void testSelectAllByDisciplineId() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAllByDisciplineId(1);
+    int resultInt = markDao.insert(markTest);
     
-    boolean resultBis = true;
-    for (Mark m : listMarks) {
-      if(m.getDiscipline().getId() != 1)
-      {
-        resultBis = false;
-      }
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = markDao.selectAllByDisciplineId(disciplineBdd.getId());
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
     }
     
-    boolean result = resultBis && listMarks.size() > 0;
     assertTrue(result);
   }
+  
+  
   
   /**
    * Test of selectAllByDisciplineId method, of class MarkDAO.
    */
   @Test
   public void testSelectAllByStudentIdAndDisciplineId() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAllByStudentIdAndDisciplineId(3, 1);
+    int resultInt = markDao.insert(markTest);
     
-    boolean resultBis = true;
-    for (Mark m : listMarks) {
-      if(m.getStudent().getId() != 3 || m.getDiscipline().getId() != 1)
-      {
-        resultBis = false;
-      }
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = markDao.selectAllByStudentIdAndDisciplineId(studentBdd.getId(), disciplineBdd.getId());
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
     }
     
-    boolean result = resultBis && listMarks.size() > 0;
     assertTrue(result);
   }
   
@@ -223,18 +281,20 @@ public class MarkDAOTest {
    */
   @Test
   public void testSelectAllByTeacherIdAndDisciplineId() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markDao.selectAllByTeacherIdAndDisciplineId(2, 1);
+    int resultInt = markDao.insert(markTest);
     
-    boolean resultBis = true;
-    for (Mark m : listMarks) {
-      if(m.getTeacher().getId() != 2 || m.getDiscipline().getId() != 1)
-      {
-        resultBis = false;
-      }
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = markDao.selectAllByTeacherIdAndDisciplineId(teacherBdd.getId(), disciplineBdd.getId());
+      result                = listMarks.size() > 0;
+      
+      markDao.delete(markTest);
     }
     
-    boolean result = resultBis && listMarks.size() > 0;
     assertTrue(result);
   }
   

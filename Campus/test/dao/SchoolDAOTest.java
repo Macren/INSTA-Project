@@ -24,14 +24,15 @@ public class SchoolDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School    school;
-  private SchoolDAO schoolDao;
+  private static School    schoolTest;
+  private static SchoolDAO schoolDao;
   
   public SchoolDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -40,33 +41,50 @@ public class SchoolDAOTest {
   
   @Before
   public void setUp() {
-    this.school = new School("Ecole Insta");
     
-    this.schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolTest = new School("ecole_test");
+    
   }
   
   @After
   public void tearDown() {
   }
 
+  
   /**
    * Test of insert method, of class SchoolDAO.
    */
   @Test
   public void testInsert() {
-    boolean result = this.schoolDao.insert(this.school) > 0;
-    assertTrue(result);
+    int resultInt = schoolDao.insert(schoolTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      schoolTest.setId(resultInt);
+      schoolDao.delete(schoolTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
   /**
    * Test of update method, of class SchoolDAO.
    */
   @Test
   public void testUpdate() {
-    this.school = this.schoolDao.selectById(1);
+    int resultInt = schoolDao.insert(schoolTest);
     
-    this.school.setName("Ecole Insta 2");
-    boolean result = this.schoolDao.update(this.school);
+    boolean result = false;
+    
+    if(resultInt > 0){
+      schoolTest.setId(resultInt);
+      
+      schoolTest.setName("ecole_test2");
+      
+      result = schoolDao.update(schoolTest);
+      
+      schoolDao.delete(schoolTest);
+    }
+    
     assertTrue(result);
   }
 
@@ -75,35 +93,40 @@ public class SchoolDAOTest {
    */
   @Test
   public void testDelete() {
-    this.school.setName("a_suppr");
+    int resultInt = schoolDao.insert(schoolTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.schoolDao.insert(this.school);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.school = this.schoolDao.selectById(id);
+    if(resultInt > 0){
+      schoolTest = schoolDao.selectById(resultInt);
+      
+      result = schoolDao.delete(schoolTest);
+    }
     
-    boolean result = this.schoolDao.delete(this.school);
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectById method, of class SchoolDAO.
    */
   @Test
   public void testSelectById() {
-    this.school = this.schoolDao.selectById(1);
-    assertTrue(this.school.getId() == 1);
+    schoolTest = schoolDao.selectById(1);
+    boolean result = schoolTest.getId() == 1;
+    assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAll method, of class SchoolDAO.
    */
   @Test
   public void testSelectAll() {
-    List<School> listSchools = new ArrayList();
-    listSchools = this.schoolDao.selectAll();
-    boolean result = listSchools.size() > 0;
+    List<School> listSchools  = new ArrayList();
+    listSchools               = schoolDao.selectAll();
+    boolean result            = listSchools.size() > 0;
     assertTrue(result);
   }
   
