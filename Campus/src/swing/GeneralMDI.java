@@ -2187,6 +2187,9 @@ public class GeneralMDI extends javax.swing.JFrame {
     
   private void bt_home_addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_addUserActionPerformed
     // TODO add your handling code here:
+        this.refreshAddUserUI();
+        UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
+        this.jif_home.setVisible(false);
   }//GEN-LAST:event_bt_home_addUserActionPerformed
 
   private void jmi_showContactsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_showContactsActionPerformed
@@ -2225,8 +2228,9 @@ public class GeneralMDI extends javax.swing.JFrame {
 
   private void jmi_addContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_addContactActionPerformed
     // TODO add your handling code here:
-    
-    
+    this.refreshAddUserUI();
+    UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
+    this.jif_home.setVisible(false);
   }//GEN-LAST:event_jmi_addContactActionPerformed
 
     
