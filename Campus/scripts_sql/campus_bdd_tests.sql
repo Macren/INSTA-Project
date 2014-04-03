@@ -268,7 +268,7 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`inscription_lesson` (
   `id_lesson` INT NOT NULL ,
   `inscription_date` DATETIME NOT NULL ,
   `desinscription_date` DATETIME NULL ,
-  `admin_validation` VARCHAR(45) NULL ,
+  `admin_validation` TINYINT(1) NULL ,
   PRIMARY KEY (`id_user_student`, `id_lesson`) ,
   INDEX `fk_inscription_lesson_user_student_idx` (`id_user_student` ASC) ,
   INDEX `fk_inscription_lesson_lesson_idx` (`id_lesson` ASC) ,
@@ -327,6 +327,32 @@ CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`contact` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `campus_bdd_tests`.`cancellation_lesson`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `campus_bdd_tests`.`cancellation_lesson` (
+  `id_user_teacher` INT NOT NULL ,
+  `id_lesson` INT NOT NULL ,
+  `cancellation_date` DATETIME NULL ,
+  `admin_validation` TINYINT(1) NULL ,
+  PRIMARY KEY (`id_user_teacher`, `id_lesson`) ,
+  INDEX `fk_cancellation_lesson_user_idx` (`id_user_teacher` ASC) ,
+  INDEX `fk_cancellation_lesson_lesson_idx` (`id_lesson` ASC) ,
+  CONSTRAINT `fk_cancellation_lesson_user`
+    FOREIGN KEY (`id_user_teacher` )
+    REFERENCES `campus_bdd_tests`.`user` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cancellation_lesson_lesson`
+    FOREIGN KEY (`id_lesson` )
+    REFERENCES `campus_bdd_tests`.`lesson` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 
 -- -----------------------------------------------------
