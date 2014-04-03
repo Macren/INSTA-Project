@@ -57,6 +57,10 @@ public class StudentService {
     return this.studentDao.selectAll();
   }
   
+  public List<Student> selectAllBySchoolId(int pSchoolId) {
+    return this.studentDao.selectAllBySchoolId(pSchoolId);
+  }
+  
   
   
 }

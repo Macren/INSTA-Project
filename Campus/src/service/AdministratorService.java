@@ -57,6 +57,10 @@ public class AdministratorService {
     return this.administratorDao.selectAll();
   }
   
+  public List<Administrator> selectAllBySchoolId(int pSchoolId) {
+    return this.administratorDao.selectAllBySchoolId(pSchoolId);
+  }
+  
   
   
 }

@@ -265,4 +265,43 @@ public class AdministratorDAO implements IDAO<Administrator>{
     return false;
   }
   
+  public List<Administrator> selectAllBySchoolId(int pSchoolId) {
+    List<Administrator> listAdmin = new ArrayList();
+    
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+
+      String sql = "SELECT * FROM `user` WHERE `id_role` = ? AND `id_school` = ?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, ID_ROLE_ADMINISTRATOR);
+      stat.setInt(2, pSchoolId);
+      
+      ResultSet res = stat.executeQuery();
+      
+      while (res.next()) {
+        // On récupère l'école en fonction de son id
+        SchoolDAO schoolDao = new SchoolDAO();
+        School school = schoolDao.selectById(res.getInt("id_school"));
+        
+        Administrator teacher = new Administrator(res.getInt("id"), res.getString("login"),
+                                    res.getString("pwd"), res.getString("mail"),
+                                    res.getDate("birth_date"), res.getString("first_name"),
+                                    res.getString("last_name"), res.getInt("phone"),
+                                    res.getString("path_img_trombi"), school, null);
+        listAdmin.add(teacher);
+      }
+
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(TeacherDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    
+    return listAdmin;
+  }
+  
 }

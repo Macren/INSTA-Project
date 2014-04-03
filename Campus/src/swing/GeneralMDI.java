@@ -157,6 +157,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addLesson.setEnabled(false);
         this.bt_home_signIn.setEnabled(false);
         this.bt_home_signOut.setEnabled(false);
+        this.bt_home_askCancel.setEnabled(false);
     }
     
     // <editor-fold defaultstate="collapsed" desc="Init UI Functions">  
@@ -189,6 +190,10 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_addLesson.setOpaque(false);
         this.bt_home_addLesson.setContentAreaFilled(false);
         this.bt_home_addLesson.setBorderPainted(false);
+        
+        this.bt_home_askCancel.setOpaque(false);
+        this.bt_home_askCancel.setContentAreaFilled(false);
+        this.bt_home_askCancel.setBorderPainted(false);
     }
     
     /**
@@ -733,6 +738,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         bt_home_addLesson = new javax.swing.JButton();
         bt_home_signIn = new javax.swing.JButton();
         bt_home_signOut = new javax.swing.JButton();
+        bt_home_askCancel = new javax.swing.JButton();
         jif_addDisci = new javax.swing.JInternalFrame();
         lbl_addDisci_winTitle = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -798,7 +804,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         toolsMenuBar = new javax.swing.JMenu();
         helpMenuBar = new javax.swing.JMenu();
         contactsMenuBar = new javax.swing.JMenu();
-        jmi_showContacts = new javax.swing.JMenuItem();
+        myContactMenuItem = new javax.swing.JMenuItem();
         jmi_addContact = new javax.swing.JMenuItem();
 
         jCheckBox1.setText("jCheckBox1");
@@ -1008,6 +1014,21 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
         });
 
+        bt_home_askCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_askCancel_unclick.png"))); // NOI18N
+        bt_home_askCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bt_home_askCancelMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                bt_home_askCancelMouseReleased(evt);
+            }
+        });
+        bt_home_askCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_askCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jif_homeLayout = new javax.swing.GroupLayout(jif_home.getContentPane());
         jif_home.getContentPane().setLayout(jif_homeLayout);
         jif_homeLayout.setHorizontalGroup(
@@ -1028,16 +1049,18 @@ public class GeneralMDI extends javax.swing.JFrame {
                             .addComponent(bt_home_addEdu, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jif_homeLayout.createSequentialGroup()
-                                .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jif_homeLayout.createSequentialGroup()
+                            .addComponent(bt_home_addDisci, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bt_home_addLesson, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bt_home_askCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jif_homeLayout.createSequentialGroup()
                                 .addComponent(bt_home_signIn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26))))))
+                                .addGap(26, 26, 26))
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))))
         );
         jif_homeLayout.setVerticalGroup(
             jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1046,19 +1069,24 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addComponent(combob_education, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
                     .addGroup(jif_homeLayout.createSequentialGroup()
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(bt_home_addUser)
-                            .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bt_home_signIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(bt_home_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(bt_home_addUser)
+                                    .addComponent(bt_home_addDisci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(bt_home_signIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jif_homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(bt_home_addEdu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(bt_home_addLesson, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(bt_home_signOut, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(jif_homeLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(bt_home_askCancel)))
                         .addGap(11, 11, 11)))
                 .addContainerGap())
         );
@@ -1472,7 +1500,7 @@ public class GeneralMDI extends javax.swing.JFrame {
                 .addGroup(jif_addUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jif_addUserLayout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addGroup(jif_addUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jif_addUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jif_addUserLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel24))
@@ -1512,11 +1540,11 @@ public class GeneralMDI extends javax.swing.JFrame {
                     .addComponent(combob_addUser_education, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(bt_addUser_add)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         desktopPane.add(jif_addUser);
-        jif_addUser.setBounds(0, 0, 382, 479);
+        jif_addUser.setBounds(0, 0, 382, 487);
 
         fileMenuBar.setMnemonic('h');
         fileMenuBar.setText("Fichier");
@@ -1539,13 +1567,13 @@ public class GeneralMDI extends javax.swing.JFrame {
 
         contactsMenuBar.setText("Contacts");
 
-        jmi_showContacts.setText("Mes contacts");
-        jmi_showContacts.addActionListener(new java.awt.event.ActionListener() {
+        myContactMenuItem.setText("Mes contacts");
+        myContactMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmi_showContactsActionPerformed(evt);
+                myContactMenuItemActionPerformed(evt);
             }
         });
-        contactsMenuBar.add(jmi_showContacts);
+        contactsMenuBar.add(myContactMenuItem);
 
         jmi_addContact.setText("Ajouter contact");
         jmi_addContact.addActionListener(new java.awt.event.ActionListener() {
@@ -2057,6 +2085,24 @@ public class GeneralMDI extends javax.swing.JFrame {
                 }
             }
         }
+        if (this.myTeacher != null) {
+            // getting node from jtree
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+
+            // if jtree selection exist
+            if ((node != null)  && (!node.isRoot())) {
+                if (node.getUserObject().getClass() == Lesson.class) {
+                    Lesson myLesson = (Lesson) node.getUserObject();
+                    if (myLesson.getStatus().compareTo("Annulé") == 0
+                        || myLesson.getStatus().compareTo("Terminé") == 0)
+                        this.bt_home_askCancel.setEnabled(false);
+                    else
+                        this.bt_home_askCancel.setEnabled(true);
+                }
+                else
+                    this.bt_home_askCancel.setEnabled(true);
+            }
+        }
         
         DefaultMutableTreeNode  node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
         
@@ -2175,39 +2221,29 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_home.setVisible(false);
   }//GEN-LAST:event_bt_home_addUserActionPerformed
 
-  private void jmi_showContactsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_showContactsActionPerformed
+  private void myContactMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myContactMenuItemActionPerformed
     // TODO add your handling code here:
     
-    if (this.jifListeContacts != null) {
-      this.jifListeContacts.dispose();
-    }
-    
-    if(this.myStudent != null){
-      this.jifListeContacts = new ListContacts(this.myStudent);
-    }
-    
-    this.desktopPane.add(this.jifListeContacts);
+
     // setting display
-    UIUtils.centerJIF(this.jifListeContacts, this.desktopPane);
     
-    this.jif_home.setVisible(false);
     
-//    ContactMDI cmdi = null;
-//    
-//    if (this.myAdmin != null) {
-//      cmdi = new ContactMDI(this.myAdmin);
-//    }
-//    if (this.myStudent != null) {
-//      cmdi = new ContactMDI(this.myAdmin);
-//    }
-//    if (this.myTeacher != null) {
-//      cmdi = new ContactMDI(this.myAdmin);
-//    }
-//    
-//    cmdi.setVisible(true);
-//    //this.setVisible(false);
+    ContactMDI cmdi;
     
-  }//GEN-LAST:event_jmi_showContactsActionPerformed
+    if (this.myAdmin != null) {
+      cmdi = new ContactMDI(this.myAdmin);
+    }
+    else if (this.myStudent != null) {
+      cmdi = new ContactMDI(this.myStudent);
+    }
+    else {
+      cmdi = new ContactMDI(this.myTeacher);
+    }
+    
+    cmdi.setVisible(true);
+    //this.setVisible(false);
+    
+  }//GEN-LAST:event_myContactMenuItemActionPerformed
 
   private void jmi_addContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_addContactActionPerformed
     // TODO add your handling code here:
@@ -2313,6 +2349,22 @@ public class GeneralMDI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_photo_chooserMouseClicked
 
+    private void bt_home_askCancelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_askCancelMousePressed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_askCancel.png" ));
+        this.bt_home_askCancel.setIcon(icon);
+    }//GEN-LAST:event_bt_home_askCancelMousePressed
+
+    private void bt_home_askCancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_home_askCancelMouseReleased
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("../res/img/bt_askCancel_unclick.png" ));
+        this.bt_home_askCancel.setIcon(icon);
+    }//GEN-LAST:event_bt_home_askCancelMouseReleased
+
+    private void bt_home_askCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_askCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_home_askCancelActionPerformed
+
     
     // <editor-fold defaultstate="collapsed" desc="Main + Attribute auto-generated MDI"> 
     
@@ -2361,6 +2413,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JButton bt_home_addEdu;
     private javax.swing.JButton bt_home_addLesson;
     private javax.swing.JButton bt_home_addUser;
+    private javax.swing.JButton bt_home_askCancel;
     private javax.swing.JButton bt_home_signIn;
     private javax.swing.JButton bt_home_signOut;
     private javax.swing.JCheckBox checkb_addLesson_test;
@@ -2424,12 +2477,12 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JInternalFrame jif_addUser;
     private javax.swing.JInternalFrame jif_home;
     private javax.swing.JMenuItem jmi_addContact;
-    private javax.swing.JMenuItem jmi_showContacts;
     private javax.swing.JLabel lbl_addDisci_winTitle;
     private javax.swing.JLabel lbl_addEdu_winTitle;
     private javax.swing.JLabel lbl_addLesson_winTitle;
     private javax.swing.JLabel lbl_addUser_winTitle;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem myContactMenuItem;
     private javax.swing.JTree myTree;
     private javax.swing.JPanel panel_addEdu;
     private javax.swing.JLabel photo_chooser;
