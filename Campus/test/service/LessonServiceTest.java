@@ -28,17 +28,29 @@ public class LessonServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School          school;
-  private Teacher         teacher;
-  private Discipline      discipline;
-  private Lesson          lesson;
-  private LessonService   lessonService;
+  private static School      schoolBdd;
+  private static Teacher     teacherBdd;
+  private static Discipline  disciplineBdd;
+  
+  private static Lesson         lessonTest;
+  private static LessonService  lessonService;
   
   public LessonServiceTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolService.selectById(1);
+    
+    TeacherService teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
+    teacherBdd = teacherService.selectById(2);
+    
+    DisciplineService disciplineService = new DisciplineService(CONNECTION_STRING_BDD_TESTS);
+    disciplineBdd = disciplineService.selectById(1);
+    
+    lessonService = new LessonService(); // cette ligne juste pour le coverage
+    lessonService = new LessonService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -47,19 +59,13 @@ public class LessonServiceTest {
   
   @Before
   public void setUp() {
-    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolService.selectById(1);
     
-    TeacherService teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
-    this.teacher = teacherService.selectById(2);
+    lessonTest = new Lesson("cours_test", false,
+                            false, 25,
+                            new Date(000), new Date(000),
+                            "Disponible", teacherBdd,
+                            disciplineBdd);
     
-    DisciplineService disciplineService = new DisciplineService(CONNECTION_STRING_BDD_TESTS);
-    this.discipline = disciplineService.selectById(1);
-    
-    this.lesson = new Lesson("Premier cours JEE", false, false, 25, new Date(111), new Date(222), "Disponible", this.teacher, this.discipline);
-    
-    this.lessonService = new LessonService(); // cette ligne juste pour les tests
-    this.lessonService = new LessonService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -71,78 +77,94 @@ public class LessonServiceTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.lessonService.insert(this.lesson) > 0;
-    assertTrue(result);
+    int resultInt = lessonService.insert(lessonTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      lessonTest.setId(resultInt);
+      lessonService.delete(lessonTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class LessonService.
    */
   @Test
   public void testUpdate() {
-    this.lesson = this.lessonService.selectById(1);
+    int resultInt = lessonService.insert(lessonTest);
     
-    // Ne pas oublier de lui renseigner sa Discipline (sa metiere)
-    this.lesson.setDiscipline(this.discipline);
-    // et son Teacher
-    this.lesson.setTeacher(this.teacher);
+    boolean result = false;
     
-    this.lesson.setName("Premier cours JEE 2");
-    this.lesson.setBeginDate(new Date(112));
-    this.lesson.setEndDate(new Date(223));
-    this.lesson.setStatus("Annulé");
-    boolean result = this.lessonService.update(this.lesson);
+    if(resultInt > 0){
+      lessonTest.setId(resultInt);
+      
+      lessonTest.setName("cours_test2");
+      
+      result = lessonService.update(lessonTest);
+      
+      lessonService.delete(lessonTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of delete method, of class LessonService.
    */
   @Test
   public void testDelete() {
-    this.lesson.setName("a_suppr");
-    this.lesson.setBeginDate(new Date(999));
-    this.lesson.setEndDate(new Date(800));
-    this.lesson.setStatus("Annulé");
+    int resultInt = lessonService.insert(lessonTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.lessonService.insert(this.lesson);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.lesson = this.lessonService.selectById(id);
+    if(resultInt > 0){
+      lessonTest = lessonService.selectById(resultInt);
+      
+      result = lessonService.delete(lessonTest);
+    }
     
-    boolean result = this.lessonService.delete(this.lesson);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class LessonService.
    */
   @Test
   public void testSelectById() {
-    this.lesson = this.lessonService.selectById(1);
-    assertTrue(this.lesson.getId() == 1);
+    lessonTest = lessonService.selectById(1);
+    boolean result = lessonTest.getId() == 1;
+    assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAll method, of class LessonService.
    */
   @Test
   public void testSelectAll() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAll();
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAll();
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllByTeacherId method, of class LessonService.
    */
   @Test
   public void testSelectAllByTeacherId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAllByTeacherId(2);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAllByTeacherId(2);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
 
@@ -151,31 +173,35 @@ public class LessonServiceTest {
    */
   @Test
   public void testSelectAllByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAllByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAllByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllLessonsByDisciplineId method, of class LessonService.
    */
   @Test
   public void testSelectAllLessonsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAllLessonsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAllLessonsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAllTpsByDisciplineId method, of class LessonService.
    */
   @Test
   public void testSelectAllTpsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAllTpsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAllTpsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
 
@@ -184,9 +210,9 @@ public class LessonServiceTest {
    */
   @Test
   public void testSelectAllTestsByDisciplineId() {
-    List<Lesson> listLessons = new ArrayList();
-    listLessons = this.lessonService.selectAllTestsByDisciplineId(1);
-    boolean result = listLessons.size() > 0;
+    List<Lesson> listLessons  = new ArrayList();
+    listLessons               = lessonService.selectAllTestsByDisciplineId(1);
+    boolean result            = listLessons.size() > 0;
     assertTrue(result);
   }
   

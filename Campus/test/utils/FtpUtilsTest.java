@@ -20,7 +20,9 @@ import static org.junit.Assert.*;
  */
 public class FtpUtilsTest {
   
-  private static final String PATH_TO_A_FILE_IMG = "/home/biron/Desktop/icone_boss2.png";
+  private static final String NAME_FILE_IMG_ON_FTP = "123.png";
+  
+  private static final String PATH_TO_A_FILE_IMG_LOCAL = "/home/biron/Desktop/icone_boss2.png";
   private static final String PATH_DOSSIER_LOCAL = "./remoteFiles/";
   
   public FtpUtilsTest() {
@@ -56,7 +58,10 @@ public class FtpUtilsTest {
    */
   @Test
   public void testUploadFileOnFtp() {
-    boolean result = FtpUtils.uploadFileOnFtp("toto.png", new File(PATH_TO_A_FILE_IMG));
+    boolean result = FtpUtils.uploadFileOnFtp("toto.png", new File(PATH_TO_A_FILE_IMG_LOCAL));
+    if(result){
+      FtpUtils.deleteFileOnFtp("toto.png");
+    }
     assertTrue(result);
   }
 
@@ -65,7 +70,11 @@ public class FtpUtilsTest {
    */
   @Test
   public void testDeleteFileOnFtp() {
-    boolean result = FtpUtils.deleteFileOnFtp("toto.png");
+    boolean resultBis = FtpUtils.uploadFileOnFtp("toto.png", new File(PATH_TO_A_FILE_IMG_LOCAL));
+    boolean result = false;
+    if(resultBis){
+      result = FtpUtils.deleteFileOnFtp("toto.png");
+    }
     assertTrue(result);
   }
 
@@ -74,9 +83,9 @@ public class FtpUtilsTest {
    */
   @Test
   public void testDownloadFromFtp() {
-    boolean result = FtpUtils.downloadFromFtp("icone_boss.png");
+    boolean result = FtpUtils.downloadFromFtp(NAME_FILE_IMG_ON_FTP);
     // On supprime le fichier s'il existe
-    File file = new File(PATH_DOSSIER_LOCAL+"icone_boss.png");
+    File file = new File(PATH_DOSSIER_LOCAL + NAME_FILE_IMG_ON_FTP);
     if(file.exists()) {
       file.delete();
     }

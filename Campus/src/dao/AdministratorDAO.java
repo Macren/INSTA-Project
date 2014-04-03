@@ -115,30 +115,7 @@ public class AdministratorDAO implements IDAO<Administrator>{
     }
     return false;
   }
-
-  @Override
-  public boolean delete(Administrator pAdministrator) {
-    Connection cnx = null;
-    
-    try {
-      cnx = db.connect();
-      
-      String sql = "DELETE FROM `user` WHERE `id`=?;";
-      PreparedStatement stat = cnx.prepareStatement(sql);
-      stat.setInt(1, pAdministrator.getId());
-      
-      stat.executeUpdate();
-      return true;
-      
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-      db.disconnect(cnx);
-    }
-    return false;
-  }
+  
 
   @Override
   public Administrator selectById(int id) {
@@ -221,7 +198,8 @@ public class AdministratorDAO implements IDAO<Administrator>{
     }
     return administrator;
   }
-
+  
+  
   @Override
   public List<Administrator> selectAll() {
     List<Administrator> listAdministrators = new ArrayList();
@@ -260,6 +238,31 @@ public class AdministratorDAO implements IDAO<Administrator>{
     }
     
     return listAdministrators;
+  }
+  
+  
+  @Override
+  public boolean delete(Administrator pAdministrator) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `user` WHERE `id`=?;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pAdministrator.getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(AdministratorDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
   
 }

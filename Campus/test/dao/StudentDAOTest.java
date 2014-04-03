@@ -27,16 +27,25 @@ public class StudentDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Education   education;
-  private Student     student;
-  private StudentDAO  studentDao;
+  private static School      schoolBdd;
+  private static Education   educationBdd;
+  
+  private static Student     studentTest;
+  private static StudentDAO  studentDao;
+  
   
   public StudentDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolDao.selectById(1);
+    
+    EducationDAO educationDao = new EducationDAO(CONNECTION_STRING_BDD_TESTS);
+    educationBdd = educationDao.selectById(1);
+    
+    studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -45,19 +54,13 @@ public class StudentDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
     
-    EducationDAO educationDao = new EducationDAO(CONNECTION_STRING_BDD_TESTS);
-    this.education = educationDao.selectById(1);
+    studentTest = new Student("campus_student_test", "campus_student_test",
+                              "campus_student_test@campus.com", new Date(0),
+                              "campus_student_test", "campus_student_test",
+                              0, "path/to/img/trombi_test",
+                              schoolBdd, educationBdd);
     
-    this.student = new Student("campus_student", "campus_student",
-                              "campus_student@campus.com", new Date(888),
-                              "campus_student", "campus_student",
-                              888, "path/to/img/trombi", this.school,
-                              this.education);
-    
-    this.studentDao = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -69,84 +72,106 @@ public class StudentDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.studentDao.insert(this.student) > 0;
-    assertTrue(result);
+    int resultInt = studentDao.insert(studentTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      studentTest.setId(resultInt);
+      studentDao.delete(studentTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class StudentDAO.
    */
   @Test
   public void testUpdate() {
-    this.student = this.studentDao.selectById(3);
+    int resultInt = studentDao.insert(studentTest);
     
-    // Ne pas oublier de lui renseigner son Education (sa formation)
-    this.student.setEducation(this.education);
+    boolean result = false;
     
-    this.student.setLogin("campus_student2");
-    this.student.setPasswd("campus_student2");
-    this.student.setMail("campus_student2@campus.com");
-    this.student.setBirthDate(new Date(999));
-    this.student.setFirstName("campus_student2");
-    this.student.setLastName("campus_student2");
-    this.student.setPhone(999);
-    this.student.setPathImgTrombi("path/to/img/t");
-    boolean result = this.studentDao.update(this.student);
+    if(resultInt > 0){
+      studentTest.setId(resultInt);
+      
+      studentTest.setLogin("campus_student_test2");
+      studentTest.setPasswd("campus_student_test2");
+      studentTest.setMail("campus_student_test2@campus.com");
+      studentTest.setFirstName("campus_student_test2");
+      studentTest.setLastName("campus_student_test2");
+      studentTest.setPathImgTrombi("path/to/img/trombi_test2");
+      
+      result = studentDao.update(studentTest);
+      
+      studentDao.delete(studentTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of delete method, of class StudentDAO.
    */
   @Test
   public void testDelete() {
-    this.student.setLogin("a_suppr");
-    this.student.setPasswd("a_suppr");
-    this.student.setMail("a_suppr@campus.com");
-    this.student.setBirthDate(new Date(000));
-    this.student.setFirstName("a_suppr");
-    this.student.setLastName("a_suppr");
-    this.student.setPhone(000);
-    this.student.setPathImgTrombi("a/suppr");
+    int resultInt = studentDao.insert(studentTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.studentDao.insert(this.student);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.student = this.studentDao.selectById(id);
+    if(resultInt > 0){
+      studentTest = studentDao.selectById(resultInt);
+      
+      result = studentDao.delete(studentTest);
+    }
     
-    boolean result = this.studentDao.delete(this.student);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class StudentDAO.
    */
   @Test
   public void testSelectById() {
-    this.student = this.studentDao.selectById(3);
-    assertTrue(this.student.getId() == 3);
+    studentTest     = studentDao.selectById(3);
+    boolean result  = studentTest.getId() == 3;
+    assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectByLoginPwd method, of class StudentDAO.
    */
   @Test
   public void testSelectByLoginPwd() {
-    this.student = this.studentDao.selectByLoginPwd("campus_student2", "campus_student2");
-    boolean result = this.student.getLogin().equals("campus_student2")
-                      && this.student.getPasswd().equals("campus_student2");
+    int resultInt = studentDao.insert(studentTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      studentTest = studentDao.selectByLoginPwd("campus_student_test", "campus_student_test");
+      
+      result = studentTest.getLogin().equals("campus_student_test")
+                && studentTest.getPasswd().equals("campus_student_test");
+      
+      studentDao.delete(studentTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectAll method, of class StudentDAO.
    */
   @Test
   public void testSelectAll() {
-    List<Student> listStudents = new ArrayList();
-    listStudents = this.studentDao.selectAll();
-    boolean result = listStudents.size() > 0;
+    List<Student> listStudents  = new ArrayList();
+    listStudents                = studentDao.selectAll();
+    boolean result              = listStudents.size() > 0;
     assertTrue(result);
   }
   

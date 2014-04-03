@@ -26,15 +26,21 @@ public class TeacherServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School          school;
-  private Teacher         teacher;
-  private TeacherService  teacherService;
+  private static School      schoolBdd;
+  
+  private static Teacher        teacherTest;
+  private static TeacherService teacherService;
   
   public TeacherServiceTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolService.selectById(1);
+    
+    teacherService = new TeacherService(); // cette ligne juste pour le coverage
+    teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -43,18 +49,14 @@ public class TeacherServiceTest {
   
   @Before
   public void setUp() {
-    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolService.selectById(1);
     
-    this.teacher = new Teacher("campus_teacher", "campus_teacher",
-                                "campus_teacher@campus.com", new Date(555),
-                                "campus_teacher", "campus_teacher",
-                                555, "path/to/img/trombi", this.school, 
-                                null); // dernier arg : Education
-                                // null car un teacher n'a pas d'education( de formation)
+    teacherTest = new Teacher("campus_teacher_test", "campus_teacher_test",
+                              "campus_teacher_test@campus.com", new Date(0),
+                              "campus_teacher_test", "campus_teacher_test",
+                              0, "path/to/img/trombi_test",
+                              schoolBdd, null); // dernier arg : Education
+                              // null car un teacher n'a pas d'education( de formation)
     
-    this.teacherService = new TeacherService(); // cette ligne juste pour les tests
-    this.teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -66,79 +68,111 @@ public class TeacherServiceTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.teacherService.insert(this.teacher) > 0;
-    assertTrue(result);
+    int resultInt = teacherService.insert(teacherTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      teacherTest.setId(resultInt);
+      teacherService.delete(teacherTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class TeacherService.
    */
   @Test
   public void testUpdate() {
-    this.teacher = this.teacherService.selectById(2);
+    int resultInt = teacherService.insert(teacherTest);
     
-    this.teacher.setLogin("campus_teacher2");
-    this.teacher.setPasswd("campus_teacher2");
-    this.teacher.setMail("campus_teacher2@campus.com");
-    this.teacher.setBirthDate(new Date(444));
-    this.teacher.setFirstName("campus_teacher2");
-    this.teacher.setLastName("campus_teacher2");
-    this.teacher.setPhone(444);
-    boolean result = this.teacherService.update(this.teacher);
+    boolean result = false;
+    
+    if(resultInt > 0){
+      teacherTest.setId(resultInt);
+      
+      teacherTest.setLogin("campus_teacher_test2");
+      teacherTest.setPasswd("campus_teacher_test2");
+      teacherTest.setMail("campus_teacher_test2@campus.com");
+      teacherTest.setFirstName("campus_teacher_test2");
+      teacherTest.setLastName("campus_teacher_test2");
+      teacherTest.setPathImgTrombi("path/to/img/trombi_test2");
+      
+      result = teacherService.update(teacherTest);
+      
+      teacherService.delete(teacherTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
+  
   /**
    * Test of delete method, of class TeacherService.
    */
   @Test
   public void testDelete() {
-    this.teacher.setLogin("a_suppr");
-    this.teacher.setPasswd("a_suppr");
-    this.teacher.setMail("a_suppr@campus.com");
-    this.teacher.setBirthDate(new Date(000));
-    this.teacher.setFirstName("a_suppr");
-    this.teacher.setLastName("a_suppr");
-    this.teacher.setPhone(000);
+    int resultInt = teacherService.insert(teacherTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.teacherService.insert(this.teacher);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.teacher = this.teacherService.selectById(id);
+    if(resultInt > 0){
+      teacherTest = teacherService.selectById(resultInt);
+      
+      result = teacherService.delete(teacherTest);
+    }
     
-    boolean result = this.teacherService.delete(this.teacher);
     assertTrue(result);
   }
-
+  
+  
+  
+  
   /**
    * Test of selectById method, of class TeacherService.
    */
   @Test
   public void testSelectById() {
-    this.teacher = this.teacherService.selectById(2);
-    assertTrue(this.teacher.getId() == 2);
+    teacherTest     = teacherService.selectById(2);
+    boolean result  = teacherTest.getId() == 2;
+    assertTrue(result);
   }
-
+  
+  
+  
+  
   /**
    * Test of selectByLoginPwd method, of class TeacherService.
    */
   @Test
   public void testSelectByLoginPwd() {
-    this.teacher = this.teacherService.selectByLoginPwd("campus_teacher2", "campus_teacher2");
-    boolean result = this.teacher.getLogin().equals("campus_teacher2")
-                      && this.teacher.getPasswd().equals("campus_teacher2");
+    int resultInt = teacherService.insert(teacherTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      teacherTest = teacherService.selectByLoginPwd("campus_teacher_test", "campus_teacher_test");
+      
+      result = teacherTest.getLogin().equals("campus_teacher_test")
+                && teacherTest.getPasswd().equals("campus_teacher_test");
+      
+      teacherService.delete(teacherTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectAll method, of class TeacherService.
    */
   @Test
   public void testSelectAll() {
-    List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherService.selectAll();
-    boolean result = listTeachers.size() > 0;
+    List<Teacher> listTeachers  = new ArrayList();
+    listTeachers                = teacherService.selectAll();
+    boolean result              = listTeachers.size() > 0;
     assertTrue(result);
   }
 
@@ -147,18 +181,9 @@ public class TeacherServiceTest {
    */
   @Test
   public void testSelectAllBySchoolId() {
-    List<Teacher> listTeachers = new ArrayList();
-    listTeachers = this.teacherService.selectAllBySchoolId(1);
-    
-    boolean resultBis = true;
-    for (Teacher t : listTeachers) {
-      if(t.getSchool().getId() != 1)
-      {
-        resultBis = false;
-      }
-    }
-    
-    boolean result = resultBis && listTeachers.size() > 0;
+    List<Teacher> listTeachers  = new ArrayList();
+    listTeachers                = this.teacherService.selectAllBySchoolId(1);
+    boolean result              = listTeachers.size() > 0;
     assertTrue(result);
   }
   

@@ -4,11 +4,10 @@
  * and open the template in the editor.
  */
 
-package dao;
+package service;
 
 import java.util.ArrayList;
 import java.util.List;
-import metier.Administrator;
 import metier.Contact;
 import metier.Student;
 import metier.Teacher;
@@ -23,32 +22,33 @@ import static org.junit.Assert.*;
  *
  * @author biron
  */
-public class ContactDAOTest {
+public class ContactServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
   private static Teacher teacher;
-  private static TeacherDAO teacherdao;
+  private static TeacherService teacherService;
   
   private static Student student;
-  private static StudentDAO studentDao;
+  private static StudentService studentService;
   
   private static Contact contactTest;
-  private static ContactDAO contactDao;
+  private static ContactService contactService;
   
   
-  public ContactDAOTest() {
+  public ContactServiceTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
-    teacherdao        = new TeacherDAO(CONNECTION_STRING_BDD_TESTS);
-    studentDao        = new StudentDAO(CONNECTION_STRING_BDD_TESTS);
+    teacherService        = new TeacherService(CONNECTION_STRING_BDD_TESTS);
+    studentService        = new StudentService(CONNECTION_STRING_BDD_TESTS);
     
-    contactDao        = new ContactDAO(CONNECTION_STRING_BDD_TESTS);
+    contactService  = new ContactService(); // cette ligne juste pour le coverage
+    contactService  = new ContactService(CONNECTION_STRING_BDD_TESTS);
     
-    teacher        = teacherdao.selectById(2);
-    student        = studentDao.selectById(3);
+    teacher        = teacherService.selectById(2);
+    student        = studentService.selectById(3);
   }
   
   @AfterClass
@@ -67,33 +67,33 @@ public class ContactDAOTest {
   }
 
   /**
-   * Test of insert method, of class ContactDAO.
+   * Test of insert method, of class ContactService.
    */
   @Test
   public void testInsert() {
-    boolean result = contactDao.insert(contactTest) == 1;
+    boolean result = contactService.insert(contactTest) == 1;
     if(result){
-      contactDao.delete(contactTest);
+      contactService.delete(contactTest);
     }
     assertTrue(result);
   }
   
   
   /**
-   * Test of selectByUserIds method, of class ContactDAO.
+   * Test of selectByUserIds method, of class ContactService.
    */
   @Test
   public void testSelectByUserIds() {
-    boolean resultBis = contactDao.insert(contactTest) == 1;
+    boolean resultBis = contactService.insert(contactTest) == 1;
     boolean result = false;
     
     if(resultBis){
-      contactTest = contactDao.selectByUserIds(teacher.getId(), student.getId());
+      contactTest = contactService.selectByUserIds(teacher.getId(), student.getId());
       
       result = contactTest.getUtilisateur1().getId() == 2
                 && contactTest.getUtilisateur2().getId() == 3;
       
-      contactDao.delete(contactTest);
+      contactService.delete(contactTest);
     }
     
     assertTrue(result);
@@ -101,20 +101,20 @@ public class ContactDAOTest {
   
   
   /**
-   * Test of selectAllByOneUserId method, of class ContactDAO.
+   * Test of selectAllByOneUserId method, of class ContactService.
    */
   @Test
   public void testSelectAllByOneUserId() {
-    boolean resultBis = contactDao.insert(contactTest) == 1;
+    boolean resultBis = contactService.insert(contactTest) == 1;
     boolean result = false;
     
     if(resultBis){
       List<Contact> listContacts  = new ArrayList();
-      listContacts                = contactDao.selectAllByOneUserId(contactTest.getUtilisateur1().getId());
+      listContacts                = contactService.selectAllByOneUserId(contactTest.getUtilisateur1().getId());
       
       result = listContacts.size() > 0;
       
-      contactDao.delete(contactTest);
+      contactService.delete(contactTest);
     }
     
     assertTrue(result);
@@ -122,20 +122,22 @@ public class ContactDAOTest {
   
   
   /**
-   * Test of delete method, of class ContactDAO.
+   * Test of delete method, of class ContactService.
    */
   @Test
   public void testDelete() {
-    boolean resultBis = contactDao.insert(contactTest) == 1;
+    boolean resultBis = contactService.insert(contactTest) == 1;
     boolean result = false;
     
     if(resultBis){
       
-      result = contactDao.delete(contactTest);
+      result = contactService.delete(contactTest);
       
     }
     
     assertTrue(result);
   }
+  
+  
   
 }

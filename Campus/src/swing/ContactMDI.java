@@ -8,6 +8,7 @@ package swing;
 
 import java.util.List;
 import javax.swing.DefaultListModel;
+import metier.AbstractUser;
 import metier.Administrator;
 import metier.Contact;
 import metier.Student;
@@ -16,6 +17,7 @@ import service.AdministratorService;
 import service.ContactService;
 import service.StudentService;
 import service.TeacherService;
+import utils.UIUtils;
 
 /**
  *
@@ -33,25 +35,55 @@ public class ContactMDI extends javax.swing.JFrame {
     private AdministratorService    adminService = new AdministratorService();
 
     /**
-     * Creates new form ContactMDI
+     * Ctor
      */
     public ContactMDI() {
-        initComponents();
-        initList();
+      
+      initComponents();
+      initList();
+    }
+    /**
+     * Creates new form ContactMDI
+     */
+    public ContactMDI(AbstractUser user) {
+      
+      if(user.getClass().isInstance(Administrator.class)){
+        this.myAdmin = (Administrator) user;
+      }
+      if(user.getClass().isInstance(Teacher.class)){
+        this.myTeacher = (Teacher) user;
+      }
+      if(user.getClass().isInstance(Student.class)){
+        this.myStudent = (Student) user;
+      }
+      
+      initComponents();
+      this.initList();
     }
     
-    public void initList(){
-    
+    private void initList(){
         this.dcmContact.clear();
         
-        List <Contact> listContact = this.contactService.selectAll();
+        List<Contact> listContacts = null;
         
-        for (Object o : listContact ){
-            Contact contact = (Contact) o;
-            this.dcmContact.addElement(contact);
+        if (this.myAdmin != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myAdmin.getId());
         }
-         this.contactList.setModel(dcmContact);
+        if (this.myTeacher != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myTeacher.getId());
+        }
+        if (this.myStudent != null) {
+          listContacts = this.contactService.selectAllByOneUserId(this.myStudent.getId());
+        }
         
+        if(listContacts != null){
+          for (Contact c : listContacts ){
+              Contact contact = c;
+              this.dcmContact.addElement(contact.getUtilisateur2().getLogin());
+          }
+        }
+        
+        this.contactList.setModel(dcmContact);
     }
     
      private void refreshAddUserUI() {
@@ -277,6 +309,14 @@ public class ContactMDI extends javax.swing.JFrame {
 
     private void bt_addContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addContactActionPerformed
         // TODO add your handling code here:
+      
+      // Ici appeler la fenetre contenant la liste de tous les Students et Teachers
+      // setting display
+//        UIUtils.centerJIF(this.jif_addDisci, this.desktopPane);
+//        this.jif_home.setVisible(false);
+      
+      
+      
         int idUser = 0;
        // aLogin = this.tf_addContact_login.getText();
         

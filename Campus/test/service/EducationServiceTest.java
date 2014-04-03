@@ -25,15 +25,20 @@ public class EducationServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School            school;
-  private Education         education;
-  private EducationService  educationService;
+  private static School           schoolBdd;
+  private static Education        educationTest;
+  private static EducationService educationService;
   
   public EducationServiceTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolService.selectById(1);
+    
+    educationService = new EducationService(); // cette ligne juste pour le coverage
+    educationService = new EducationService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -42,13 +47,9 @@ public class EducationServiceTest {
   
   @Before
   public void setUp() {
-    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolService.selectById(1);
     
-    this.education = new Education("Architecte Logiciel", 400, 13, this.school);
+    educationTest = new Education("formation_test", 400, 13, schoolBdd);
     
-    this.educationService = new EducationService(); // cette ligne juste pour les tests
-    this.educationService = new EducationService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -60,61 +61,81 @@ public class EducationServiceTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.educationService.insert(this.education) > 0;
-    assertTrue(result);
+    int resultInt = educationService.insert(educationTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      educationTest.setId(resultInt);
+      educationService.delete(educationTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class EducationService.
    */
   @Test
   public void testUpdate() {
-    this.education = this.educationService.selectById(1);
+    int resultInt = educationService.insert(educationTest);
     
-    this.education.setName("Architecte Logiciel 2");
-    this.education.setNbHours(480);
-    this.education.setPromo(14);
-    // on ne change pas son ecole
-    boolean result = this.educationService.update(this.education);
+    boolean result = false;
+    
+    if(resultInt > 0){
+      educationTest.setId(resultInt);
+      
+      educationTest.setName("formation_test2");
+      
+      result = educationService.update(educationTest);
+      
+      educationService.delete(educationTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of delete method, of class EducationService.
    */
   @Test
   public void testDelete() {
-    this.education.setName("a_suppr");
-    this.education.setNbHours(0);
-    this.education.setPromo(0);
+    int resultInt = educationService.insert(educationTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.educationService.insert(this.education);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.education = this.educationService.selectById(id);
+    if(resultInt > 0){
+      educationTest = educationService.selectById(resultInt);
+      
+      result = educationService.delete(educationTest);
+    }
     
-    boolean result = this.educationService.delete(this.education);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class EducationService.
    */
   @Test
   public void testSelectById() {
-    this.education = this.educationService.selectById(1);
-    assertTrue(this.education.getId() == 1);
+    educationTest = educationService.selectById(1);
+    boolean result = educationTest.getId() == 1;
+    assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectAll method, of class EducationService.
    */
   @Test
   public void testSelectAll() {
-    List<Education> listEducations = new ArrayList();
-    listEducations = this.educationService.selectAll();
-    boolean result = listEducations.size() > 0;
+    List<Education> listEducations  = new ArrayList();
+    listEducations                  = educationService.selectAll();
+    boolean result                  = listEducations.size() > 0;
     assertTrue(result);
   }
 
@@ -123,9 +144,9 @@ public class EducationServiceTest {
    */
   @Test
   public void testSelectAllBySchoolId() {
-    List<Education> listEducations = new ArrayList();
-    listEducations = this.educationService.selectAllBySchoolId(1);
-    boolean result = listEducations.size() > 0;
+    List<Education> listEducations  = new ArrayList();
+    listEducations                  = educationService.selectAllBySchoolId(1);
+    boolean result                  = listEducations.size() > 0;
     assertTrue(result);
   }
   

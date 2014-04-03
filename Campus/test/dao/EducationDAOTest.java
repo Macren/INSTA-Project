@@ -25,15 +25,20 @@ public class EducationDAOTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School        school;
-  private Education     education;
-  private EducationDAO  educationDao;
+  private static School        schoolBdd;
+  private static Education     educationTest;
+  private static EducationDAO  educationDao;
+  
   
   public EducationDAOTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolDao.selectById(1);
+    
+    educationDao = new EducationDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -42,12 +47,9 @@ public class EducationDAOTest {
   
   @Before
   public void setUp() {
-    SchoolDAO schoolDao = new SchoolDAO(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolDao.selectById(1);
     
-    this.education = new Education("Architecte Logiciel", 400, 13, this.school);
+    educationTest = new Education("formation_test", 400, 13, schoolBdd);
     
-    this.educationDao = new EducationDAO(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -59,22 +61,35 @@ public class EducationDAOTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.educationDao.insert(this.education) > 0;
-    assertTrue(result);
+    int resultInt = educationDao.insert(educationTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      educationTest.setId(resultInt);
+      educationDao.delete(educationTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
   /**
    * Test of update method, of class EducationDAO.
    */
   @Test
   public void testUpdate() {
-    this.education = this.educationDao.selectById(1);
+    int resultInt = educationDao.insert(educationTest);
     
-    this.education.setName("Architecte Logiciel 2");
-    this.education.setNbHours(480);
-    this.education.setPromo(14);
-    // on ne change pas son ecole
-    boolean result = this.educationDao.update(this.education);
+    boolean result = false;
+    
+    if(resultInt > 0){
+      educationTest.setId(resultInt);
+      
+      educationTest.setName("formation_test2");
+      
+      result = educationDao.update(educationTest);
+      
+      educationDao.delete(educationTest);
+    }
+    
     assertTrue(result);
   }
 
@@ -83,48 +98,53 @@ public class EducationDAOTest {
    */
   @Test
   public void testDelete() {
-    this.education.setName("a_suppr");
-    this.education.setNbHours(0);
-    this.education.setPromo(0);
+    int resultInt = educationDao.insert(educationTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.educationDao.insert(this.education);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.education = this.educationDao.selectById(id);
+    if(resultInt > 0){
+      educationTest = educationDao.selectById(resultInt);
+      
+      result = educationDao.delete(educationTest);
+    }
     
-    boolean result = this.educationDao.delete(this.education);
     assertTrue(result);
   }
-
+  
+  
+  
+  
   /**
    * Test of selectById method, of class EducationDAO.
    */
   @Test
   public void testSelectById() {
-    this.education = this.educationDao.selectById(1);
-    assertTrue(this.education.getId() == 1);
+    educationTest = educationDao.selectById(1);
+    boolean result = educationTest.getId() == 1;
+    assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectAll method, of class EducationDAO.
    */
   @Test
   public void testSelectAll() {
-    List<Education> listEducations = new ArrayList();
-    listEducations = this.educationDao.selectAll();
-    boolean result = listEducations.size() > 0;
+    List<Education> listEducations  = new ArrayList();
+    listEducations                  = educationDao.selectAll();
+    boolean result                  = listEducations.size() > 0;
     assertTrue(result);
   }
-
+  
+  
   /**
    * Test of selectAllBySchoolId method, of class EducationDAO.
    */
   @Test
   public void testSelectAllBySchoolId() {
-    List<Education> listEducations = new ArrayList();
-    listEducations = this.educationDao.selectAllBySchoolId(1);
-    boolean result = listEducations.size() > 0;
+    List<Education> listEducations  = new ArrayList();
+    listEducations                  = educationDao.selectAllBySchoolId(1);
+    boolean result                  = listEducations.size() > 0;
     assertTrue(result);
   }
   

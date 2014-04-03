@@ -33,35 +33,47 @@ public class ContactService {
   }
   
   
-  
+  /**
+   * Créer un Contact en BDD
+   * 
+   * @param pContact
+   * @return 
+   */
   public int insert(Contact pContact) {
     return this.contactDao.insert(pContact);
   }
   
-  public boolean update(Contact pContact) {
-    return this.contactDao.update(pContact);
-  }
-  
-  public boolean delete(Contact pContact) {
-    return this.contactDao.delete(pContact);
-  }
-  
-  // Ne marche pas
-  public Contact selectById(int id) {
-//    return this.contactDao.selectById(id);
-    return null;
-  }
-  
+  /**
+   * Récupère un Contact de la BDD en fonction des deux id d'utilisateurs
+   * 
+   * @param pUserId1
+   * @param pUserId2
+   * @return 
+   */
   public Contact selectByUserIds(int pUserId1, int pUserId2) {
     return this.contactDao.selectByUserIds(pUserId1, pUserId2);
   }
   
-  public List<Contact> selectAll() {
-    return this.contactDao.selectAll();
-  }
-  
+  /**
+   * Récupère une liste de Contacts de la BDD en fonction d'un id d'utilisateur
+   * 
+   * @param pUserId
+   * @return 
+   */
   public List<Contact> selectAllByOneUserId(int pUserId) {
     return this.contactDao.selectAllByOneUserId(pUserId);
   }
+  
+  /**
+   * Supprime un Contact de la BDD
+   * 
+   * @param pContact
+   * @return 
+   */
+  public boolean delete(Contact pContact) {
+    return this.contactDao.delete(pContact);
+  }
+  
+  
   
 }

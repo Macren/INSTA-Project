@@ -23,7 +23,10 @@ import metier.Contact;
  *
  * @author Thierry
  */
-public class ContactDAO implements IDAO<Contact> {
+public class ContactDAO {
+  
+  public DB db = new DB();
+  
   
   public ContactDAO() {
   }
@@ -32,24 +35,32 @@ public class ContactDAO implements IDAO<Contact> {
     this.db.setUrl(pUrl);
   }
   
-  @Override
+  
+  
+  
   public int insert(Contact pContact) {
     Connection cnx = null;
-
+    
     try {
       cnx = db.connect();
       
       String sql = "INSERT INTO `contact`(`id_user_1`,`id_user_2`) VALUES (?,?);";
-      PreparedStatement stat = cnx.prepareStatement(sql);
-      stat.setInt(1, pContact.getUtilisateur1().getId());
-      stat.setInt(2, pContact.getUtilisateur2().getId());
-      stat.executeUpdate();
       
-      String sqlBis = "INSERT INTO `contact`(`id_user_1`,`id_user_2`) VALUES (?,?);";
-      PreparedStatement statBis = cnx.prepareStatement(sqlBis);
-      statBis.setInt(1, pContact.getUtilisateur2().getId());
-      statBis.setInt(2, pContact.getUtilisateur1().getId());
-      statBis.executeUpdate();
+      // on verifie si la ligne existe déja en BDD
+      if(this.selectByUserIds(pContact.getUtilisateur1().getId(), pContact.getUtilisateur2().getId()) == null){
+        PreparedStatement stat = cnx.prepareStatement(sql);
+        stat.setInt(1, pContact.getUtilisateur1().getId());
+        stat.setInt(2, pContact.getUtilisateur2().getId());
+        stat.executeUpdate();
+      }
+      
+      // on verifie si la ligne existe déja en BDD
+      if(this.selectByUserIds(pContact.getUtilisateur2().getId(), pContact.getUtilisateur1().getId()) == null){
+        PreparedStatement statBis = cnx.prepareStatement(sql);
+        statBis.setInt(1, pContact.getUtilisateur2().getId());
+        statBis.setInt(2, pContact.getUtilisateur1().getId());
+        statBis.executeUpdate();
+      }
       
       return 1;
       
@@ -63,49 +74,9 @@ public class ContactDAO implements IDAO<Contact> {
     
     return 0;
   }
-
-  @Override
-  public boolean update(Contact pContact) {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
   
   
-
-  @Override
-  public boolean delete(Contact pContact) {
-    Connection cnx = null;
-    
-    try {
-      cnx = db.connect();
-      
-      String sql = "DELETE FROM `contact` WHERE `id_user_1`=? AND `id_user_2`=?;";
-      PreparedStatement stat = cnx.prepareStatement(sql);
-      stat.setInt(1, pContact.getUtilisateur1().getId());
-      stat.setInt(2, pContact.getUtilisateur2().getId());
-      stat.executeUpdate();
-      
-      String sqlBis = "DELETE FROM `contact` WHERE `id_user_1`=? AND `id_user_2`=?;";
-      PreparedStatement statBis = cnx.prepareStatement(sqlBis);
-      statBis.setInt(1, pContact.getUtilisateur2().getId());
-      statBis.setInt(2, pContact.getUtilisateur1().getId());
-      statBis.executeUpdate();
-      
-      return true;
-      
-    } catch (ClassNotFoundException ex) {
-      Logger.getLogger(ContactDAO.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-      Logger.getLogger(ContactDAO.class.getName()).log(Level.SEVERE, null, ex);
-    } finally {
-      db.disconnect(cnx);
-    }
-    return false;
-  }
-
-  @Override
-  public Contact selectById(int id) {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+  
   
   
   public Contact selectByUserIds(int pUserId1, int pUserId2) {
@@ -166,11 +137,7 @@ public class ContactDAO implements IDAO<Contact> {
     return contact;
   }
   
-
-  @Override
-  public List<Contact> selectAll() {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+  
   
   
   
@@ -186,7 +153,7 @@ public class ContactDAO implements IDAO<Contact> {
       String sql = "SELECT * FROM `contact` WHERE `id_user_1`=?;";
       PreparedStatement stat = cnx.prepareStatement(sql);
       stat.setInt(1, pUserId);
-      ResultSet res = stat.executeQuery(sql);
+      ResultSet res = stat.executeQuery();
       
       while (res.next()) {
         
@@ -198,14 +165,14 @@ public class ContactDAO implements IDAO<Contact> {
         TeacherDAO teacherDao             = new TeacherDAO();
         StudentDAO studentDao             = new StudentDAO();
         
-        if(administratorDao.selectById(res.getInt("id_user_1")) != null){
-          u1 = administratorDao.selectById(res.getInt("id_user_1"));
+        if(administratorDao.selectById(pUserId) != null){
+          u1 = administratorDao.selectById(pUserId);
         }
-        if(teacherDao.selectById(res.getInt("id_user_1")) != null){
-          u1 = teacherDao.selectById(res.getInt("id_user_1"));
+        if(teacherDao.selectById(pUserId) != null){
+          u1 = teacherDao.selectById(pUserId);
         }
-        if(studentDao.selectById(res.getInt("id_user_1")) != null){
-          u1 = studentDao.selectById(res.getInt("id_user_1"));
+        if(studentDao.selectById(pUserId) != null){
+          u1 = studentDao.selectById(pUserId);
         }
         
         if(administratorDao.selectById(res.getInt("id_user_2")) != null){
@@ -233,5 +200,46 @@ public class ContactDAO implements IDAO<Contact> {
 
     return listContacts;
   }
+  
+  
+  
+  
+  
+  
+  
+  public boolean delete(Contact pContact) {
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `contact` WHERE `id_user_1`=? AND `id_user_2`=?;";
+      
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pContact.getUtilisateur1().getId());
+      stat.setInt(2, pContact.getUtilisateur2().getId());
+      stat.executeUpdate();
+      
+      PreparedStatement statBis = cnx.prepareStatement(sql);
+      statBis.setInt(1, pContact.getUtilisateur2().getId());
+      statBis.setInt(2, pContact.getUtilisateur1().getId());
+      statBis.executeUpdate();
+      
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+      Logger.getLogger(ContactDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+      Logger.getLogger(ContactDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
+  }
+  
+  
+  
+  
+  
 
 }

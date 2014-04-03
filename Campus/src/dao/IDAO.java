@@ -18,7 +18,7 @@ public interface IDAO<T> {
     // renvoie un int (l'id (généré par mysql) de l'objet inséré ou bien 0 (zéro)
     public  int       insert(T objet);
     public  boolean   update(T objet);
-    public  boolean   delete(T objet);
     public  T         selectById(int id);
     public  List<T>   selectAll();
+    public  boolean   delete(T objet);
 }

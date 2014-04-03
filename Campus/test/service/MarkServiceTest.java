@@ -28,18 +28,33 @@ public class MarkServiceTest {
   
   private static final String CONNECTION_STRING_BDD_TESTS = "jdbc:mysql://localhost/campus_bdd_tests";
   
-  private School      school;
-  private Teacher     teacher;
-  private Student     student;
-  private Discipline  discipline;
-  private Mark        mark;
-  private MarkService markService;
+  private static School      schoolBdd;
+  private static Teacher     teacherBdd;
+  private static Student     studentBdd;
+  private static Discipline  disciplineBdd;
+  
+  private static Mark         markTest;
+  private static MarkService  markService;
   
   public MarkServiceTest() {
   }
   
   @BeforeClass
   public static void setUpClass() {
+    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
+    schoolBdd = schoolService.selectById(1);
+    
+    TeacherService teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
+    teacherBdd = teacherService.selectById(2);
+    
+    StudentService studentService = new StudentService(CONNECTION_STRING_BDD_TESTS);
+    studentBdd = studentService.selectById(3);
+    
+    DisciplineService disciplineService = new DisciplineService(CONNECTION_STRING_BDD_TESTS);
+    disciplineBdd = disciplineService.selectById(1);
+    
+    markService = new MarkService(); // cette ligne juste pour le coverage
+    markService = new MarkService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @AfterClass
@@ -48,22 +63,11 @@ public class MarkServiceTest {
   
   @Before
   public void setUp() {
-    SchoolService schoolService = new SchoolService(CONNECTION_STRING_BDD_TESTS);
-    this.school = schoolService.selectById(1);
     
-    TeacherService teacherService = new TeacherService(CONNECTION_STRING_BDD_TESTS);
-    this.teacher = teacherService.selectById(2);
+    markTest = new Mark((float) 10, (float) 20,
+                        studentBdd, teacherBdd,
+                        disciplineBdd, "note_test");
     
-    StudentService studentDao = new StudentService(CONNECTION_STRING_BDD_TESTS);
-    this.student = studentDao.selectById(3);
-    
-    DisciplineService disciplineService = new DisciplineService(CONNECTION_STRING_BDD_TESTS);
-    this.discipline = disciplineService.selectById(1);
-    
-    this.mark = new Mark((float) 15.5, (float) 20, this.student, this.teacher, this.discipline, "Très bon travail!");
-    
-    this.markService = new MarkService(); // cette ligne juste pour les tests
-    this.markService = new MarkService(CONNECTION_STRING_BDD_TESTS);
   }
   
   @After
@@ -75,57 +79,81 @@ public class MarkServiceTest {
    */
   @Test
   public void testInsert() {
-    boolean result = this.markService.insert(this.mark) > 0;
-    assertTrue(result);
+    int resultInt = markService.insert(markTest);
+    // Je pense à le suppr si l'insert à fonctionné
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      markService.delete(markTest);
+    }
+    assertTrue(resultInt > 0);
   }
-
+  
+  
+  
   /**
    * Test of update method, of class MarkService.
    */
   @Test
   public void testUpdate() {
-    this.mark = this.markService.selectById(1);
+    int resultInt = markService.insert(markTest);
     
-    // Ne pas oublier de lui renseigner sa Discipline (sa metiere)
-    this.mark.setDiscipline(this.discipline);
-    // et son Teacher
-    this.mark.setTeacher(this.teacher);
-    // et son Student (surtout)
-    this.mark.setStudent(this.student);
+    boolean result = false;
     
-    this.mark.setValue((float) 5.5);
-    this.mark.setValueMax((float) 20);
-    this.mark.setComment("Que s'est il passé ?!");
-    boolean result = this.markService.update(this.mark);
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      markTest.setValue((float) 20);
+      markTest.setComment("note_test2");
+      
+      result = markService.update(markTest);
+      
+      markService.delete(markTest);
+    }
+    
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of delete method, of class MarkService.
    */
   @Test
   public void testDelete() {
-    this.mark.setValue(0);
-    this.mark.setValueMax(0);
-    this.mark.setComment("a_suppr");
+    int resultInt = markService.insert(markTest);
     
-    int id; // On récupère le dernier id généré
-    id = this.markService.insert(this.mark);
+    boolean result = false;
     
-    // On re-récupère l'objet, pour le suppr
-    this.mark = this.markService.selectById(id);
+    if(resultInt > 0){
+      markTest = markService.selectById(resultInt);
+      
+      result = markService.delete(markTest);
+    }
     
-    boolean result = this.markService.delete(this.mark);
     assertTrue(result);
   }
-
+  
+  
+  
   /**
    * Test of selectById method, of class MarkService.
    */
   @Test
   public void testSelectById() {
-    this.mark = this.markService.selectById(1);
-    assertTrue(this.mark.getId() == 1);
+    int resultInt = markService.insert(markTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      markTest  = markService.selectById(resultInt);
+      result    = markTest.getId() == resultInt;
+      
+      markService.delete(markTest);
+    }
+    
+    assertTrue(result);
   }
 
   /**
@@ -133,9 +161,20 @@ public class MarkServiceTest {
    */
   @Test
   public void testSelectAll() {
-    List<Mark> listMarks = new ArrayList();
-    listMarks = this.markService.selectAll();
-    boolean result = listMarks.size() > 0;
+    int resultInt = markService.insert(markTest);
+    
+    boolean result = false;
+    
+    if(resultInt > 0){
+      markTest.setId(resultInt);
+      
+      List<Mark> listMarks  = new ArrayList();
+      listMarks             = this.markService.selectAll();
+      result                = listMarks.size() > 0;
+      
+      markService.delete(markTest);
+    }
+    
     assertTrue(result);
   }
   
