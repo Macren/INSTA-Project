@@ -14,6 +14,7 @@ import java.util.List;
  * @author Madeleine
  */
 public class Teacher extends AbstractUser implements IDocUse {
+
     
 
     /**

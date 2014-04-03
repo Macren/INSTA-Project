@@ -7,9 +7,7 @@
 package swing;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import javax.swing.ListModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -47,13 +45,13 @@ public class ListContacts extends javax.swing.JInternalFrame {
   public ListContacts(AbstractUser pUser) {
     initComponents();
     
-    if(pUser.getClass().isInstance(Administrator.class)){
+    if(pUser.getClass() == Administrator.class){
       this.utilisateurConnecte = new Administrator(pUser);
     }
-    if(pUser.getClass().isInstance(Teacher.class)){
+    if(pUser.getClass() == Teacher.class){
       this.utilisateurConnecte = new Teacher(pUser);
     }
-    if(pUser.getClass().isInstance(Student.class)){
+    if(pUser.getClass() == Student.class){
       this.utilisateurConnecte = new Student(pUser);
     }
     
@@ -64,12 +62,11 @@ public class ListContacts extends javax.swing.JInternalFrame {
   private void initListContacts() {
     
     ContactService contactService = new ContactService();
-    List<Contact> listContacts = new ArrayList();
-    listContacts = contactService.selectAllByOneUserId(1);
+    List<Contact> listContacts = contactService.selectAllByOneUserId(this.utilisateurConnecte.getId());
 //    listContacts = contactService.selectAllByOneUserId(this.utilisateurConnecte.getId());
     
     // On cherche à récupérer une liste d'utilisateurs
-    List<AbstractUser> listUsers = null;
+    List<AbstractUser> listUsers = new ArrayList();
     
     StudentService studentService             = new StudentService();
     TeacherService teacherService             = new TeacherService();
@@ -80,26 +77,27 @@ public class ListContacts extends javax.swing.JInternalFrame {
       
       if(studentService.selectById(contactCourant.getUtilisateur2().getId()) != null){
         u = studentService.selectById(contactCourant.getUtilisateur2().getId());
-        listUsers.add(u);
+        listUsers.add((AbstractUser)u);
       }
       if(teacherService.selectById(contactCourant.getUtilisateur2().getId()) != null){
         u = teacherService.selectById(contactCourant.getUtilisateur2().getId());
-        listUsers.add((AbstractUser)u);
+        listUsers.add(u);
       }
       if(administratorService.selectById(contactCourant.getUtilisateur2().getId()) != null){
         u = administratorService.selectById(contactCourant.getUtilisateur2().getId());
-        listUsers.add(u);
+        listUsers.add((AbstractUser)u);
       }
     }
     
     this.racine = new DefaultMutableTreeNode("Contacts");
-    TreeModel model = new DefaultTreeModel(racine);
     
     for (AbstractUser currentUser : listUsers) {
       DefaultMutableTreeNode noeud = new DefaultMutableTreeNode(currentUser);
       this.racine.add(noeud);
     }
     
+    TreeModel model = new DefaultTreeModel(racine);
+    this.jt_list_contacts.setModel(model);
   }
   
 

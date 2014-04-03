@@ -2182,8 +2182,8 @@ public class GeneralMDI extends javax.swing.JFrame {
       this.jifListeContacts.dispose();
     }
     
-    if(this.myAdmin != null){
-      this.jifListeContacts = new ListContacts(this.myAdmin);
+    if(this.myStudent != null){
+      this.jifListeContacts = new ListContacts(this.myStudent);
     }
     
     this.desktopPane.add(this.jifListeContacts);
