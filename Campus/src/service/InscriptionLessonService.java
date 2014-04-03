@@ -47,6 +47,6 @@ public class InscriptionLessonService {
   }
   
   public List<Student> selectAllStudentByLessonId(int pLessonId) {
-    return this.signUpDao.selectAllStudentByLessonId(pLessonId);
+    return this.signUpDao.selectAllStudentsbyLessonId(pLessonId);
   }
 }

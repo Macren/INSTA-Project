@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,6 +27,7 @@ import metier.AbstractUser;
 import metier.Administrator;
 import metier.Discipline;
 import metier.Education;
+import metier.InscriptionLesson;
 import metier.Lesson;
 import metier.Student;
 import metier.Teacher;
@@ -63,7 +66,7 @@ public class GeneralMDI extends javax.swing.JFrame {
     private LessonService               lessonService = new LessonService();
     private DisciplineService           disciService = new DisciplineService();
     private EducationService            eduService = new EducationService();
-    private InscriptionLessonService    signUpServie = new InscriptionLessonService();
+    private InscriptionLessonService    signUpService = new InscriptionLessonService();
     
     // </editor-fold>
     
@@ -898,6 +901,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(myTree);
 
+        txt_detail.setEditable(false);
         jScrollPane2.setViewportView(txt_detail);
 
         bt_home_addUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/img/bt_addUser_unclick.png"))); // NOI18N
@@ -966,6 +970,11 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bt_home_signInMouseReleased(evt);
+            }
+        });
+        bt_home_signIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_signInActionPerformed(evt);
             }
         });
 
@@ -1989,6 +1998,19 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_signOut.setIcon(icon);
     }//GEN-LAST:event_bt_home_signOutMouseReleased
 
+    
+    public boolean studentAlreadyExist(List<Student> myList, Student myStudent) {
+        
+        if (myList == null || myStudent == null || myList.isEmpty())
+            return false;
+        
+        for (Student student : myList) {
+            if (myStudent.getId() == student.getId())
+                return true;
+        }
+        return false;
+    }
+    
     private void myTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_myTreeValueChanged
         // TODO add your handling code here:
              
@@ -2011,15 +2033,129 @@ public class GeneralMDI extends javax.swing.JFrame {
             if ((node != null)  && (!node.isRoot())) {
                 if (node.getUserObject().getClass() == Lesson.class) {
                     
+                    // getting Lesson from node
                     Lesson myLesson = (Lesson)node.getUserObject();
-                    List<Student> myStudentList = InscriptionLessonService.selectAllStudentByLessonId(myLesson.getId());
-                    this.bt_home_signIn.setEnabled(true);
-                    this.bt_home_signOut.setEnabled(false);
+                    if (this.canSignIn(myLesson)) {
+                        this.bt_home_signIn.setEnabled(true);
+                        this.bt_home_signOut.setEnabled(false);
+                    }
+                    if (this.canSignOut(myLesson)) {
+                        this.bt_home_signOut.setEnabled(true);
+                        this.bt_home_signIn.setEnabled(false);
+                    }
                 }
+            }
+        }
+        
+        DefaultMutableTreeNode  node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+        
+        // if jtree selection exist
+        if ((node != null)  && (!node.isRoot())) {
+            if (node.getUserObject().getClass() == Lesson.class) {
+                Lesson myLesson = (Lesson)node.getUserObject();
+                this.writeDetail(myLesson);
+            }
+            if (node.getUserObject().getClass() == Discipline.class) {
+                Discipline myDisci = (Discipline)node.getUserObject();
+                this.writeDetail(myDisci);
+            }
+            if (node.getUserObject().getClass() == String.class) {
+                String myStr = (String)node.getUserObject();
             }
         }
     }//GEN-LAST:event_myTreeValueChanged
 
+    private void writeDetail(Lesson myLesson) {
+        String detailText = "";
+        detailText += "\t\t" + myLesson.getName() + "\n";
+        String tmp = "";
+        for (int i = 1; i < myLesson.getName().length(); i++)
+            tmp += "=";
+        detailText += "\t\t" + tmp + "\n";
+        detailText += "par " + myLesson.getTeacher().getFirstName() + " " + myLesson.getTeacher().getLastName().toUpperCase() + "\n\n";
+        detailText += "Nombre d'étudiant max : " + myLesson.getNbMaxStudent() + "\n";
+        List<Student> myStudentList = this.signUpService.selectAllStudentByLessonId(myLesson.getId());
+        detailText += "Nombre d'étudiant inscrits : " + myStudentList.size() + "\n\n";
+        detailText += "Ce cours aura lieu le : " + myLesson.getBeginDate().toString() + "\n";
+        detailText += "Ce cours est prévu en " + myLesson.getDiscipline().getName();
+        if (this.myStudent  != null)
+            detailText += " pour la promo " + this.myStudent.getEducation() + "\n\n";
+        else
+            detailText += "\n\n";
+        detailText += "Ce cours est actuellement " + myLesson.getStatus();
+
+        this.txt_detail.setText(detailText);
+        detailText = "";
+    }
+    
+    private void writeDetail(Discipline myDisci) {
+        String detailText = "";
+        detailText += "\t\t" + myDisci.getName() + "\n";
+        String tmp = "";
+        for (int i = 1; i < myDisci.getName().length(); i++)
+            tmp += "=";
+        detailText += "\t\t" + tmp + "\n";
+        detailText += "Cette matière est prévue pour le cursus " + myDisci.getEducation() + "\n";
+        detailText += "Elle débute le : " + myDisci.getBeginDate().toString() + "\n";
+        detailText += "Et termine le : " + myDisci.getEndDate().toString() + "\n\n";
+
+        this.txt_detail.setText(detailText);
+        detailText = "";
+    }
+    
+    private void bt_home_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_signInActionPerformed
+        // TODO add your handling code here:
+        
+        // getting node from jtree
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+        Lesson myLesson = null;
+        // if jtree selection exist
+        if ((node != null)  && (!node.isRoot())) {
+            if (node.getUserObject().getClass() == Lesson.class) {
+                
+                // getting Lesson from node
+                myLesson = (Lesson)node.getUserObject();
+            }
+        }
+        InscriptionLesson   inscription = new InscriptionLesson(this.myStudent, myLesson);
+        this.signUpService.insert(inscription);
+        this.writeDetail(myLesson);
+        this.bt_home_signIn.setEnabled(false);
+        if (canSignOut(myLesson))
+            this.bt_home_signOut.setEnabled(true);
+    }//GEN-LAST:event_bt_home_signInActionPerformed
+
+    
+    private boolean canSignIn (Lesson myLesson) {
+    
+        // getting all student who signed in the Lesson
+        List<Student> myStudentList = this.signUpService.selectAllStudentByLessonId(myLesson.getId());    
+        if (myStudentList.size() == myLesson.getNbMaxStudent()) {
+            myLesson.setStatus("Complet");
+            this.lessonService.update(myLesson);
+        }
+        
+        return (!this.studentAlreadyExist(myStudentList, this.myStudent) && myLesson.getStatus().compareTo("Disponible") == 0);
+    }
+    
+    private boolean canSignOut(Lesson myLesson) {
+        // On recupere la date actuelle
+        Calendar cal1 = Calendar.getInstance();
+
+        // getting Lesson from node
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(myLesson.getBeginDate());
+        cal2.add(Calendar.DAY_OF_MONTH, -1);
+
+        boolean canSignOut = (cal1.before(cal2));
+        System.out.println("canSignOut : " + canSignOut);
+
+        // getting all student who signed in the Lesson
+        List<Student> myStudentList = this.signUpService.selectAllStudentByLessonId(myLesson.getId());
+        if (myStudentList.size() == myLesson.getNbMaxStudent())
+            myLesson.setStatus("Complet");
+        return this.studentAlreadyExist(myStudentList, this.myStudent) && canSignOut;
+    }
     
     // <editor-fold defaultstate="collapsed" desc="Main + Attribute auto-generated MDI"> 
     
