@@ -44,34 +44,6 @@
             <Property name="text" type="java.lang.String" value="Outils"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="helpMenuBar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Aide"/>
-          </Properties>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="contactsMenuBar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Contacts"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="myContactMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Mes contacts"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="myContactMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jmi_addContact">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ajouter contact"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jmi_addContactActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
@@ -475,6 +447,7 @@
               <Events>
                 <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signOutMousePressed"/>
                 <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="bt_home_signOutMouseReleased"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_home_signOutActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="bt_home_askCancel">

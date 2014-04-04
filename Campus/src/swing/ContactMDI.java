@@ -106,8 +106,10 @@ public class ContactMDI extends javax.swing.JFrame {
             DefaultMutableTreeNode studentNode = new DefaultMutableTreeNode("Etudiant");
             racine.add(studentNode);
             for (Student student : listStudent){
-                DefaultMutableTreeNode  aStudentNode =   new DefaultMutableTreeNode(student);
-                studentNode.add(aStudentNode);
+                if (student.getId() != this.currentUser.getId()) {
+                    DefaultMutableTreeNode  aStudentNode =   new DefaultMutableTreeNode(student);
+                    studentNode.add(aStudentNode);
+                }
             }
             racine.add(studentNode);
         }
@@ -118,8 +120,10 @@ public class ContactMDI extends javax.swing.JFrame {
             DefaultMutableTreeNode teacherNode = new DefaultMutableTreeNode("Professeur");
             racine.add(teacherNode);
             for (Teacher teacher : listTeacher){
-                DefaultMutableTreeNode  aTeacherNode =   new DefaultMutableTreeNode(teacher);
-                teacherNode.add(aTeacherNode);
+                if (teacher.getId() != this.currentUser.getId()) {
+                    DefaultMutableTreeNode  aTeacherNode =   new DefaultMutableTreeNode(teacher);
+                    teacherNode.add(aTeacherNode);
+                }
             }
             racine.add(teacherNode);
         }
@@ -130,8 +134,10 @@ public class ContactMDI extends javax.swing.JFrame {
             DefaultMutableTreeNode adminNode = new DefaultMutableTreeNode("Admin");
             racine.add(adminNode);
             for (Administrator admin : listAdmin){
-                DefaultMutableTreeNode  anAdminNode =   new DefaultMutableTreeNode(admin);
-                adminNode.add(anAdminNode);
+                if (admin.getId()!= this.currentUser.getId()) {
+                    DefaultMutableTreeNode  anAdminNode =   new DefaultMutableTreeNode(admin);
+                    adminNode.add(anAdminNode);
+                }
             }
             racine.add(adminNode);
         }
@@ -216,6 +222,11 @@ public class ContactMDI extends javax.swing.JFrame {
         });
 
         bt_addContact_add.setText("Ajouter");
+        bt_addContact_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_addContact_addActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(tree_listAddContact);
 
@@ -290,6 +301,29 @@ public class ContactMDI extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.jif_home.setVisible(true);
     }//GEN-LAST:event_jif_addContactComponentHidden
+
+    private void bt_addContact_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addContact_addActionPerformed
+        // TODO add your handling code here:
+        System.out.println("actionPerformed");
+        Contact myContact = null;
+        AbstractUser friend = null;
+         // getting node from jtree
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree_listAddContact.getLastSelectedPathComponent();
+        // if jtree selection exist
+        if ((node != null)  && (!node.isRoot())) {
+            if (node.getUserObject().getClass() != String.class) {
+                
+                // getting AbstractUser from node
+                friend = (AbstractUser)node.getUserObject();
+                myContact = new Contact(this.currentUser, friend);
+                this.contactService.insert(myContact);
+                this.jif_addContact.setVisible(false);
+                this.initListContacts();
+                this.tree_contactList.revalidate();
+                this.tree_contactList.repaint();
+            }
+        }
+    }//GEN-LAST:event_bt_addContact_addActionPerformed
 
     /**
      * @param args the command line arguments

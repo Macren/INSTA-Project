@@ -194,6 +194,14 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.bt_home_askCancel.setOpaque(false);
         this.bt_home_askCancel.setContentAreaFilled(false);
         this.bt_home_askCancel.setBorderPainted(false);
+        
+        this.bt_home_signIn.setOpaque(false);
+        this.bt_home_signIn.setContentAreaFilled(false);
+        this.bt_home_signIn.setBorderPainted(false);
+        
+        this.bt_home_signOut.setOpaque(false); 
+        this.bt_home_signOut.setContentAreaFilled(false);
+        this.bt_home_signOut.setBorderPainted(false);
     }
     
     /**
@@ -206,10 +214,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         
         // Menu Bar : Fichier
         // ------------------
-        JMenuItem       importItem = new JMenuItem("Importer...");
-        JMenuItem       exportItem = new JMenuItem("Exporter...");
-        this.fileMenuBar.add(importItem);
-        this.fileMenuBar.add(exportItem);
         this.fileMenuBar.add(this.disconnectMenuItem);
         
         // Menu Bar : Outils
@@ -252,13 +256,7 @@ public class GeneralMDI extends javax.swing.JFrame {
         addItem.add(addLessonItem);
         addItem.add(addDisciplineItem);
         addItem.add(addEducationItem);
-        JMenuItem       listStudentItem = new JMenuItem("Liste des élèves");
-        JMenuItem       listTeacherItem = new JMenuItem("Liste des profs");
-        JMenuItem       listAdminItem = new JMenuItem("Liste des admin");
         this.toolsMenuBar.add(addItem);
-        this.toolsMenuBar.add(listStudentItem);
-        this.toolsMenuBar.add(listTeacherItem);
-        this.toolsMenuBar.add(listAdminItem);
     }
     
     /**
@@ -278,12 +276,17 @@ public class GeneralMDI extends javax.swing.JFrame {
         
         // Menu Bar : Outils
         // -----------------
-        JMenuItem       planningItem = new JMenuItem("Planning...");
-        JMenuItem       listLessonItem = new JMenuItem("Liste cours");
         JMenuItem       infoEducItem = new JMenuItem("Infos formation");
         JMenuItem       contactManagerItem = new JMenuItem("Carnet d'adresse");
-        this.toolsMenuBar.add(planningItem);
-        this.toolsMenuBar.add(listLessonItem);
+        
+        
+        contactManagerItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contactManagerItemActionPerformed(evt);
+            }
+        });
+        
         this.toolsMenuBar.add(infoEducItem);
         this.toolsMenuBar.add(contactManagerItem);
     }
@@ -802,10 +805,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         fileMenuBar = new javax.swing.JMenu();
         disconnectMenuItem = new javax.swing.JMenuItem();
         toolsMenuBar = new javax.swing.JMenu();
-        helpMenuBar = new javax.swing.JMenu();
-        contactsMenuBar = new javax.swing.JMenu();
-        myContactMenuItem = new javax.swing.JMenuItem();
-        jmi_addContact = new javax.swing.JMenuItem();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -1011,6 +1010,11 @@ public class GeneralMDI extends javax.swing.JFrame {
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 bt_home_signOutMouseReleased(evt);
+            }
+        });
+        bt_home_signOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_home_signOutActionPerformed(evt);
             }
         });
 
@@ -1562,29 +1566,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         toolsMenuBar.setText("Outils");
         menuBar.add(toolsMenuBar);
 
-        helpMenuBar.setText("Aide");
-        menuBar.add(helpMenuBar);
-
-        contactsMenuBar.setText("Contacts");
-
-        myContactMenuItem.setText("Mes contacts");
-        myContactMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                myContactMenuItemActionPerformed(evt);
-            }
-        });
-        contactsMenuBar.add(myContactMenuItem);
-
-        jmi_addContact.setText("Ajouter contact");
-        jmi_addContact.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmi_addContactActionPerformed(evt);
-            }
-        });
-        contactsMenuBar.add(jmi_addContact);
-
-        menuBar.add(contactsMenuBar);
-
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1653,7 +1634,21 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.refreshAddLessonUI();
         UIUtils.centerJIF(this.jif_addLesson, this.desktopPane);
         this.jif_home.setVisible(false);
-    }  
+    }                                         
+
+    private void contactManagerItemActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+    
+        ContactMDI cmdi;
+
+        if (this.myAdmin != null)
+          cmdi = new ContactMDI(this.myAdmin);
+        else if (this.myStudent != null)
+          cmdi = new ContactMDI(this.myStudent);
+        else
+          cmdi = new ContactMDI(this.myTeacher);
+        cmdi.setVisible(true);
+    } 
     // </editor-fold>
     
      
@@ -2221,37 +2216,6 @@ public class GeneralMDI extends javax.swing.JFrame {
         this.jif_home.setVisible(false);
   }//GEN-LAST:event_bt_home_addUserActionPerformed
 
-  private void myContactMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myContactMenuItemActionPerformed
-    // TODO add your handling code here:
-    
-
-    // setting display
-    
-    
-    ContactMDI cmdi;
-    
-    if (this.myAdmin != null) {
-      cmdi = new ContactMDI(this.myAdmin);
-    }
-    else if (this.myStudent != null) {
-      cmdi = new ContactMDI(this.myStudent);
-    }
-    else {
-      cmdi = new ContactMDI(this.myTeacher);
-    }
-    
-    cmdi.setVisible(true);
-    //this.setVisible(false);
-    
-  }//GEN-LAST:event_myContactMenuItemActionPerformed
-
-  private void jmi_addContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_addContactActionPerformed
-    // TODO add your handling code here:
-    this.refreshAddUserUI();
-    UIUtils.centerJIF(this.jif_addUser, this.desktopPane);
-    this.jif_home.setVisible(false);
-  }//GEN-LAST:event_jmi_addContactActionPerformed
-
     private void jif_addUserComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jif_addUserComponentHidden
         // TODO add your handling code here:
         this.jif_home.setVisible(true);
@@ -2365,6 +2329,17 @@ public class GeneralMDI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_bt_home_askCancelActionPerformed
 
+    private void bt_home_signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_home_signOutActionPerformed
+        // TODO add your handling code here:
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)myTree.getLastSelectedPathComponent();
+        Lesson myLesson = (Lesson)node.getUserObject();
+        InscriptionLesson signOut = new InscriptionLesson(myStudent, myLesson);
+        signUpService.delete(signOut);
+        writeDetail(myLesson);
+        this.bt_home_signOut.setEnabled(false);
+        this.bt_home_signIn.setEnabled(true);
+    }//GEN-LAST:event_bt_home_signOutActionPerformed
+
     
     // <editor-fold defaultstate="collapsed" desc="Main + Attribute auto-generated MDI"> 
     
@@ -2438,11 +2413,9 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JComboBox combob_addUser_year;
     private javax.swing.JComboBox combob_eHour;
     private javax.swing.JComboBox combob_education;
-    private javax.swing.JMenu contactsMenuBar;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem disconnectMenuItem;
     private javax.swing.JMenu fileMenuBar;
-    private javax.swing.JMenu helpMenuBar;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
@@ -2476,13 +2449,11 @@ public class GeneralMDI extends javax.swing.JFrame {
     private javax.swing.JInternalFrame jif_addLesson;
     private javax.swing.JInternalFrame jif_addUser;
     private javax.swing.JInternalFrame jif_home;
-    private javax.swing.JMenuItem jmi_addContact;
     private javax.swing.JLabel lbl_addDisci_winTitle;
     private javax.swing.JLabel lbl_addEdu_winTitle;
     private javax.swing.JLabel lbl_addLesson_winTitle;
     private javax.swing.JLabel lbl_addUser_winTitle;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem myContactMenuItem;
     private javax.swing.JTree myTree;
     private javax.swing.JPanel panel_addEdu;
     private javax.swing.JLabel photo_chooser;

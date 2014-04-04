@@ -55,8 +55,29 @@ public class InscriptionLessonDAO implements IDAO<InscriptionLesson> {
   }
 
   @Override
-  public boolean delete(InscriptionLesson objet) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean delete(InscriptionLesson pSignOut) {
+
+    Connection cnx = null;
+    
+    try {
+      cnx = db.connect();
+      
+      String sql = "DELETE FROM `inscription_lesson` WHERE `id_user_student`=? AND `id_lesson`=? ;";
+      PreparedStatement stat = cnx.prepareStatement(sql);
+      stat.setInt(1, pSignOut.getStudent().getId());
+      stat.setInt(2, pSignOut.getLesson().getId());
+      
+      stat.executeUpdate();
+      return true;
+      
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(InscriptionLessonDAO.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      db.disconnect(cnx);
+    }
+    return false;
   }
 
   @Override // N'a pas de sens ==> Non implémentée
